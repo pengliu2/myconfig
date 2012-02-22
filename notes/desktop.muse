@@ -1,0 +1,81 @@
+* PC setting up in Xubuntu
+
+** Motorola VPN
+
+http://mad-scientist.net/juniper.html
+
+** apt source
+
+<code>
+deb http://tw.archive.ubuntu.com/ubuntu hardy main restricted universe multiverse
+deb http://tw.archive.ubuntu.com/ubuntu hardy-security main restricted universe multiverse
+deb http://tw.archive.ubuntu.com/ubuntu hardy-updates main restricted universe multiverse
+deb http://tw.archive.ubuntu.com/ubuntu hardy-backports main restricted universe multiverse
+deb http://tw.archive.ubuntu.com/ubuntu hardy-proposed main restricted universe multiverse
+deb-src http://tw.archive.ubuntu.com/ubuntu hardy main restricted universe multiverse
+deb-src http://tw.archive.ubuntu.com/ubuntu hardy-security main restricted universe multiverse
+deb-src http://tw.archive.ubuntu.com/ubuntu hardy-updates main restricted universe multiverse
+deb-src http://tw.archive.ubuntu.com/ubuntu hardy-backports main restricted universe multiverse
+deb-src http://tw.archive.ubuntu.com/ubuntu hardy-proposed main restricted universe multiverse
+</code>
+
+** Automatically Switch Proxy
+
+http://www.linuxbasement.com/content/automatically-switching-between-work-proxy-and-no-proxy
+
+<code>
+#My script in /etc/NetworkManager/dispatcher.d/
+#!/bin/sh
+if [ -z "$1" ]; then
+	echo "$0: called with no interface" 1>&2
+	exit 1;
+fi
+
+
+if [ "$2" = "up" ]; then
+	WIRELESS_NETWORK=`nm-tool | grep -e "Device: *eth0_rename" | cut -d[ -f2 | cut -d] -f1`
+	if [ "$1" = "eth2" -o "$WIRELESS_NETWORK" = "M-Wireless" ]; then
+		diff /etc/tinyproxy.conf /etc/tinyproxy_work.conf > /dev/null
+		if [ "$?" = "0" ]; then
+			exit 0
+		fi
+		cp -f /etc/tinyproxy_work.conf /etc/tinyproxy.conf
+	else
+		diff /etc/tinyproxy.conf /etc/tinyproxy_home.conf > /dev/null
+		if [ "$?" = "0" ]; then
+			exit 0
+		fi
+		cp -f /etc/tinyproxy_home.conf /etc/tinyproxy.conf
+	fi
+	service tinyproxy restart
+fi
+</code>
+
+** System Wide Env
+
+/etc/environment
+
+** wdfs
+
+install wdfs to mount the compass
+
+** Firefox
+
+*** cache in tmpfs
+
+put in /etc/fstab
+tmpfs /media/ramdisk tmpfs size=64M,nr_inodes=10k,mode=777 0 0
+
+new string in firefox's about:config
+browser.cache.disk.parent_directory=/media/ramdisk
+
+** Screen
+
+*** use C-z for escape key
+
+in .screenrc
+escape ^za
+
+** printer
+
+libertyville: \\10.22.66.52\MPC4000

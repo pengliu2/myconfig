@@ -1,0 +1,4 @@
+* iBus
+
+** Import the External Words Lib
+ - http://forum.ubuntu.org.cn/viewtopic.php?f=8&t=188685&start=0

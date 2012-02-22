@@ -1,0 +1,238 @@
+* 功能:
+
+配合手机, 在 windows 操作系统上模拟出串行口设备, 用于和手机通讯.
+
+* 策略: 
+
+手机端 USB 控制器配置为 device(客户端, 对应的 PC 为 host, 主机端), 至少
+一个 IN endpoint 和至少一个 OUT endpoint. USB driver for windows 把相邻
+的一个 IN endpoint 和一个 OUT endpoint 作为一对 endpoint, 一对
+endpoint 被模拟成一个 windows 系统里的串行口.
+
+串行口号是这样确定的. windows 在注册表里对于每一个串口设备维护一个键值,
+USB driver for windows 找到最大的一个串口号, USB driver for windows 建
+立的串口的编号, 从这个串口号的下一个数字开始.
+
+* 开发工具:
+
+Windows 2000 DDK, Windows DDK 2600, SoftIce
+
+* 程序文件:
+
+** MAKEFILE:			工程文件, 用于编译.
+** POLLEX.INF: 		安装信息, 用于安装.
+** README.TXT:		简要说明.
+** hopenusb.rc:		资源文件.
+** makedrvr.bat:		工程文件, 用于编译.
+** source:			工程文件, 用于编译.
+** resource.h:		资源文件.
+
+** comport.c:		建立, 控制, 撤销 windows 串口设备.
+** debugprint.c:		用于输出调试信息.
+** dispatch.c:		串口设备分发(dispatch)主函数.
+** emulser.c:		处理事件通知的函数.
+** hopenpos.c:		驱动程序入口函数.
+** ioctl.c:			串口控制函数.
+** pnp.c:			plug and play 管理.
+** power.c:			设备电源管理.
+** read.c:			读串口操作.
+** usb.c:			和 windows 系统 USB 驱动接口.
+** util.c:			公用函数.
+** write.c:			写串口操作.
+
+** debugprint.h:		用于输出调试信息.
+** hopenpos.h:		数据结构定义, 常数定义.
+
+* 流程:
+
+看流程图文件 read.pdf, write.pdf
+
+* 关键代码分析:
+
+准备分析 FDO_PnP, Ioctl -> IOCTL_SERIAL_WAIT_ON_MASK
+
+** FDO_PnP
+
+FDO_PnP 是 Function Deivce Object 收到 IRP_MJ_PNP 的 Dispatch
+routine. 处理和 Plug and Play 相关的系统消息.
+
+FDO_PnP 的主体是一个分支语句, 以 IRP 的 Minor Function 值为分支条件. 下
+面主要介绍 IRP_MN_START_DEVICE 和IRP_MN_REMOVE_DEVICE 这两个分支.
+
+*** IRP_MN_REMOVE_DEVICE
+
+在设备从 PC 上移走后被调用. 先设置 FDO Extension 的状态为
+STATE_REMOVED. 在 dispatch 函数里, 当 FDO Extension 状态为
+STATE_REMOVED, 设备不再接受应用程序的请求.
+
+先把 IRP 传到栈下层处理.
+
+完成后, 等待所有未完成的请求完成. 由于很多设备操作都是异步的, 因此在开
+始一个操作的时候, 调用 IncrementPendingActionCount 让
+pendingActionCount 加1, 标记一个未完成的操作, 每一个操作完成的时候, 调
+用 DecrementPendingActionCount 使 pendingActionCount 减1, 除掉前面做的
+标记. 这里多调用一次 DecrementPendingActionCount, 当所有操作都完成后,
+pendingActionCount 的值为 -1, DecrementPendingActionCount 会置
+removeEvent.
+
+removeEvent 被置位后, 表示再没有未完成的操作, 可以按照正常的流程释放虚
+拟串口 (PDO) 和 FDO 的内存了.
+
+*** IRP_MN_START_DEVICE
+
+分支在设备被连接到 PC 上以后被调用. 这个分支首先设置 Function Device
+Object 的状态, 把 IRP 传递到设备栈下一级, 启动整个设备栈. 这些都成功完
+成以后, GetDeviceCapabilities 函数让设备栈的下一级填充一些 FDO
+Extension 的域. InitUSB 函数初始化一些 USB 设备相关的参数.
+
+比较重要的函数是 CreatePdoForEachEndpointPair,
+IoInvalidateDeviceRelations.
+
+**** CreatePdoForEachEndpointPair
+
+这个函数为每一对 OUT ENDPOINT/IN ENDPOINT 创建一个 PDO (Physical
+Device Object). 每一个 PDO 就代表了一个虚拟串口. 把新创建的 PDO 加入到
+FDO 的 deviceRelations 域里.
+
+函数的主体是一个循环体, 跳出循环的条件是 OUT ENDPOINT 或者 IN ENDPOINT
+被遍历. 在循环内部, 初始化可以配对的每一对 OUT ENDPOINT 和 IN
+ENDPOINT. 用每一对 ENDPOINT 生成一个代表虚拟串口的 PDO (CreateCOMPdo).
+
+在 CreateCOMPdo 函数里, 先调用 GetFreeComPortNumber 取得系统现在可用的
+串口号, 保存在 comPortNumber里.
+
+得到可用的串口号后, 以之为参数调用 CreateChildPdoName, 得到名字字符串,
+作为参数调用 IoCreateDevice 在 Windows 系统中生成一个 PDO.
+
+上述步骤都成功完成后, 对 PDO Extension 的域进行初始化. 其中重要的成员
+包括:
+
+pendingReadIrpsList, 未处理的 Read IRP 队列, 应用程序 Read 请求被放入
+该队列.
+
+pendingWriteIrpsList, 未处理的 Write IRP 队列, 应用程序 Write 请求被放
+入该队列.
+
+completedReadPacketsList, 从设备栈下层返回的 Read Packet 队列, Windows
+系统收到 USB 数据后, 调用回调函数 ReadPipeCompletion, 把新数据放入该队
+列.
+
+devExtSpinLock, 保护 PDO Extension 的互斥锁.
+
+devExtSpinLock_mask, 保护 MASK 的互斥锁, 在处理 MASK 相关的请求时需要取
+得这个互斥锁.
+
+callSyncEvent, 用于模拟同步调用驱动服务. 调用 Windows 系统的 USB 服务都
+是异步的, 但我们的应用程序有时候需要同步调用. util.c 的 CallDriverSync
+函数模拟了一个同步调用. callSyncEvent 用于 USB 服务完成后通知我们的应用
+程序.
+
+TotalReadTimeoutDpc, 读超时后要做的操作.
+
+ReadRequestTotalTimer, 记录读超时的 Timer. 系统在开始处理
+pendingReadIrpsList 里的一个读请求时, 启动这个 Timer.
+
+writeWorkItem, 启动下次 Write 操作的 Work Item. 
+
+readWorkItem, 启动下次 Read 操作的 Work Item.
+
+因为该驱动程序的读, 写 USB 操作都是异步操作, 操作完成后, Windows 系统调
+用回调函数通知该驱动程序. 驱动程序要开始处理 pendingWriteIrpsList, 或者
+pendingReadIrpsList 里后续的请求, 不能直接在回调函数里进行, 因为回调函
+数实际是在 Windows 的系统线程里调用的. 而需要在一个单独的线程里进行, 注
+册 Work Item 相当于在单独的线程做这些 Work Item.
+
+totalQueuedReadDataLength, 目前未返回给应用程序的数据字节数.
+
+**** IoInvalidateDeviceRelations
+
+这个函数是 Windows 内核接口, 用于通知 PnP Manager 设备对象的关系发生了
+变化. 我们这里通知 BusRelations 发生了改变. PnP Manager 收到这个通知后
+会发送一个 IRP_MN_QUERY_DEVICE_RELATIONS 到驱动程序. 驱动程序在
+FDO_PnP 函数里处理这个请求.
+
+具体的处理工作在 QueryDeviceRelations 函数里. 只处理类型的
+BusRelations 的请求. 驱动把 FDO Extension 的 deviceRelations 域复制到
+IRP 里. 按照 Windows 文档的要求, 调用 ObReferenceObject 函数增加
+deviceRelations 每一个 Objects 成员的外部引用数.
+
+调用这个函数产生的效果是, 把我们按照 ENDPOINT 对生成的每一个 PDO (每一
+个代表一个虚拟串口), 加入到系统总线关系中.
+
+** Ioctl -> IOCTL_SERIAL_WAIT_ON_MASK
+
+Windows 应用程序一般用事件驱动的方式进行串口操作. 应用程序关心的事件用
+MASK 表示, MASK 是一组事件的组合. IOCTL_SERIAL_SET_WAIT_MASK 设置应用程
+序关心的 MASK 值. 应用程序发出的IOCTL_SERIAL_WAIT_ON_MASK IRP 被驱动程
+序保存, 并在事件发生的时候完成这个 IRP.
+
+该驱动程序处理 IOCTL_SERIAL_WAIT_ON_MASK 请求按如下步骤:
+
+1.取得 PDO Extension MASK的互斥锁, 确保原子操作;
+
+2.如果上一次的 IOCTL_SERIAL_WAIT_ON_MASK IRP 还没有被处理, 或者没有设
+  置 MASK, 出错返回;
+
+3.如果目前设备的状态已经满足应用程序关心的 MASK, 成功返回;
+
+4.到此前面的验证工作都已经通过, 保存IRP 在 PDO Extension 的 pWaitIrp,
+  设置该 IRP 的 CancelRoutine 为 CommCancelWaitIrp, 标记 IRP 为
+  PENDING 状态. 等待事件的发生.
+
+5.释放互斥锁.
+
+目前我们只在 USB 设备的 READ 请求被满足后, 处理 PENDING 状态的
+IOCTL_SERIAL_WAIT_ON_MASK IRP. 具体实现在 ProcessWaitOnIrp 函数里. 目
+前能够处理的事件包括, SERIAL_EV_RXFLAG, SERIAL_EV_RX80FULL,
+SERIAL_EV_RLSD. 
+
+注意取得 PENDING 状态的 IRP 在取得 PDO Extension MASK 互斥锁条件下进行,
+如果事件满足, 完成 IRP 的操作必须释放互斥锁. 否则, 应用程序如果马上进行
+下一次 IOCTL_SERIAL_WAIT_ON_MASK 请求, 再试图取得互斥锁时会锁死系统.
+
+* 改动情况
+
+所有改动在 CVS 里有记录, CVS 服务器在
+
+:pserver:@10.10.70.75:/home/pliu/cvsroot
+
+用户名: pliu
+
+密码: smartphone
+
+** 串口号决定机制
+
+原有的串口号是根据
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\COM Name Arbiter
+
+这个项的 ComDB 键值确定.
+
+缺点是有些虚拟串口程序使用了串口号以后, 不主动修改这个键值, 因此根据这
+个键值确定的可用串口号不准确.
+
+现在的串口号是根据
+
+HKEY_LOCAL_MACHINE\HARDWARE\DEVICEMAP\SERIALCOMM
+
+这个项下的键值确定的.
+
+这个项下的键值是 windows 系统自动创建的. 键值为 COMn, n 是阿拉伯数字.
+找到最大的 n, n+1 就是可用的虚拟串口号.
+
+修改涉及的文件: comport.c
+
+** 限制每次发送数据不超过 4096 字节
+
+原有的发送为发送 IRP 中全部数据. 在用 WinFax 发送传真时, 系统崩溃. 原
+因是 windows 系统 USB 驱动程序不能接受超过 4096 字节的数据.
+
+现在的发送机制为每次发送 IRP 数据至多为 4096 字节, 没有完成的部分, 下
+次发送. 具体机制见流程图 write.pdf.
+
+** USB 拔出后分发函数返回错误号
+
+原有的错误号为 STATUS_PORT_DISCONNECTED. 超级终端不能识别这个错误号,
+造成 USB 线拔出后超级终端不断发送读请求, 系统死锁.
+
+现在返回错误号 STATUS_DELETE_PENDING. 可以避免系统死锁的情况.

@@ -1,0 +1,45 @@
+./Makefile:
+        to build tcmd_test.c
+./aptest.sh:
+        Run test cases one by one, from the first one by default. Not
+        one to one with 22662_Feature_Test.xls [Need more
+        investigation].
+./filehog.c:
+        Not used. Fork a new process and both father and child run an
+        endless loop.
+./fill_file.sh:
+        fill 1024 times of abcdefghijklmno to /ezxlocal/file
+./fill_panic.sh:
+        fill 1024 times of abcdefghijklmno to /var/tmp/fill_file_temp
+        and then dd the file to /dev/mtdblock/kpanic
+./gen_files.sh:
+        touch 2521 files in /ezxlocal/app_dump/
+./nullptr_prog.c:
+        write to null pointer
+./stdouterr_test.c:
+        continueously writing to stdout and stderr
+./touch_lots.sh:
+        touch several files in certain directory. number of files,
+        base name of files, directory can be customized.
+./aplogd/:
+        aplogd test suite
+./aplogd/Makefile:
+        compile input_test and log_parse, package common.sh and
+        random_input.sh test_daemon.sh
+./aplogd/input_test.c:
+        send certain amount of logger with a short interval.
+./aplogd/test_daemon.sh:
+        another 13 cases, which are more reasonable.
+./aplogd/common.sh:
+        functions useful.
+./aplogd/random_input.sh:
+        log randomly, and verify that log file is integrate.
+
+Following files seem developed for LIBkk96330, but not
+completed. Where is sudatalog_test source code?
+./regression_suite/ap_test.sh:
+        more test cases for aplogd than DataLoggerTestPlan.
+./regression_suite/pd_test.sh:
+        more test cases for panic daemon than DataLoggerTestPlan.
+./regression_suite/bp_test.sh:
+        more test cases for bplogd.

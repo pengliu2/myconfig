@@ -1,0 +1,305 @@
+\documentclass[11pt,leqno]{article}
+%define the title
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\pagestyle{fancy}
+\rhead{pengliu2}
+\lhead{Peng Liu}
+\author{Peng Liu(pengliu2, I2CS graduate)}
+\title{Solutions for Homework 3}
+\begin{document}
+\lstset{language={[Motorola68k]Assembler}}
+% generates the title
+\maketitle
+% insert the table of contents
+%\tableofcontents
+\section*{Problem 1}
+
+\begin{enumerate}
+\item[(a)]
+  \begin{enumerate}
+  \item[1.] SUB R1, R13, R14
+  \item[2.] CMP.lt pT, pF = R1, R4
+  \item[3.] (pF) ADDI R2, R2, \#1
+  \item[4.] (pF) SW 0(R7), R2
+  \item[5.] (pT) DIV.D F0, F0, F2
+  \item[6.] (pT) ADD.D F0, F4, F2
+  \item[7.] (pT) S.D 0(R8), F0
+  \end{enumerate}
+
+\item[(b)] 2 has an RAW on F1 from 1\\
+  3 has an RAW on pF from 2\\
+  4 has an RAW on pF from 2\\
+  7 probably has a RAW on F0 from 6
+
+\end{enumerate}
+
+\section*{Problem 2}
+
+\begin{enumerate}
+\item[(a)] There are 22 cycles before the second iteration begins.
+{\tiny
+\begin{verbatim}
+Loop:
+  L.D F2, 0(R1)     IF ID EX ME WB
+                       st
+  ADD.D F2, F2, F2        IF ID EX EX EX ME WB
+  L.D F4, 0(R2)              IF ID EX ME WB
+                                st
+  MUL.D F4, F4, F2                 IF ID EX EX EX EX EX EX EX ME WB
+                                      st st st st st st
+  ADD.D F6, F2, F4                                      IF ID EX EX EX ME WB
+                                                           st
+  S.D F6, 0(R3)                                               IF ID EX ME WB
+  DADDUI R1, R1, #8                                              IF ID EX ME WB
+  DADDUI R2, R2, #16                                                IF ID EX ME WB
+  DADDUI R3, R3, #16                                                   IF ID EX ME WB
+  DSUBUI R5, R5, #2                                                       IF ID EX ME WB
+                                                                              st
+  BNEZ R5, Loop                                                                  IF ID
+                                                                                    st
+\end{verbatim}
+}
+
+\item[(b)] There are 14 cycles after the loop is rescheduled.
+{\tiny
+\begin{verbatim}
+Loop:
+  L.D F2, 0(R1)     IF ID EX ME WB
+  DADDUI R1, R1, #8    IF ID EX ME WB
+  ADD.D F2, F2, F2        IF ID EX EX EX ME WB
+  L.D F4, 0(R2)              IF ID EX ME WB
+  DADDUI R2, R2, #16            IF ID EX ME WB
+  MUL.D F4, F4, F2                 IF ID EX EX EX EX EX EX EX ME WB
+  DSUBUI R5, R5, #2                   IF ID EX ME WB
+  (DADDUI R7, R3, #0)                    IF ID EX ME WB
+  DADDUI R3, R3, #16                        IF ID EX ME WB
+  BNEZ R5, Loop                                IF ID EX ME WB
+                                                  st st
+  ADD.D F6, F2, F4                                      IF ID EX EX EX ME WB
+  S.D F6, 0(R3)                                                  IF ID EX ME WB
+\end{verbatim}
+}
+
+\item[(c)] Made one unrolling. 17 cycles before next iteration (the 3rd loop) begins.
+{\tiny
+\begin{verbatim}
+Loop:
+  L.D           F2, 0(R1)
+  L.D           F12, 8(R1)
+  ADD.D         F2, F2, F2
+  ADD.D         F12, F12, F12
+  L.D           F4, 0(R2)
+  L.D           F14, 16(R2)
+  MUL.D         F4, F4, F2
+  MUL.D         F14, F14, F12
+  DADDUI        R1, R1, #16
+  DADDUI        R2, R2, #32
+  DADDUI        R3, R3, #32
+  DSUBUI        R5, R5, #4
+  BNEZ          R5, Loop
+  ADD.D         F6, F2, F4
+  ADD.D         F16, F12, F14
+  S.D           F6, -16(R3)
+  S.D           F16, 0(R3)
+  DADDUI        R1, R1, #32  
+  DADDUI        R2, R2, #64 
+  DADDUI        R3, R3, #64 
+  DSUBUI        R5, R5, #8 
+\end{verbatim}
+
+}
+  
+\end{enumerate}
+
+\section*{Problem 3}
+\begin{enumerate}
+\item[(a)] 10 cycles.
+{\tiny
+\begin{verbatim}
+Loop:
+        L.D     F2, 0(R1)
+        L.D     F12, 8(R1)
+        L.D     F22, 16(R1)
+        L.D     F32, 24(R1)
+        ADD.D   F2, F2, F2
+        ADD.D   F12, F12, F12
+        ADD.D   F22, F22, F22
+        ADD.D   F32, F32, F32
+        L.D     F4, 0(R2)
+        L.D     F14, 16(R2)
+        L.D     F24, 32(R2)
+        L.D     F34, 48(R2)
+        MUL.D   F4, F4, F2
+        MUL.D   F14, F14, F12
+        MUL.D   F24, F24, F22
+        MUL.D   F34, F34, F32
+        ADD.D   F6, F2, F4
+        ADD.D   F16, F12, F14
+        ADD.D   F26, F22, F24
+        ADD.D   F36, F32, F34
+        S.D     F6, 0(R3)
+        S.D     F16, 16(R3)
+        S.D     F26, 32(R3)
+        S.D     F36, 48(R3)
+        DADDUI  R1, R1, #32
+        DADDUI  R2, R2, #64
+        DADDUI  R3, R3, #64
+        DSUBUI  R5, R5, #8
+        BNEZ    R5, Loop
+\end{verbatim}
+}
+{\tiny
+\begin{tabular}{|l|l|l|l|l|}
+  \hline
+  Memory OP 1   & Memory OP 2   & Integer OP    & FP adder              & FP multiplier\\
+  \hline
+  \hline
+  L.D F2,0(R1)  & L.D F12,8(R1) &               &                       & \\
+  \hline
+  L.D F4,0(R2)  & L.D F22,16(R1)&               & ADD.D F2,F2,F2        & \\
+  \hline
+  L.D F32,24(R1)& L.D F14,16(R2)&               & ADD.D F12,F12,F12     & MUL.D F4,F4,F2\\
+  \hline
+  L.D F24,32(R2) & L.D F34,48(R2)&              & ADD.D F22,F22,F22     & MUL.D F14,F14,F12\\
+  \hline
+                &               & DADDUI R1,R1,\#32& ADD.D F32,F32,F32  & MUL.D F24,F24,F22\\
+  \hline
+                &               & DADDUI R2,R2,\#64& ADD.D F6,F2,F4     & MUL.D F34,F32,F32\\
+  \hline
+  S.D F6,0(R3)  &               &               & ADD.D F16,F12,F14  & \\
+  \hline
+  S.D F16,16(R3)&               & DSUBUI R5,R5,\#8& ADD.D F26,F22,F24   & \\
+  \hline
+  S.D F26,32(R3)&               & DADDUI R3,R3,\#64& ADD.D F36,F32,F34     & \\
+  \hline
+  S.D F32,-16(R3)&              & BNEZ R5,Loop  &                       & \\
+
+\end{tabular}
+}
+\item[(b)]
+At least 3 loop unrollings are needed. Because there is only one FP adding unit, and each loop has two add operations. Other operations all can be parallelized. 
+
+The first add operation has the RAW dependency on the first load. And the last store has the RAW dependency on the last add. So we need 2 more cycles. 
+
+Thus if we unroll the loop for 3 times, total cycles would be $3\times 2 + 1 + 1 = 8$. If it's 2, $2\times 2 + 1 + 1 = 6$. But unrolling the loop 2 times can't create enough space to parallelize the instructions. 
+
+
+\end{enumerate}
+\section*{Problem 4}
+
+\begin{enumerate}
+\item[(a)] 
+{\small
+\begin{verbatim}
+        S.D     F14, (R3)
+        ADD.D   F14, F12, F11
+        MUL.D   F11, F9, F8
+        ADD.D   F8, F7, F7
+        L.D     F7, 0(R1)
+        L.D     F9, 0(R2)
+        DADDUI  R1, R1, #8
+        DADDUI  R2, R2, #16
+        DADDUI  R3, R3, #16
+        DSUBUI  R5, R5, #2
+\end{verbatim}
+}
+\item[(b)]
+
+Start-up code
+{\small
+\begin{verbatim}
+        L.D     F7, 0(R1)
+        L.D     F9, 0(R2)
+        ADD.D   F8, F7, F7
+        MUL.D   F11, F9, F8
+        ADD.D   F14, F8, F11
+        DADDUI  R1, R1, #8
+        DADDUI  R2, R2, #16
+        DSUBUI  R5, R5, #2
+
+        L.D     F7, 0(R1)
+        L.D     F9, 0(R2)
+        ADD.D   F8, F7, F7
+        MUL.D   F11, F9, F8
+        DADDUI  R1, R1, #8
+        DADDUI  R2, R2, #16
+        DSUBUI  R5, R5, #2
+
+        LDD.D   F7, 0(R1)
+        LDD.D   F9, 0(R1)
+        ADD.D   F8, F7, F7
+        DADDUI  R1, R1, #8
+        DADDUI  R2, R2, #16
+        DSUBUI  R5, R5, #2
+\end{verbatim}
+}
+Finish-up code
+{\small
+\begin{verbatim}
+        S.D     F14, (R3)
+        ADD.D   F14, F12, F11
+        MUL.D   F11, F9, F8
+        ADD.D   F8, F7, F7
+        DADDUI  R3, R3, #16
+
+        S.D     F14, (R3)
+        ADD.D   F14, F12, F11
+        MUL.D   F11, F9, F8
+        DADDUI  R3, R3, #16
+
+        S.D     F14, (R3)
+        ADD.D   F14, F12, F11
+        DADDUI  R3, R3, #16
+
+        S.D     F14, (R3)
+        DADDUI  R3, R3, #16
+\end{verbatim}
+}
+\end{enumerate}
+
+\section*{Problem 5}
+\begin{enumerate}
+\item[(a)]
+To best hide its potential long latency, if possible, move the load instruction up as far as right after previous speculation check.
+\begin{verbatim}
+        instr.1
+        instr.2
+        ...
+        sLD     F2, 0(R1)
+        BEQZ    R1, null
+        SPECCK  0(R1)
+        ADD.D   F4, F0, F2
+        J       merge
+null:   ...
+merge:  ...
+\end{verbatim}
+
+\item[(b)]
+\begin{verbatim}
+        instr.1
+        instr.2
+        ...
+        sLD     F2, 0(R1)
+        ADD.D   F4, F0, F2
+        SPECCK  0(R1)
+        J       merge
+recover:
+        restore old F4
+null:   ...
+merge:  ...
+\end{verbatim}
+
+\end{enumerate}
+\section*{Problem 6}
+\begin{enumerate}
+\item[(a)] Bit 4-18 are used for index bits. 
+
+\item[(b)] Bit 19-20 are used for cache tag.
+
+\item[(c)] There are $2MB/16byte=131072 blocks$. And each block has a 2 bit tag and 1 state bit. So the total number of bits is $131072\times131=17170432$.
+
+\end{enumerate}
+
+\end{document}

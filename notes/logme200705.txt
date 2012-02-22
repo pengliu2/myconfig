@@ -1,0 +1,146 @@
+*2007/05/01 17:07:41 基金
+
+*2007/05/09 14:22:48 LogFS
+
+http://logfs.org/logfs/
+
+*2007/05/09 15:13:00 real-time examination of process memory usage
+
+http://thread.gmane.org/gmane.linux.kernel/511881
+
+*2007/05/11 10:34:46 improving booting time
+
+use initng: start deamons in a parallel way, with dependence control
+
+use upstart: start deamons based on event
+
+monitoring init performance with bootchart
+
+*2007/05/11 11:31:22 RCP exporting
+
+Exporting your Product in Jars or in Folders
+
+If, like me, you use the Product Export Wizard to produce a final
+build of your RCP application you may not know that if you specify a
+plug-in's Bundle Classpath as the "." in MANIFEST.MF
+("Bundle-ClassPath: .") then, when you perform the export, your
+plug-in will be built as a jar and given the bundle's ID and version
+number, such as “org.myproduct.foo_1.0.0.jar”. All additional files
+specified in the Build Configuration page will also be stuffed into
+the jar and your plug-in will consist of this one jar file.
+
+If, instead of ".", you specify a given jar name such as
+“myproduct.jar” then the plug-in will be exported as a folder (with
+the same name as the bundle's ID and version number) and your
+specified jar name will be used for your main plugin's jar file. This
+may be useful if you have some particular need to preserve a folder
+structure rather than deploying as a single jar file.
+
+*2007/05/11 22:18:26 2.6 scheduling
+
+2.6 版本调度器的源代码都很好地封装到了 /usr/src/linux/kernel/sched.c 文件中。我们在表 1 中对在这个文件中可以找到的一些有用的函数进行了总结。
+表 1. Linux 2.6 调度器的功能 函数名	函数说明
+schedule	调度器主函数。调度优先级最高的任务执行。
+load_balance	检查 CPU，查看是否存在不均衡的情况，如果不均衡，就试图迁移任务。
+effective_prio	返回任务的有效优先级（基于静态策略，但是可以包含任何奖励和惩罚）。
+recalc_task_prio	根据任务的空闲时间确定对任务的奖励或惩罚。
+source_load	适当地计算源 CPU（任务从中迁移出的 CPU）的负载。
+target_load	公平地计算目标 CPU（任务可能迁移到的 CPU）的负载。
+migration_thread	在 CPU 之间迁移任务的高优先级的系统线程。
+
+*2007/05/16 17:11:13 S60 游戏开发
+
+** http://www.52rd.com/S_TXT/2005_12/TXT2993.htm
+
+当一个系统事件发生时，最前端的应用程序失去焦点。 这造成应用程序用户接
+口类（CAknAppUI）的HandleForegroundEventL方法被调用
+
+当在预先设定的时间间隔里一直没有用户活动的时候，应用程序还可以从一个系
+统端计时器中取得事件。 要做到这些可以使用e32std.h头文件中可以找到的
+RTimer::Inactivity方法
+
+系统的最大时钟频率可以使用UserHal::TickPeriod方法访问，是用一种平台无
+关性的方法来给出时钟周期。 这个方法在e32hal.h头文件中被引用。
+
+核心端计时器可以使用RTimer类取得
+
+Symbian OS还提供两个CTimer导出类来重复的进行计时事件：CPeriodic和
+CHeartbeat。
+
+在应用程序端中，按键事件是在窗口服务器调用的OfferKeyEventL 方法处理的。
+每按下一个键就会生成三个单独的事件。 第一个事件是EEventKeyDown，这是当
+一个键被按下的时候生成的。然后是EEventKey，当键被松开的时候生成了
+EEventKeyUp事件。这些事件类型是被TEventCode枚举定义的，被传送到
+OfferKeyEventL作为第二个参数。第一个参数是一个结构
+（struct）TKeyEvent，指定关于事件的更详细的信息。如果一个键按下的时间
+长于0.8秒，窗口服务器发送另一个EEventKey事件到应用程序，长时间按键事件。
+如果这个键按下的时间比这个还长，那么窗口服务器每隔0.25秒钟发送一次按键
+重复事件。 这些时间帧对于Series 60来说是缺省值，它们可以被应用程序修改。
+
+对于大多数游戏来说，音频示例播放器接口提供了所有需要的特性来实现要求的
+音响效果。这个接口由MMdaAudioPlayerCallback和 CMdaAudioPlayerUtility类
+组成。 MMdaAudioPlayerCallback是一个mixin类，提供回调方法来通知客户端
+类样本的初始化或者播放已经完成。
+
+应用程序在屏幕上的描画一般是使用CWsScreenDevice图形设备来完成，与
+CWindowGc图形上下文相关联。CONE提供了一个CWindowGc实例作为描画控件的标
+准图形上下文。它被CCoeEnv创建并且可以使用 CCoeControls::SystemGc方法访
+问。CWindowGc的描画方法在客户端窗口服务器缓冲区上进行缓冲。
+
+当一个应用程序的数据或者状态改变的时候，需要应用程序初始化描画，并且屏
+幕需要更新。 CCoeControl提供非虚拟DrawNow方法，指明控件将要描画的窗口
+服务器，调用控件的Draw方法，最后指明完成描画的窗口服务器。 CCoeControl
+还提供了DrawDeferred方法，使窗口无效并且在窗口服务器中触发一个新的重画
+事件。这两个方法之间的差异是 DrawNow强制控件立即重画自己，而
+DrawDeferred导致一个重画事件将使用低优先级操作。由于CONE使用比重画事件
+更优先的级别处理用户输入事件，所以任何未定的用户输入事件都将首先处理。
+
+子图形是一个经过蒙板化（Mask）的位图，可以在应用程序不重画底层窗口的情
+况下移动。如果游戏不需要经常更新背景，那么使用子图形就再好不过了。
+RWsSpriteBase是一个用于子图形的抽象基本类
+
+
+*2007/05/21 14:38:39 apt pck
+
+** apt-pkg/contrib/cmndline.cc
+
+line 194
+
+** apt-pkg/contrib/configuration.cc
+
+line 88
+
+
+
+*2007/05/28 19:15:37 apt-get unsync problem
+
+** ilj_create_s19.pl
+
+It will go to wrong even if apt-get update is used.
+
+The package cannot be removed by apt-get, but it still can be removed
+by rpm.
+
+** try other packages
+
+tried java_apps and the same problem occurs.
+
+** invoke apt-get directly
+
+apt-get causes same problem
+
+** rpm erase
+
+A workaround is to uninstall packages with rpm erase.
+
+** root cause
+
+
+
+*2007/05/31 18:02:48 SWIG
+
+Simple Wrapper and Interface Generator used by apt source code.
+
+at http://www.swig.org/
+
+

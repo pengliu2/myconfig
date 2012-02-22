@@ -1,0 +1,6 @@
+#!/bin/sh
+gconftool -s /system/http_proxy/host -t string wwwgate0.mot.com
+gconftool -s /system/http_proxy/port -t int 1080
+gconftool -s /system/proxy/secure_host -t string wwwgate0.mot.com
+gconftool -s /system/proxy/secure_port -t int 1080
+gconftool -s /system/proxy/mode -t string manual

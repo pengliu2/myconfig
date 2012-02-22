@@ -1,0 +1,75 @@
+---------------------------------------------------------------------
+---+++ PCK RELEASE NOTES                         
+---------------------------------------------------------------------
+FOR MOTOROLA INTERNAL USE ONLY
+---------------------------------------------------------------------
+<pre>
+COMPONENT LABEL            : PCK_ILJ_R_1.9.2
+COMPONENT CM               : Peng Liu(a22543@email.mot.com)
+COMPONENT BUILD DATE       : 04/19/2007
+RELEASE LOCATION           : /vob/ilj_release/devkit/pck
+</pre>
+---------------------------------------------------------------------
+*LIST OF TARGETS SUPPORTED*
+---------------------------------------------------------------------
+   * Tool running in host
+
+---------------------------------------------------------------------
+*Document Baseline*
+---------------------------------------------------------------------
+Built Package List:
+%EDITTABLE{format="| textarea, 1x20 | textarea, 1x15 | textarea, 1x15 | textarea, 6x40 | textarea, 6x40 |"}%
+| *ITEM* | *NAME* | *VERSION* | *VOB path* | *Notes* |
+| User Guide | pck_user_guide.zip | 1.8.0 | /vob/ilj_release/devkit/pck/pck_user_guide.zip<br/> | |
+
+---------------------------------------------------------------------
+*BUILD INSTRUCTIONS*
+---------------------------------------------------------------------
+<pre>
+N/A
+</pre>
+---------------------------------------------------------------------
+*SPECIAL NOTES*
+---------------------------------------------------------------------
+<pre>
+
+</pre>
+---------------------------------------------------------------------
+*COMPONENT CONFIG SPEC*
+---------------------------------------------------------------------
+<pre>
+element * PCK_ILJ_R_1.9.2
+element * SBOX_ILJ_R_1.0.1
+element * LINUXOS_B2_00.01.00
+element * LINUXOS_N_02.10.00I
+</pre>
+---------------------------------------------------------------------
+*EXTERNAL COMPONENT BUILD DEPENDENCIES*
+---------------------------------------------------------------------
+<pre>
+N/A
+</pre> 
+---------------------------------------------------------------------
+*LIST OF PRs/CRs IN THIS RELEASE*
+---------------------------------------------------------------------
+%EDITTABLE{format="| textarea, 1x15 | textarea, 4x60 |"}%
+| *PR/CR#* | *Title* |
+| ISGcq00476791 | [NA] PCK always reports "bad user id or password" when signing s19's|
+| ISGcq00477116 | [NA] PCK 1.9.1 creates empty s19 when sign option selected|
+| ISGcq00477117 | [NA] PCK 1.9.1 gives false error about "Sign information is not valid..."|
+| ISGcq00477118 | [NA] PCK 1.9.1 separate signing tool too hard to use.|
+
+---------------------------------------------------------------------
+*COMPONENT RESOURCE USAGE STATUS*
+---------------------------------------------------------------------
+<pre>
+N/A
+</pre> 
+---------------------------------------------------------------------
+*TEST STATUS SUMMARY*
+---------------------------------------------------------------------
+<pre>
+N/A
+</pre> 
+
+

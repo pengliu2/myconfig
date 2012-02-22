@@ -1,0 +1,115 @@
+* C++
+
+[[plugin_framework][Plugin Framework]] 
+
+[[c_plus_exceptions][Exceptions]]
+
+** C++ Primer
+
+*** structure of the book
+
+- *What's missed in this book*
+1. how constructor works
+2. under what conditions internal temporary objects are created by the compiler
+3. efficiency
+
+- Chapter 1 and 2 compromise a overview. 2 can be skimmed. 
+- Chapter 3 introduces the build-in types as well as string, complex, and vector class data types provided by C++ standard library. 
+- Chapter 4 and 5 are about expression and statement.
+- Chapter 6 introduces container types provided by the standard C++ library. 
+- 7-12 focus on the procedural-based programming support. 
+1. 8 focuses on namespace
+2. 9 focuses on overloading
+3. 10 introduces function template
+4. 11 is basic exception handling, continued in 19
+
+- 13-16 focus on object-based programming
+- 17-20 focus on object-oriented programming
+1. 17 is on class hierarchy
+2. 18 is on multiple inheritance and virtual inheritance
+3. 19 is on RTTI
+4. 20 is on iostream IO library. 
+
+*** Part I
+
+**** Chapter 1 Getting Start
+
+
+---+++ C++
+---++++ Debugging
+
+there is a good macro for C++:
+<verbatim>
+
+__PRETTY_FUNCTION__</verbatim> to print class and function name like <verbatim>int c::foo </verbatim>
+
+---++++ virtual function
+---++++ Simple overwriting
+
+Virtual functions are stored in a table called virtual table stored in the instance of classes. The table is alway at the beginning of object memory block. A deriving object overwrites the virtual function table with its own implementation.
+
+You can do
+<verbatim>
+class Base{
+public:
+virtual void a(){};
+};
+Base base = new Derive();
+base.a();
+</verbatim> But not <verbatim>
+class Derive{ 
+void b(){}; 
+}; 
+Base base = new Derive(); 
+base.b(); 
+</verbatim>
+
+---++++ Multi inheritance
+
+The derived classes' members are stored in the beginning of object of deriving class. The overwritten functions are replaced in the storage. (cygwin, GCC 3.4.4)
+
+There is a problem when we are deriving one ancestor from several parents.For example:
+<verbatim>
+class B {int i;};
+class B1 : public B{};
+class B2: public B{};
+class D : public B1, public B2{};
+</verbatim>
+
+There will be two instance of _i_ in instance of class D. And there shall be error when we use
+<verbatim>
+D d;
+d.i = 0;
+</verbatim> In this case we've to use <verbatim>
+D d;
+d:B1::i = 0;
+d:B2::i = 1;
+</verbatim>
+
+So we'd use virtual deriving as below:
+<verbatim>
+class B {int i;};
+class B1 : virtual public B{};
+class B2: virtual public B{};
+class D : public B1, public B2{};
+</verbatim>
+
+In this case, members of B are put at the end of class D's object and no duplicated members.
+
+%ICON{more}%http://blog.csdn.net/haoel/archive/2008/10/15/3081385.aspx
+
+---++++ C++ libraries and standards
+   * <p><a target="_blank" href="http://www.kuqin.com/itjishufenlei/cpluspluslib.html">~ libraries </a> </p> 
+      * <p>standard: <br /> http://www.dinkumware.com/ by P.J.Plauger <br /> http://www.roguewave.com/ by SGI <br /> http://www.stlport.org/ (STL) <br /> http://www.boost.org (C++ standard commitee) </p><p>GUI: <br /> MFC by MS <br /> QT by trolltech <br /> WxWindows <br /> http://www.fox-toolkit.org <br /> GTK </p><p>network: <br /> ACE <br /> http://www.omnifarious.org/StrMod (StreamModule) <br /> http://home/hetnet.nl/~lcbokkers/simsock.htm (SimpleSocket) <br /> http://www.pcs.cnu.edu/~dgame/sockets/socketsC++/sockets.html (A Stream Socket API for C++) </p><p>XML: <br /> Xcerces <br /> XMLBooster <br /> Pull Parser <br /> Xalan <br /> CMarkup <br /> libxml++ </p><p>computing: <br /> Blitz++ <br /> POOMA <br /> MTL <br /> CGAL </p><p>game: <br /> http://www.galacticasoftware.com/products/av/ (AV3D) <br /> http://home.g365.net/enginedev/ (KlayGE) <br /> http://www.ogre3d.org (OGRE) </p><p>Threads: <br /> http://threads.sourceforge.net/ (C++ Threads) <br /> http://zthread.sourceforge.net/ (ZThreads) </p><p>Serializing: <br /> http://s11n.net (s11n) <br /> http://sxp.sourceforge.net/ (Simple XML Persistence Library) </p><p>String: <br /> http://www.utilitycode.com/str/ (C++ Str Library) <br /> http://cttl.sourceforge.net/ (Common Text Transformation Library) <br /> http://research.microsoft.com/projects/greta/ (GRETA) </p><p>integrated: <br /> http://pclasses.com/ (P::Classes) <br /> http://acdk.sourceforge.net/ (ACDK - Artefaktur Component Development Kit) <br /> http://www.cis.ohio-state.edu/~kingd/dlib/ (dlib C++ library) <br /> http://www.chilkatsoft.com/cpp_libraries.asp (Chilkat C++ Libraries) <br /> http://www.melikyan.com/ptypes/ (C++ Portable Types Library (PTypes)) <br /> http://lfc.sourceforge.net/ (LFC) </p>
+
+<a target="_blank" href="http://dclib.sourceforge.net/intro.html">~ dlib C++ </a>
+
+<a target="_blank" href="http://zamanbakshifirst.blogspot.com/2007/02/c-free-store-versus-heap.html">~ heap is not defined in C++ standard. <br /> Stroustrup allways uses free store insteadly. <br /> It is common for new and malloc() to allocate and free storage from the same part of computer memory. </a>
+
+
+
+
+
+
+
+

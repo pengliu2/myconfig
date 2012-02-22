@@ -1,0 +1,15 @@
+Attendee: Ma Wan.Zheng-A22022; Liu Peng-A22543
+
+Dependency Checking UI layout:
+
+Dependency Checking rule:
+
+1. Highlight those packages which are not selected by user. 
+
+Solution:
+
+
+
+Alternative solution 1:
+
+Alternative solution 2:

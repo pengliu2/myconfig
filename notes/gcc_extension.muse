@@ -1,0 +1,28 @@
+---+ GCC Extension
+
+---++ Type Identifying
+
+<verbatim> #define min(x, y) ({                typeof(x) _min1 = (x);             typeof(y) _min2 = (y);             (void) (&_min1 == &_min2);          _min1 < _min2 ? _min1 : _min2; }) </verbatim>
+
+---++ area
+
+<verbatim> switch (major_idx) {
+   case 0:
+      return SCSI_DISK0_MAJOR;
+   case 1 ... 7:
+      return SCSI_DISK1_MAJOR + major_idx - 1;
+   case 8 ... 15:
+      return SCSI_DISK8_MAJOR + major_idx - 8;
+   default:
+      BUG();
+      return 0;   /* shut up gcc */
+   }
+
+int widths[] = { [0 ... 9] = 1, [10 ... 99] = 2, [100] = 3 };</verbatim>
+
+---++ get return address
+
+<verbatim>void local_bh_disable(void)
+{
+        __local_bh_disable((unsigned long)__builtin_return_address(0));
+}</verbatim>

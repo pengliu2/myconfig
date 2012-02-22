@@ -1,0 +1,15 @@
+#!/bin/sh
+if which zenity > /dev/null; then
+	if [ -z $1 ]; then
+		zenity --info --text=$PWD &
+	else
+		zenity --info --text=$1 &
+	fi
+fi
+
+if which ogg123 > /dev/null; then
+        if [ -f "/home/peng/Documents/ding.ogg" ]; then
+                ogg123 -q /home/peng/Documents/ding.ogg 2>&1 > /dev/null
+        fi
+fi
+

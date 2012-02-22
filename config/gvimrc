@@ -1,0 +1,24 @@
+set backspace=indent,eol,start
+set nocompatible
+set confirm
+set ignorecase smartcase
+set incsearch
+set vb
+set expandtab
+set sw=4
+set sts=4
+set backup
+"set guifont=ĞÂËÎÌå:h16
+set guifont=Courier\ New:h14
+set si
+syntax on
+set guioptions-=T
+set smartindent
+set showmatch
+set ruler
+set laststatus=2
+set lines=36
+set columns=80
+set autowrite
+set diffopt=iwhite
+colorscheme pablo

@@ -1,0 +1,141 @@
+*2007/06/01 15:51:52 GDB
+
+** shared library
+
+Before you issue the run command, GDB does not understand references
+to a function in a shared library, however--unless you are debugging a
+core file.
+
+
+
+*2007/06/06 10:34:43 apt-rpm
+
+$cdir:$cwd:/home/a22543/source/apt-0.5.15.1cnc7/apt-pkg:/home/a22543/source/apt-0.5.15.1cnc7/apt-pkg/rpm:/home/a22543/source/apt-0.5.15.1cnc7/apt-pkg/deb:/home/a22543/source/apt-0.5.15.1cnc7/apt-pkg/contrib
+
+** judge whether a package is installed and its version (obsolete)
+
+bool rpmListParser::ParseStatus(pkgCache::PkgIterator Pkg,
+pkgCache::VerIterator Ver)
+{   
+   if (!Handler->IsDatabase())  // this means we're parsing an hdlist,
+   so it's not installed
+
+      return true;
+   
+   // if we're reading from the rpmdb, then it's installed
+   // 
+   Pkg->SelectedState = pkgCache::State::Install;
+   Pkg->InstState = pkgCache::State::Ok;
+   Pkg->CurrentState = pkgCache::State::Installed;
+   
+   Pkg->CurrentVer = Ver.Index();
+   
+   return true;
+}
+
+The first line is important.
+
+** Where to get version, file name, etc
+
+pkgCache::ReMap will set all cache poiters to a same address,
+Map.base. It seems Map is mapped the cache file.
+
+** building cache
+
+This provides the generation of the entries in the cache. Each loop
+goes through a single package record from the underlying parse engine.
+
+pkgCacheFile::BuildCaches -> pkgMakeStatusCache -> BuildCache ->
+pkgCacheGenerator::MergeList
+
+bool pkgCacheGenerator::MergeList(ListParser &List,
+				  pkgCache::VerIterator *OutVer)
+
+** MergeList
+
+MergeList deeply depends on rpmListParser or debListParser, or other
+package specific ListParser. This shall be the most important part to
+make apt support another kind of packge system.
+
+rpmListParser requires several handlers of RPM: RPMFileHandler,
+RPMSingleFileHandler, RPMDirHandler, RPMDBHandler. The last one
+actually use rpm library api.
+
+** root cause of mismatching of apt cache and RPM DB:
+
+http://lkml.org/lkml/2006/5/17/138
+
+rpmPkgListIndex::FindInCache(pkgCache &Cache) uses mtime to check
+validity of apt cache.
+
+*2007/06/18 14:14:29 apt-cache depends
+
+`apt-cache depends' always give following information:
+
+accy-0.11.0-DB2.00.42.MS
+  Depends: <libaccy.so.0>
+    accy-0.11.0-DB2.00.42.MS
+  Depends: <libc.so.6>
+    glibc-2.3.3-40.0.77.DB2.00.41.MS
+  Depends: <libc.so.6(GLIBC_2.4)>
+    glibc-2.3.3-40.0.77.DB2.00.41.MS
+  Depends: <libipcsocket.so.1>
+    sipclib-1.38.00-DB2.00.42.MS
+  Depends: <liblogging.so.0>
+    logging-0.3.1-DB2.00.42.MS
+  Depends: <libpthread.so.0>
+    glibc-2.3.3-40.0.77.DB2.00.41.MS
+  Depends: <libpthread.so.0(GLIBC_2.0)>
+    glibc-2.3.3-40.0.77.DB2.00.41.MS
+  Depends: <libptod.so.0>
+    ptod-0.1.10-DB2.00.42.MS
+  Depends: <libros2linux.so.1>
+    ros2linux-0.18.28-DB2.00.42.MS
+  Depends: <librt.so.1>
+    glibc-2.3.3-40.0.77.DB2.00.41.MS
+  Depends: <libsysutil.so.0>
+    sysutil-0.4.1-DB2.00.42.MS
+  Depends: <libvriscommon.so.0>
+    vris_common-1.7.5-DB2.00.42.MS
+  Depends: <libz.so.1>
+    zlib-libs-1.2.1.1-2.0.2.43.IB2.00.43
+  Depends: logging >= 0.2.0
+  Depends: ros2linux >= 0.18.1
+  Depends: sipclib >= 1.31.0
+  Depends: vris_common >= 1.0.7
+
+** current package name
+
+** Depends on library
+
+Identify the line containing "Depends: <XXXXX>" and then parse package
+name from following line.
+
+** Depends on specific version of package
+
+Identify the line containing "Depends: XXXXX >= XXXX"
+
+** step over all selected packages
+
+createimage.sh can get selected package names from package list
+file, and get extra package names from standard output of apt-get:
+
+Reading Package Lists... Done
+Building Dependency Tree... Done
+The following extra packages will be installed:
+  accy ams bash codeplug cp_data fdi2vfs glibc kernel libgcc1 libncurses logging panic pmd ptod ros2linux rtc sipcdrv sipclib sysclock sysutil vris_common
+  zlib-libs
+The following NEW packages will be installed:
+  accy ams bash codeplug cp_data fdi2vfs glibc kernel libgcc1 libncurses logging panic pmd ptod ros2linux rtc sim sipcdrv sipclib sysclock sysutil
+  vris_common zlib-libs
+0 upgraded, 23 newly installed, 0 removed and 0 not upgraded.
+Need to get 0B/2455kB of archives.
+After unpacking 5178kB of additional disk space will be used.
+
+** dependence query
+
+Find all depends of each selected package to check if they are listed
+in extra packages.
+
+
+*2007/06/30 11:22:09 ADSL¶©µ¥ºÅ U7063002478

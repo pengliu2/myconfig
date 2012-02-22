@@ -1,0 +1,36 @@
+* Linux Device Driver
+
+** GPIO
+
+   - Documentation/gpio.txt
+   - GPIOs to IRQs mapping has specific functions
+	int gpio_to_irq(unsigned gpio) :: map GPIO numbers to IRQ numbers.
+	int irq_to_gpio(unsigned irq) :: map IRQ numbers to GPIO numbers.
+
+** MTD NAND Driver Programming
+
+   - interface at http://www.linux-mtd.infradead.org/tech/mtdnand/book1.html
+
+** OMAP3 Watchdog
+
+   - WDT2 also called MPU watchdog timer serves resets to the PRCM module (its interrupt outputs are unused)
+   - WDT3 also called IVA2 WDT serves watchdog interrupts to the MPU, M_IRQ_36 (its reset outputs are unused)
+   - initialized in arch/arm/plat-omap/device.c (only WDT2)
+
+
+** IRQ and FIQ
+
+*** flags
+
+	IRQF_DISABLED flag :: disable local interrupts while processing
+
+*** 
+
+
+** Loadable Module
+
+*** Parameter
+
+ - modinfo can tell us a lot about .ko file, which includes dependencies and parameters, etc. 
+ - parameters can be read from /sys/module/<module_name>/parameters/, and the filename can be configured. 
+

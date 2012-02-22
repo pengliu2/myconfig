@@ -1,0 +1,40 @@
+#!/bin/sh
+mount_fuse() {
+    REMOTEDIR=$1
+    MNTDIR=$2
+    ACCOUNT=$3
+
+    FUSEDIR=".fuse"
+
+    # sanity check user
+    if [ !$ACCOUNT ]; then
+        ACCOUNT="$USER"
+    fi
+
+    # first check if the target is already mounted
+    grep $HOME/$FUSEDIR/$MNTDIR /etc/mtab >/dev/null 2>&1
+    STATUS=$?
+
+    if [ $STATUS -eq 0 ]; then
+        echo "$HOME/$FUSEDIR/$MNTDIR is already mounted"
+    else
+    # mount it 
+        afuse \
+            -o mount_template="sshfs $ACCOUNT\@%r:$REMOTEDIR %m" \
+            -o unmount_template="fusermount -u -z %m" \
+            -o timeout=300 \
+            ~/$FUSEDIR/$MNTDIR
+    fi
+}
+
+mount_fuse /localrepo/a22543 localrepo
+#mount_fuse / desktop
+mount_fuse /var/www/ pmdashboard
+
+ls -l ${HOME}/.fuse/localrepo/il93lnxdroid43.pcs.mot.com
+#ls -l ${HOME}/.fuse/desktop/10.22.178.81
+ls -l ${HOME}/.fuse/pmdashboard/10.22.71.222
+
+ln -s ${HOME}/.fuse/localrepo/il93lnxdroid43.pcs.mot.com ${HOME}/remote/localrepo
+#ln -s ${HOME}/.fuse/desktop/10.22.178.81 ${HOME}/remote/desktop
+ln -s ${HOME}/.fuse/pmdashboard/10.22.71.222 ${HOME}/remote/pmdashboard

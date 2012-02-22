@@ -1,0 +1,18 @@
+1. PCK team is made up of 5 members, where two are interns joining us
+   in September. Now all members are qualified for development
+   following GSG process and quality rule. During 2006, we
+   accomplished 4 formal release.
+
+2. About 20K lines of code is created, and 50% is formal reviewed,
+   while full unit test is conducted by developer. COQ is limited
+   below 24%,and COPQ below 4%.
+
+3. Totally 4 PRDs are logged, where two is reported by customer and
+   considered with higher priority. All PRDs is resolved in bug fixing
+   version.
+
+4. Team members had recept 30 staff days of training. All employees
+   passed CIC2006 quality course and exam. Formal technical trainings
+   are highly needed by team. Training plan has been updated for more
+   technical tranings.
+				   

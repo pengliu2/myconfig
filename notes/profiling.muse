@@ -1,0 +1,11 @@
+* Profiling
+
+** Profiling Tools
+
+ - Bootchart
+
+** Profiling Articles
+
+ - boot up Linux in five seconds http://blog.chinaunix.net/u/30686/showart.php?id=2037226
+
+This is a tool to find unneeded services. 

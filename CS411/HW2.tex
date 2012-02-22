@@ -1,0 +1,101 @@
+\documentclass[letter,11pt]{article}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{ulem}
+\usepackage{amsmath}
+\pagestyle{fancy}
+\rhead{pengliu2}
+\lhead{Peng Liu}
+\author{Peng Liu, I2CS student}
+\title{Homework 2\\CS411 2011 Spring}
+
+\begin{document}
+\lstset{language=SQL}
+\maketitle
+
+\section*{Problem 1: ER Diagram Design}Solution
+
+1. $\pi_{char\_id}(\sigma_{username='Beowulf'}(Account\bowtie Characters))$
+
+2. $\pi_{account\_id}-\pi_{account\_id}(\sigma_{realmName\neq'Thor'}(Server\bowtie Characters))$
+
+3. $\pi_{character\_name}(\sigma_{character\_class='Warrior'\ and\ realName\neq'Asgard'}(Server\bowtie Chracters))$
+
+4. $\pi_{username}(Account)-\pi_{username}(\sigma_{level<100}(Account\bowtie Characters)$
+
+\section*{Problem 2: Thinking about Relational Algebra}Solution
+
+\begin{enumerate}
+\item[1]
+  \begin{enumerate}
+  \item[1] Yes. They have the same output.
+  \item[2] Yes. They have the same output.
+  \item[3] No. For example, R(a,b)={(1,2),(2,3)} and S(a,b)={(2,3),(3,4)}\\
+        S-R = {(3,4)}\\
+        R-S = {(1,2)}
+  \end{enumerate}
+
+\item[2]
+  \begin{enumerate}
+  \item[1] The minimum number of tuples of $R\cup S$ is max(n,m).\\
+    The maximum number is n+m.
+  \item[2] $R\bowtie_C S$ :\\
+    Minumum: 0\\
+    Maximum: nxm
+  \item[3] R - S :\\
+    Minumum: 0 if $n<m$ or $|n-m|$\\
+    Maximum: n
+  \end{enumerate}
+\end{enumerate}
+
+\section*{Problem 3: More Relational Algebra}Solution
+
+\begin{enumerate}
+\item[1]
+  \begin{enumerate}
+  \item[1.1] Violates
+  \item[1.2] Does not violate
+  \item[1.3] Violates
+  \end{enumerate}
+\item[2]
+  \begin{enumerate}
+  \item[2.1] T(a,b,b',c)={(w,x,w,x),(w,x,w,y),(w,x,x,y),(y,z,w,x),(y,z,w,y),(y,z,x,y)}
+  \item[2.2] T(a,b,c)={(w,x,y)}
+  \item[2.3] T(a,b,b',c)={(w,x,w,x),(w,x,w,y),(w,x,x,y)}
+  \end{enumerate}
+\end{enumerate}
+
+\section*{Problem 4: Functional Dependencies}Solution
+\begin{enumerate}
+\item Closures are:
+  \begin{enumerate}
+  \item (B):(B,D)
+  \item(A,B):(A,B,D)
+  \item (A,C):(A,B,C,D)
+  \end{enumerate}
+\item (minimal)keys are (A,C) and (B,C). Because:
+  \begin{itemize}
+  \item nothing can determine C, C must be in any key. 
+  \item Considering one element subsets, (C) is not a key because it can't determine A and B.
+  \item In two element subsets, (A,C) and (B,C) are (minimal)keys, because A, B or C is not a key, thanks to above analysis.
+  \end{itemize}
+\item (super)keys that are not (minimal)keys are:
+
+  (A,B,C)
+
+  (A,C,D)
+
+  (B,C,D)
+
+  (A,B,C,D)
+
+\item
+
+  $AC\to B$
+
+\end{enumerate}
+
+\end{document}
+
+

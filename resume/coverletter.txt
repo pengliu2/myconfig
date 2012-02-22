@@ -1,0 +1,16 @@
+Dear Sir/Madam, 
+
+I'm writing to you because I'm interested in applying for the position as Software Engineer in your esteemed team focusing on power management.
+
+Working for 7 years in the embedded software industry as a developer, I would say I understand the job in a insight way and I am fit in the requirements very well. 
+
+Being familiar with advanced debugging tools and profiling would help a lot in system level support. For the last several years of my career, I have been focusing on the debug techniques, especially for Android and Embedded Linux. A systematic solution of capturing logs and system snapshots for debug purpose which I proposed and led the development of, has been widely used in all Motorola Mobility products.
+
+I also created a method to analyze and optimize the energy usage, as well as implemented necessary functions in Linux kernel device applications and host machine. This is the unique way Motorola Mobility development team used to analyze energy perform ace. The energy performance is one of the most important and complicated topic for embedded system. It involves almost all aspects of embedded system, from hardware to software. I'll be glad if I can have a chance to share my knowledge in your team. 
+
+I'm working with a full time job in the U.S. for more than 12 months, communicating with engineers allover the world smoothly, even though English is my second language. In the company I'm currently working for, as a member of BSP team, I work with different product teams, providing trainings, analyzing problems, fixing bugs, and implementing new features. It's exiting to support product teams to ship phones successfully. I love this job and I wish I can continue my succeed in the new position.
+
+Thank you for reading. I'm looking forward to hearing from you soon. I'll appreciate it if we can have a change to talk in person. 
+
+Sincerely yours, 
+Peng Liu

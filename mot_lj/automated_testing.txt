@@ -1,0 +1,66 @@
+* Current Status:
+
+** Interactive test cases:
+
+3, 4: The test case print messages, which now cannot be identified by
+human being, to pc tool.
+
+** Manual test cases:
+
+5, 6: Panic daemon waits for the USB cable connecting event, which is
+generated when USB cable is connected to PC manually. Also, it is
+dependent on human being to identify BP panic primitives printed and
+phone reboot.
+
+7, 8: It's dependent on human being to identify messages printed and
+phone reboot.
+
+9: It's hard for machine to identify nothing happens. Although I think
+it is enough to make sure that there is no BP panic, no SUAPI panic,
+phone reset, application restart
+
+10: already turn automated
+
+11: It's dependent on human being to identify phone reboot.
+
+13, 14, 15: not core function testing
+
+** Problems to be resolved
+
+*** Events of USB cable connection: 5, 6
+
+Panic daemon waiting for bplogd's notification. And the event can be
+simulated by another PC side application. While the PC side
+application also shall accept bp data dumping.
+
+*** Screen Message: 3, 4, 5, 6, 7, 8
+
+The function to print message to phone screen is MEDL API now. The
+function call is simple, although it shall be more flexible to be
+stubed out.
+
+*** A PC side tool to retrieve dumping data and verify it
+
+The dumping data size is large, the tool can hardly be implemented in phone.
+
+*** Phone reboot: 5, 6, 7, 8, 11
+
+RSDLite can detect phone reboot. We don't know how it knows that. It
+is said RSDLite decides phone reboot if there is a phone enumerated at
+the same bus and port.
+
+* test cases to be added for panic daemon on OMAP:
+
+** BP panic happens
+
+** BP does not be re-enumerated after panic
+
+** BP does not enumerated from the beginning of phone booting
+
+** BP freezes
+
+** BP is enumerated as ACM directly
+
+** Any other application writes to panic pipe
+
+** BP freezes during data dumping

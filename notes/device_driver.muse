@@ -1,0 +1,43 @@
+---+ Device Driver
+
+   * [[SerialTTY][tty driver and serial driver]]
+
+%TOC%
+
+---++ cdev
+
+cdev structure is to associate device numbers with specific devices.
+
+<verbatim>
+int cdev_add(struct *cdev, dev_t first, unsigned int cout);
+</verbatim>
+
+This function will add _cdev_ to the system. It will service operations for the _count_ device numbers starting with first; a _cdev_ will often serve a single device number, but it does not have to be that way. 
+
+%ICON{tip}% when a char device's file operations are invoked, the associated _inode_ pointer will be passed in, as usual. The field <i>inode->i_cdev</i> contains a pointer to the _cdev_ structure for the device. Drivers can use that pointer to get to their own device-specific structure (perhaps with <i>container_of()</i>). It is, thus, no loger necessary to try to map the minor number onto a internal device - an operation witch many drivers got wrong.
+
+---++ Process Management
+
+%T% _task_struct_ s are allocated dynmically, but that of init is static variable.
+
+%T% _active_mm_ is the memory map of the process prior scheduled.
+
+---++ Add sysfs support to device driver
+
+---+++ basic knowledge
+
+To declare an attribute in sysfs, use one of the following macros
+
+<verbatim>#include <linux/device.h></verbatim>
+
+   * DEVICE_ATTR has four parameters, name, access control, read routine and write routine.
+   * BUS_ATTR
+   * DRIVER_ATTR
+   * CLASS_ATTR
+
+To add attribute file or binary attribute file to a kobject, use one of following fuctions.
+
+   * int __must_check sysfs_create_file(struct kobject *kobj, const struct attribute *attr);
+   * int __must_check sysfs_create_bin_file(struct kobject *kobj, const struct bin_attribute *attr);
+
+---+++ case study

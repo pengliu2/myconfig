@@ -1,0 +1,59 @@
+Release Name: 1.10.1
+ 
+Notes:
+========================================================================
+PCK Release Notes
+Version: 1.10.1
+Release Date: Sep 04, 2007
+Copyright 2007 Motorola Inc. All Rights reserved.
+========================================================================
+ 
+PCK, the abbreviation for Platform Creation Kit, Is a GUI tool, which helps developer to develop embedded programs. 
+ 
+PCK shall provide the functionalities, Such as components dependency checking, Installation order determination, Building from source, Picking up the base lined distributions, Generating the root file system and creating the image, etc. 
+ 
+For iDEN Samba Product,PCK could also be mentioned as Integration Tool, Since it covers a part of PCK functionalities, And focuses on the components integration.
+ 
+What's New
+---------------
+- CR fixing
+  ISGcq00507885, [NA] PCK GUI shall support signing of BP images
+  ISGcq00507879, [NA] Fix PCK Help System
+  ISGcq00512104, [NA] A dollar sign in user's password breaks signing script
+
+Known Problems
+---------------
+- None
+ 
+Executable Files
+---------------
+  Name				Comments
+  ============================================================
+  itool				PCK start up command
+  pck.sh			PCK command line interface
+  createimage.sh		Wrapper for operations which require sudo privilege
+   
+Release Location in VOB
+---------------
+  Label: "PCK_ILJ_R_1.10.1"
+  /vob/ilj_release/devkit/pck
+
+ 
+Config Spec 
+---------------- 
+  element * PCK_ILJ_R_1.10.1
+  element * SBOX_ILJ_R_1.0.1
+  element * LINUXOS_B2_00.01.00
+  element * LINUXOS_N_02.10.00I
+  element * /main/LATEST
+ 
+
+Installation
+---------------
+  None
+ 
+Support
+---------------
+  Any questions about this release, please send mail to: 
+  iden_linux_tools@sc.mcel.mot.com
+

@@ -1,0 +1,68 @@
+#!/bin/bash
+#++++++++++++++++
+# Monitor Switch
+#
+# Moves currently focused window from one monitor to the other.
+# Designed for a system with two monitors.
+# Script should be triggered using a keyboard shortcut.
+#++++++++++++++++
+window_key=`zenity --entry --text "(E)macs,(C)consol,(F)irefox?"`
+
+if [ -z window_key ];then
+    return
+fi
+
+# width of left monitor
+w_l_monitor=1280
+
+case "$window_key" in
+    "c")
+        window_name='\<Terminal -'
+        ;;
+    "e")
+        window_name='\<Emacs -'
+        ;;
+    "f")
+        window_name='Pentadactyl$'
+        ;;
+    ";")
+        window_name='move'
+        ~/usr/bin/movewindow
+        exit 0
+        ;;
+esac
+
+if [ -z window_name ]; then
+    return
+fi
+
+window=`wmctrl -l | egrep $window_name | head -n 1 | cut -f 1 -d " "`
+if [ -z $window ]; then
+    exit 0
+fi
+echo "window id is $window"
+
+# get active window position and width
+x=`xwininfo -id $window | grep "Absolute upper-left X" | awk '{print $4}'`
+y_abs=`xwininfo -id $window | grep "Absolute upper-left Y" | awk '{print $4}'`
+y_rel=`xwininfo -id $window | grep "Relative upper-left Y" | awk '{print $4}'`
+w=`xwininfo -id $window | grep "Width" | awk '{print $2}'`
+
+# unmaximize
+wmctrl -i -r $window -b remove,maximized_vert,maximized_horz
+
+# calculate new x position
+if [ "$x" -ge "$w_l_monitor" ]; then
+	# window on right monitor
+	new_x=$(($x-$w_l_monitor))
+     #move window. Need to subtract the relative y-position.
+    new_y=$(($y_abs-$y_rel))
+    xdotool windowmove $window $new_x $new_y
+fi
+
+if [ "$w" -eq "$w_l_monitor" ]; then
+	# maximize
+	wmctrl -i -r $window -b add,maximized_vert,maximized_horz
+fi
+
+wmctrl -i -R $window

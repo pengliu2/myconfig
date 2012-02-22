@@ -1,0 +1,28 @@
+*2006/08/08 08:39:22 apt-get install/reinstall
+
+apt-get reinstall 只能安装最新版本, 即使指定绝对路径, 也会安装
+source.list 里能找到的最新版本.
+
+apt-cache policy 不能显示 repository 的路径, 只能显示 release ID.
+
+*2006/08/21 09:02:41 apt-get install/reinstall cont.
+
+RPM cannot install a lower version still.
+
+apt-get reinstall 指定版本号, 可以重新安装更低的版本.
+rpm -U --oldpackage 可以用老的版本替换新版本.
+rpm -i --replacepkgs 可以重新装现在的版本
+
+*2006/08/22 09:26:23 eclipse with jvm argument
+
+用 -vmargs, 后面跟随的参数都是给 JVM 的, 这些参数必须在所有参数的最后.
+
+
+*2006/08/29 22:51:59 Eclipse Plug-in intro
+
+1. Decide how your plug-in will be integrated with the platform.
+2. Identify the extension points that you need to contribute in order to integrate your plug-in.
+3. Implement these extensions according to the specification for the extension points.
+4. Provide a manifest file (manifest.mf) that describes the packaging and prerequisites for your code, and a plug-in manifest (plugin.xml) that describes the extensions you are defining
+
+Plug-ins can define extension points, well-defined function points that can be extended by other plug-ins

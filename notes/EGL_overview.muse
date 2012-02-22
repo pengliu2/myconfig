@@ -1,0 +1,11 @@
+* OpenGL ES and EGL
+
+** EGL
+
+Native Platform Graphics Interface - an interface portable layer for graphics resource management, working between rendering APIs such as OpenGL ES or OpenVG and the underlying native platform window system. 
+
+** OpenGL ES
+
+** Android
+
+[[android_overview][Android]] has C example in frameworks/base/opengl/tests/angles/. The GL code is in frameworks/base/opengl/libagl/.

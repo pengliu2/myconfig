@@ -1,0 +1,30 @@
+* C Plus Exceptions
+
+** In windows
+
+- A non-continuable exception does not terminate the application. However, a non-continuable exception typically arises as a result of a corrupted stack or other serious problems, making it difficult to recover from the exception.
+
+** General Discussion
+
+*** Classes of Code Quality impact of Exception
+
+**** Usage Penalty [EH tax]
+- General overhead of a function with any EH construct.
+
+
+**** Cost of entering a protected region
+- __try{}, try{}, C++ object with a destructor
+
+**** Cleanup Cost
+- final invocation: (in X64) C++EH makes a function call for final, while Windows' SEH makes it inline. 
+- C++ Object destructor: Descrutor invoked inline [C++ standard]
+
+**** Optimization Constraints
+- Most optimizations that *must* be constrained for EH *should* be constrained for implementations that don't use EH.
+
+- Mandatory optimization constrains
+1. Limitations required by the language standard.
+2. ABI specific limitations
+
+**** Cost of actually handling an exception
+- if you're actually concerned about this, you're probably abusing exceptions.

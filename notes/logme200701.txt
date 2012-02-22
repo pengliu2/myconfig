@@ -1,0 +1,127 @@
+*2007/01/01 20:13:40 Special effects
+
+** Words
+
+aerial; projector; multiple exposure; time-lapse; dissolve; prolific;
+spectacle; miniature; depict; arsenal; spearhead; sabres; bolt; prop;
+scenery; pyrotechnics; sever; hearse; pedestrian; rear projection
+screen; high-water mark; usher; watershed; blockbuster; 
+
+** grammar
+
+Many different special effects techniques exist, ranging from
+traditional theater effects or elaborately staged as in the "machine
+plays" of the Restoration spectacular, through classic film techniques
+invented in the early 20th century, such as aerial image photography
+and optical printers, to modern computer graphics imagery.
+
+
+*2007/01/03 15:13:50 sqlfs - test
+
+sqlfs_init(char[]) -> sqlfs_open(char[], sqlfs_t *) ->
+sqlfs_close(sqlfs_t *)
+
+sqlfs_init(char[] db_file_name): db_file_name can be null.
+
+operations:
+
+sqlfs_proc_mkdir(sqlfs_t *, char[], int mode)
+
+*2007/01/04 16:34:16 buildImage
+
+create from rpmlist: CommandManager.java 566 CommandProvider.java 467
+
+create from XML: CommandManager.java 566 CommandProvider.java 494
+
+create from RootFS: CommandManager.java 646 CommandProvider.java 544
+
+single image build: CommandManager.java 516 
+
+*2007/01/04 21:57:54 bundle
+
+The classpath entry details where, inside the bundle itself, the
+bundle¡¯s code can be found. Specifying ¡®.¡¯ is the default and
+indicates that the bundle¡¯s code is at the root of the bundle JAR
+itself.
+
+*2007/01/08 15:27:54 rpmsize
+
+** requirement
+
+Update environment checking function to correct createimage.sh
+mkcramfs. 
+
+Update the interface for a choice of filesystem selection
+
+Add a option for tao filesytem selection
+
+
+*2007/01/09 09:37:48 shopping phone
+
+Dangdai: 62576688
+Shuang'an: 82148000 82148233
+Xinshijie: 67080055 67081690
+Jinyuan: 88873800
+Huayu: 010-82513988-8888
+
+*2007/01/09 10:01:56 update version
+
+** design
+
+Invoke the optscript in createimage.sh.
+
+Transfer optscript name and user's name from GUI.
+
+
+*2007/01/10 17:09:31 Freeze or lock rows and columns
+
+Applies to: Microsoft Office Excel 2003
+
+** Lock rows and columns by splitting panes
+
+   1.  To lock rows, select the row below where you want the split to appear.
+      To lock columns, select the column to the right of where you want the split to appear.
+      To lock both rows and columns, click the cell below and to the right of where you want the split to appear.
+   2. On the Window menu, click Split.
+   3. To remove the split, click Remove Split on the Window menu.
+
+** Lock rows and columns by freezing panes
+
+   1.  To lock rows, select the row below where you want the split to appear.
+      To lock columns, select the column to the right of where you want the split to appear.
+      To lock both rows and columns, click the cell below and to the right of where you want the split to appear.
+   2. On the Window menu, click Freeze Panes.
+   3. To unlock rows, click Unfreeze Panes on the Window menu.
+
+*2007/01/11 13:44:41 rpmsize.sh
+
+** design
+
+*** update 1
+
+If the package name is bp_zeus, user mkcramfs to calculate size
+always.
+
+filesystem, cp_data, codeplug, use mkjffs2
+
+
+
+*2007/01/19 17:06:07 Pattern
+
+** Object quantity
+
+*** Singleton
+
+All constructor is private, and at least one is needed. Something
+shall be done to avoid clone (final the class if there is no public
+clone method, or override clone method only throwing an exception).
+
+*** Pool
+
+** Object decoupling
+
+*** Proxy
+
+*** Dynamic Proxies
+
+*** States

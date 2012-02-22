@@ -1,0 +1,102 @@
+                                              LIU,    PENG
+                              386  Paddock    Drive  West,   Savoy,  IL  61874
+                              (217)898-3636
+                              pengliu2@illinois.edu
+
+OBJECTIVE
+    Looking   for a position   as a software   engineer    where   I can  utilize my  skills in Linux   program-
+    ming  and   experiences    in embedded     device  development      to be  a valuable  team   player   in your
+    organization.
+
+SOFTWARE   SKILLS
+    Languages:    C/C++,   ARM    assembly,   Python,   Java,  Perl,  Virtual  Basic  for Applications
+    Platforms:   Linux   kernel,  Android,   Qt, WDM     SDK,   Eclipse,  NI-DAQmx
+    Software:  Git,  Emacs,   Vim,   Clearcase,   Foswiki,   Hudson,   Eclipse,  MS  Oﬃce(Excel,     Word)
+CAREER HISTORY
+    Senior  Software   Engineer                                                              Feb  2006  - Present
+    Motorola
+    ==============================================================================================================
+        • In C,  Python,   Perl  and   Java,   developing    smart   phone   features  and   development     tools.
+          Leading   the  team   in some   projects.
+
+    Software   Engineer                                                                    Aug  2003  - Jan   2006
+    Pollex Mobile   Software    Co., Beijing,  China
+    ==============================================================================================================
+        • Developed    major  parts  of Hopen   Operating    System    3.0, a proprietary  RTOS.   Ported   Hopen
+          OS  to diﬀerent   CPUs,    including   Intel XScale   PXA270     and  IBM  PowerPC     405.
+
+    Research   Assistant                                                                    Sep  2000  - Jul  2003
+    State  Key  Lab  of Fire  Science,  Hefei,  China
+    ==============================================================================================================
+        • Participated   in  the research   project,  the  application   of Ethernet   in real-time  control   sys-
+          tem.  As  a  programmer,     participated    in the  project  to construct  a ceramics   manufacture
+          control  system,   designed   and  implemented     a CAN    ﬁeld  bus  interface circuit board   and  its
+          WDM    driver.
+
+ACHIEVEMENTS
+    Tools and  methods    for energy    usage  analysis   on ARM    Linux                    <C on  ARM    Linux>
+    Role: Owner                                                                <Python   and  C++  on  Windows>
+    ==============================================================================================================
+    This  played  a key  role in the  development     of latest ﬂagship    products.  Following   jobs have   been
+    done  to build  up  a  set of systematic    methods    to keep   track  of energy   usage,  to point   out the
+    violator and  to  optimize   battery  performance.
+        • Complemented       Linux   kernel  2.6.35  with   support   for tracing  OMAP4     power  events.    The
+          upstream    Linux   kernel   of this version   doesn’t  support    tracing these  for ARM,    so  I back
+          ported  it. With   this ported,   CPU   frequency    adjustments,    CPU   hotplug   events,  CPU    idle
+          state changes    and  all other   power   related  events   can  be logged.  Logging   can  be   turn on
+          and  oﬀ  without   phone   reboot,  and  its overhead   is low.
+        • Implemented      a current   drain  measurement      tool.  It formalized   and  automated     the  mea-
+          surement.     The  objectives   now   include  idle  mode   current   drain, audio   playback    current
+          drain,  video  playback   current   drain,  etc, and  can  be deﬁned    by the developers.
+        • Created   a  set of tools to  analyze   traces.  The  amount    of logs  can be  huge,  so I developed
+          helper  applications    to  accelerate   the  analysis,   for instance,   the  tool to analyze    Linux
+          kernel  logs  and  user  space   logs  together,  the  tool to visualize  CPU   idle  mode   switching,
+          and  the  tool to create  stats  for wake-ups    events.
+        • Discovered    several   reliable  methods    to  analyze   the  logs.  These  methods    use   the  logs,
+          the tools  and  the  knowledge     on  Linux   to guide  the  system   optimization   from   the  power
+          management      point  of view.
+
+
+Peng Liu                                                                                                  Page  2
+
+     Debug    infrastructure                                         <C/Assembly   Language    on  ARM    Linux>
+     Role:  Leader
+     ============================================================================================================
+     This  is the  Motorola’s   unique  solution  to capture   logs for Android  phones,  covering   from  Linux
+     kernel  to  applications.
+         • Designed     and  implemented    a  method   to capture   the snapshot  of system   before  watchdog
+           reset  issues.  This  helped  BSP   team   ﬁx complicated    issues leading to watchdog    reset. The
+           implementation       included  deeply   hacking   into  ARM   Monitor  mode    code, bootloader   and
+           Linux    kernel.
+         • Application     Processor  logger.  It serializes  Android   logs and Linux   kernel  messages   onto
+           non-volatile    memory.   It has  become    one  of the most  important   tool to undertake   oﬀ-line
+           analysis.
+         • Ported   driver   and  parsing  tool for ARM    CoreSight   Trace  Macrocells   to accelerate  debug-
+           ging   low  level software  issues.
+         • Helper    tools, such  as log merge   script and   visualizing  script.
+
+     Hopen    real-time   OS                                         <C/Assembly   Language    on  ARM    Linux>
+     Role:  Key   Developer
+     ============================================================================================================
+     Hopen    OS  has   been  successfully  deployed    on more   than  10  products  of leading  mobile  device
+     vendors.    It was  also  certiﬁcated  as  one  of best  innovative  products  by  Beijing  Municipal   Sci-
+     ence  and   Technology     Committee.    My   job  was  developing   major  parts,  porting  it to deferent
+     hardware.
+
+     PCK,   a package    management      system   for embedded    system   development.       <Jave  on Eclipse>
+     Role:  Leader
+     ============================================================================================================
+     It has  been  used   in iDEN   product  line  by over  400  developers.  Functionality   includesed  devel-
+     opment    environment     setting-up,  system   assembling,   image   generating  and  signature   generat-
+     ing.
+
+EDUCATION
+     Master   of Computer     Science(oﬀ-campus)                                                  2010-Present
+     University    of Illinois, Urbana,  IL
+
+     M.E.  in  Safety  Engineering                                                                    2000-2003
+     University    of Science   and Technology    of China,  Hefei,  China
+     B.E.  in Automation                                                                              1995-2000
+     University    of Science   and Technology    of China,  Hefei,  China
+
+

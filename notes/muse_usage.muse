@@ -1,0 +1,14 @@
+* Muse Usage
+
+** Mark up Rules
+
+*** Three kind of itemization
+
+<example> 
+- bullet item one
+
+1. Enumerated item one
+
+Term1 :: A definition one
+</example>
+

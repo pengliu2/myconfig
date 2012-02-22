@@ -1,0 +1,119 @@
+*2006/03/16 09:54:34 Exception in Function Stack
+
+There is no need to catch an exception and rethrow it with nothing
+done. Just it is need to declare the invoker as a function throwing
+the same exception. Finally, in function main, you must deal the
+exception or compiler will complain.
+
+To rethrow an exception in catch phrase will not prevent code in
+finally phrase being proceeded.
+
+*2006/03/17 17:48:54 Copied log from paper
+
+要把 plugin 单独运行, 可以用 eclipse 自动生成一个 .product 文件. 要
+plugin 单独运行而且需要 help system, 需要的 plugin 如下:
+
+org.apache.ant
+org.apache.lucene
+org.eclipse.ant.core
+org.eclipse.help
+org.eclipse.help.appserver
+org.eclipse.help.base
+org.eclipse.help.ui
+org.eclipse.sgi
+org.eclipse.tomcat
+org.eclipse.help.webapp
+
+Menifest editor: 
+
+label Runtime: show all the packages that your plug-in makes visible
+to other plug-ins.
+
+Extension point: each comes with an XML schema specifying its
+grammar. Your extension's syntax must therefore follow that grammar in
+order to be processed correctly.
+
+*2006/03/16 10:23:50 Command Line Requirement
+
+** format of command line: 
+
+createimage.sh mkcramfs <configuration file> <image_name> [<user_id>]
+
+createimage.sh mkjffs2 <configuration file> <image_name> [<user_id>]
+
+** arguments required
+
+*** Input at present: 
+
+**** configuration file
+
+There is already one, which is formatted as XML. We shall add version
+for each package on it as well as pin mark.
+
+The configuration file shall contain such things as:
+
+Repository List
+
+Package List
+
+
+**** project location
+
+rootfs.image will lies in a relative path in project location. In
+command line, the rootfs image path and file name will be put into an
+argument.
+
+** behavior
+
+At first, PCK shall setup a temporary rootfs according to
+configuration file. And then, create a rootfs image for the temporary
+rootfs. Finally, the temporary rootfs will be removed. Only the rootfs
+image is left for user. Or, PCK creates a jffs2 image at first, mount
+it onto host file system, and then install RPMs directly in it.
+
+** customize
+
+to allow user to attache script to build sequence. 
+
+** optimize
+
+execute script for optimization. Firstly, arguments can be accept to
+allow user to determine optimization option.
+
+* 2006/03/16 14:43:21 RPM upgrade/downgrade (force-version
+  installation)
+
+** configuration file with RPM version
+
+export and import
+
+** RPM list file with RPM version
+
+User can customize a rootfs version by export an RPM list file. An RPM
+list file can be considered as a rootfs version. So upgrade or
+downgrade between versions can be established by importing RPM list
+files.
+
+** User's Interface
+
+* 2006/03/20 10:16:31 cross-compilation configure options
+
+--build=BUILD: The system on which the package is built
+
+--host=HOST: The system where built programs & libraries will run
+
+--target=TARGET: Only when building compiler tools: the system for
+  which the tools will create output
+
+notice: there should not be space in AC Macro and AC body in configure.ac.
+
+* 2006/03/24 14:57:12 Shell Script
+
+phrase enclosed whith two `(the symbol below ~)s will be considered as
+a command and the content of this syntax will be replaced by the
+result of the command.
+
+
+* 2006/03/29 10:05:00 Data Model for Source Build
+
+One RPM file represents one package.

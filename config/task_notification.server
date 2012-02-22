@@ -1,0 +1,18 @@
+#!/bin/bash
+NO_SSH="false"
+LOCAL_MACHINE=`echo ${SSH_CLIENT}|cut -f 1 -d " "`
+LOCAL_NET=`echo ${LOCAL_MACHINE}|cut -f 1,2 -d .`
+if [ "$LOCAL_NET" = "10.44" ]; then
+    NO_SSH="true"
+fi
+if [ "a${DISPLAY}" = "a" -o ! "a${WINDOW}" = "a" ]; then
+    if [ "$NO_SSH" = "false" ]; then
+        ssh -x peng@${LOCAL_MACHINE} DISPLAY=:0.0 /usr/local/bin/task_notification "${HOSTNAME}:${PWD}"
+    fi
+else
+    zenity --info --text=$PWD &
+    if [ "$NO_SSH" = "false" ]; then
+        ssh -x peng@${LOCAL_MACHINE} ogg123 -q /usr/share/gnome-games/sounds/gnometris.ogg 2>&1 > /dev/null
+    fi
+fi
+

@@ -1,0 +1,302 @@
+*2007/04/04 11:17:41 2007 Training
+
+CIC0091 21133019 30-May Software Architecture: Principles and Practices
+MGT1061 21130367 8-May Activie Listening as a Communication Tool
+MGT201 21130326 21-Jun Effective Presentations
+
+*2007/04/04 18:19:43 QNX vs Linux vs Windows CE
+
+** process management
+
+QNX process manager does not reside in QNX microkernel. Process
+manager is the only process to share the same address as the
+microkernel. Process manager is responses for the creation of
+processes and management of process resource.
+
+The scheduling of processes is managed by the QNX microkernel
+scheduler.
+
+
+*2007/04/11 16:34:37 Official guide to iBT
+
+** Online practice
+
+toeflpractice.ets.org
+
+** Skills of reading
+
+- Scan the passage to find and highlight key facts (dates, numbers,
+  terms) and information
+
+- Increase vocabulary knowledge, perhaps by using flashcards
+
+- Rather then carefully reading each word and each sentence, practice
+  skimming a passage quickly to get a general impression of the main
+  idea.
+
+- Choose some unfamiliar words in the passage and guess the meaning
+  from the context (surrounding sentences).
+
+- Select all pronouns (he, him, they, them, etc) and identify which
+  nouns each one refers to in the passage.
+
+- Practice making inferences and drawing conclusions based on what is
+  implied in the passage as a whole.
+
+** New Test Format
+
+- Reading 3-5 passages, 12-14 questions each, 60-100 minutes
+
+- Listening 4-6 lectures, 6 questions each, 2-3 conversations, 5
+  questions each, 60-90 minutes
+
+- Speaking 6 tasks, 2 independent and 4 integrated, 20 minutes
+
+- Writing 1 integrated task, 20 minutes, 1 independent task, 30
+  minutes
+
+** Software interface
+
+*** Reading Passages
+
+- You must scroll to the end of each passage before receiving
+  questions on that passage.
+
+*** Listening Section
+
+- Academic lectures include lecture where the professor is the only
+  speaker and that where the professor and students will speak.
+
+- One new multiple-choice question type measures understanding of a
+  speaker's attitude, degree of certainty, or purpose. These questions
+  require you to listen for voice tones and other cues and determine
+  how speekers feel about the topic being discussed.
+
+*2007/04/12 14:32:35 Affidavit of Support
+
+*2007/04/13 00:01:03 iBT Speaking
+
+Page 212 of OG
+
+** form
+
+Two questions are independent speaking tasks. Four are integrated
+speaking tasks. In integrated tasks, you will listen to a conversation
+or to an excerpt from a lecture, or read a passage and then listen to
+a brief discussion or lecture excerpt, before you are asked the
+question.
+
+The Speaking section takes approximately 20 minutes. Respond time
+allowed for each question ranges from 45 to 60 seconds.
+
+Question 1: 15 seconds 45 seconds
+Question 2: 15 seconds 45 seconds
+
+Question 3: 30 seconds 60 seconds
+Question 4: 30 seconds 60 seconds
+Question 5: 20 seconds 60 seconds
+Question 6: 20 seconds 60 seconds
+
+** Scoring
+
+- Delivery: How clear your speech is. 
+
+*2007/04/13 00:04:33 iBT Writing
+
+Page 254 of OG
+
+*2007/04/13 00:06:23 Handbook
+
+Page 299 of OG
+
+*2007/04/13 09:35:39 Add S0 to S19
+
+ $CMD_CAT $input | $CMD_SED /^$/d | $CMD_SED '1d' | $CMD_SED '$d' >>
+ $f_combine_output 2>/dev/null
+
+formal release:
+/org/mirs/release/su/salsa_ap/dB20030/ms/arm/
+
+informal release:
+/org/mirs/release/su/informal/salsa_ap/
+
+CDT memory map:
+03B80240000000400000000001
+
+S01B3033423830323430303030303030343030303030303030303031F6
+
+ATAGS: S0083032415441475325
+BP_IMAGE: S00B303242505F494D41474549
+CDT: S0063032434454BC
+CP: S00B3032434F4445504C55474A
+FP: S00C3032464C4153485041434B10
+LBL: S00630324C424CBD
+MBML: S00D30324C4F414445525F4D424DAB
+UPDT_ATAGS: S00D3032555044545F415441475391
+phx_csd: S0063032435344BD
+rootfs: S00F3032524F4F545F46494C45535953DB
+sysconf: S00D30325359535F434F4E46494789
+ue: S00E3032555044545F454E47494E454B
+ue_zImage: S00E3032555044545F4B45524E454C40
+user: S00D3032555345525F535041434593
+zImage: S00F30324C494E55585F4B45524E454CED
+
+*2007/04/16 20:17:10 长春
+
+** 龙嘉机场
+
+长春龙嘉国际机场到市区出租车八十元左右。
+
+** 北京到长春火车票：
+
+- Z61 22:40-06:30
+
+- T71 08:30-18:07
+
+- D23 17:20-23:27
+
+- T271 19:48-06:03
+
+- T59 21:13-06:42
+
+- T271 19:48-06:03
+
+** 长春到北京火车票：
+
+- Z62 22:10-06:00
+
+- K266 23:54-11:13
+
+- T60 20:12-06:01
+
+- T272 20:47-06:20
+
+
+
+** 长春酒店
+
+
+*2007/04/17 17:23:28 Real Time System
+
+real-time linux with the -rt patchset focuses primarily on
+user-process scheduling and interprocess communication.
+
+http://www.linuxjournal.com/article/9361
+
+http://www.rdrop.com/users/paulmck/RCU/
+
+http://www.cs.toronto.edu/~tomhart/perflab/ipdps06.tgz
+
+
+*2007/04/19 16:17:25 SCM interface
+
+** Build Request
+    Interface: PL
+- PL notices SCM the build plan by email one week in advance. (Just
+    approximate date, let's SCM arrange time.)
+
+Good!
+- PL sends build request to SCM by email when all needed code and
+    review finished. Refer to build request template attached.
+
+CR engineer should send the CR number to SCM when code review is
+    finished. SCM will merge 
+
+- If just want to merge code, write "N/A" in "Purpose" and "Version"
+    term in the build request.
+
+There shall be no standaline merge request. One has to base his/her
+change on other's change, he/she should 
+
+-SCM replies the build request and gives an estimated time when build
+ can be finished.
+
+SCM shall follow build plan to make build. PL shall send build plan
+if there is update. By this way, SCM can arrange build
+ahead. Following strict process will cost more effort to make plan,
+but it will improve quality.
+
+- When the build finished, SCM replies the build request again with
+    label type and location.
+
+
+
+Release Request
+    Interface: PL
+
+- PL notices SCM the release plan one week in advance. (Just
+    approximate date, let's SCM arrange time)
+
+- PL sends release request to SCM by email which includes the last
+  label type, deadline and release notes draft.
+
+- SCM replies the release request and give an estimated time when it
+  can be finished.
+
+- When the release finished, SCM replies the release request again.
+
+Baseline Document Request
+    Interface: Review meeting leader or author (if it do not need to
+    be reviewed)
+
+- Review meeting leader sends document as accessories after verifies
+  the document and closes the meeting in WISE.
+
+- SCM replies it when baselined the document.
+
+Note:
+Carbon Copy all emails to team members.
+The document always can not be verified in time, the actual baseline date may be several dates after author has sent out. If author sends the baseline request to SCM directly, SCM easy to forget to baseline it when she takes over more than one team's SCM task. So we plan review leader as interface.
+CR/PR and branch type will be applied by team members right along. Geng Yanyu will discuss this issue with TG SCM team.
+ 
+*2007/04/19 18:24:53 GRE score
+
+Call:
+
+    - 1-888-GRE SCORE (1-888-473-7267) U.S., U.S. Territories,- and
+      Canada
+
+    - 1-609-771-7290 All other locations
+
+    - 1-888-473-8333 (TTY)
+
+    - Call: 6 a.m. to 10 p.m. EST, 7 days a week
+
+    - Wait for confirmation before hanging up to be sure your request
+      is completed. Once information is entered, changes cannot be
+      made.
+
+    - Score reports will be mailed to you and to your designated
+      institutions approximately five working days after your
+      call. You must wait until your scores are initially reported
+      before you can use this service.
+
+    - Institutions that receive score reports on tape or disk are sent
+      reports approximately twice a month.
+
+    - There is a U.S. $6 service fee per call and a U.S. $15 fee per
+      score recipient for up to 8 recipients. To request more than 8
+      score recipients, please call again.
+
+    - Requests for "Test Taker Copies Only" or changes in your mailing
+      address cannot be processed through this service.
+
+*2007/04/20 11:47:41 EABI
+
+** effective changes for users
+
+- Floating point performance, with or without an FPU is very much
+  faster, and mixing soft and hardfloat code is possible
+
+- structure packing is not as painful as it used to be
+
+- more compatibility with various tools
+
+- a more efficient syscall convention
+
+- at present it works with ARMv4t, ARMv5t processors and above, but
+  supporting ARMv4 requires modification to GCC
+
+*2007/04/25 07:02:41 jffs2 mount
+
+

@@ -1,0 +1,7 @@
+* 2006/05/08 16:56:03 select
+
+select is a shell command to build menu.
+
+2006/05/11 10:19:39 shell tips
+
+IFS: fields separater

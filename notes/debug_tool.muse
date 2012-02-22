@@ -1,0 +1,164 @@
+* Debug tool
+
+[[kprobes][kprobes]]
+
+*A very good article about Emacs and Cedet at http://xtalk.msk.su/~ott/en/writings/emacs-devenv/EmacsCedet.html. And I also saved locally.*
+
+- KernelOops - oops tracking
+
+** Watchdog
+
+- An article from author of Debian watchdog at http://www.linuxjournal.com/article/217
+   - Debian watchdog features
+      - Counting down like a hardware watchdog
+      - able to check network filesystem
+      - able to detect process table full
+
+** Virtualization tool
+
+*** Virtualbox
+
+Virtualbox seems able to use VMware image directly from 2009.
+
+**** network setting
+
+
+   NAT :: network address translation, using virtual box as a router. Doesn't have an IP. 
+
+   bridged networking :: to connect the real network directly.
+
+   internal networking :: internal network is only visible to several virtual machines, but not to applications running on the host or to the outside world.
+
+   host-only networking :: between the host and a set of virtual machines, without the need for the host's physical network interface.
+
+***** host side
+
+   $ install needed packages: <example>apt-get install uml-utilities bridge-utils</example>
+   $ add a tap in host OS: <example>tuncl -t tap1 -u <username></example>
+   $ create a bridge: <example>brctl addbr br0</example>
+   $ shutdown current interface: <example>ifconfig eth0 down </example>
+   $ set virtual tap and real interface promiscuous: <example>ifconfig eth0 0.0.0.0 promisc</example><br /><example>ifconfig tap1 0.0.0.0 promisc</example>
+   $ link real interface to bridge: <example>brctl addif br0 eth0</example>
+   $ link virtual interface to bridge: <example>brctl addif br0 tap1</example>
+   $ set up bridge: <example>ifconfig br0 10.194.71.184 netmask 255.255.254.0</example>
+   $ set up route: <example>route add default gw 10.194.71.254</example>
+   $ bring up all: <example>ifconfig br0 up</example>
+
+***** client side
+
+   $ get ip address: <example>dhcpclient eth0</example>
+
+** kdump and crash
+
+*** kdump for ARM
+
+
+
+*** needed components
+
+ - crash
+ - kexec-tools
+ - system.map
+ - uncompressed vmlinux compiled with -g - this is not available in any Debian package, so need to rebuild the kernel.
+
+*** the procedure to enable kdump
+
+**** config settings
+
+***** debugged kernel
+
+ - CONFIG_KEXEC = y
+ - CONFIG_SYSFS = y
+ - CONFIG_DEBUG_INFO = y to generate the vmlinux which is uncompressed and with debuginfo
+
+***** dump-capture kernel
+
+ - CONFIG_HIGHMEM64G = y or CONFIG_HIGHMEM4G = y in i386
+ - CONFIG_SMP = n or maxcpus=1 on kernel command line
+ - CONFIG_RELOCATABLE = y %ICON{note}% This is not set in Debian default config.
+ - suitable value of CONFIG_PHYSICAL_START. 
+   - for the relocatable kernel 0x100000 if OK
+   - otherwise it shall be the X in "crashkernel=Y@X" which used in loading the dump-capture kernel
+ - CONFIG_CRASH_DUMP = y %ICON{note}% This is not set in Debian default config.
+ - the menu.list:
+<example>
+kernel    /boot/vmlinuz-2.6.26-custom root=/dev/hda1 ro quiet crashkernel=64M@16M
+</example>
+
+***** load the dump-capture kernel
+
+   $ load an uncompressed vmlinux image: <example>kexec -p <vmlinux-image> --initrd=<initrd> --args-linux --append="root=/dev/hda1 ro single irqpoll maxcups=1 reset_devices" </example>
+   $ load an compressed vmlinuz image: <example>kexec -p <vmlinuz-image> --initrd=<initrd> --append="root=/dev/hda1 ro single irqpoll maxcups=1 reset_devices" </example>
+
+***** panic the kernel
+
+<example>
+echo c > /proc/sysrq-trigger
+</example>
+
+***** the dump file
+
+ - <example>cp /proc/vmcore <dumpfile></example>
+ - <example>mknod /dev/oldmem c 1 12; dd if=/dev/oldmem of=oldmem.001</example>
+
+** udevtrigger
+
+a tool in udevadmin tools set.
+
+** GDB
+
+%T% To prevent gdb to switch to other thread: set scheduler-locking on
+
+%T% Enable core dump:
+<example>
+ulimit -c unlimited<br />echo 1 
+/proc/sys/kernel/core_user_pid 
+</example>
+
+ - to add search path of source file <example> dir PATH_OF_INIT </example>
+
+*** kgdb
+
+**** enable kgdb
+
+ _in 2.6.26+_
+
+ - CONFIG_DEBUG_INFO=y
+ - CONFIG_FRAME_POINTER=y
+ - CONFIG_KGDB=y
+ - CONFIG_KGDB_SERIAL_CONSOLE=y
+ - in boot parameters add "kgdbwait kgdboc=ttyS0"
+
+**** kgdb over VirtualBox
+
+ - in VirtualBox settings: create a serial _/tmp/vboxpipe_ connecting to host pipe autocreated.
+ - forward the pipe in host machine: <example>socat udp4-listen:6443 /tmp/vboxpipe</example>
+ - in gdb, connect to target with: <example>(gdb) target remote udp:localhost:6443</example>
+
+**** references
+
+ - http://blog.linux.org.tw/~jserv/archives/002045.html
+ - http://www.stuttgarter.org/forum/viewthread.php?tid=24904
+
+*** Debug CORE
+
+ - Change working directory to a proper location then gdb can load shared library automatically. For example: In Android platform the libraries in /system/lib and executable in /system/bin. So you must make the gdb working directory on host side be out/target/product/<your_product_name>/symbols/
+ - Seems a bug with emacs: The gdb working directory must be out/target/product/<your_product_name>/symbols/lib
+
+*** Remote Debugging
+
+**** serial hardware
+
+ - 1-1 2-2 3-3 4-4 5-5 6-6 7-7 8-8 9-9 
+ - female 1 starts from right side. 9 at left side.
+ - male 1 starts from left side. 9 at right side.
+
+** mutrace
+
+Lennart wrote a mutex trace tool running in user space, which provids profiling of mutex, at http://0pointer.de/blog/projects/mutrace.html. 
+
+
+** ftrace
+
+ - more user friendly than others
+   - SystemTap is prominent while not easily usable

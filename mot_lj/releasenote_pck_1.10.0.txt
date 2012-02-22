@@ -1,0 +1,68 @@
+Release Name: 1.10.0
+ 
+Notes:
+========================================================================
+PCK Release Notes
+Version: 1.10.0
+Release Date: Jun 27, 2007
+Copyright 2007 Motorola Inc. All Rights reserved.
+========================================================================
+ 
+PCK, the abbreviation for Platform Creation Kit, Is a GUI tool, which helps developer to develop embedded programs. 
+ 
+PCK shall provide the functionalities, Such as components dependency checking, Installation order determination, Building from source, Picking up the base lined distributions, Generating the root file system and creating the image, etc. 
+ 
+For iDEN Samba Product,PCK could also be mentioned as Integration Tool, Since it covers a part of PCK functionalities, And focuses on the components integration.
+ 
+What's New
+---------------
+- Package management improved. When there are packages not selected by
+user directly are to be installed or removed from PCK GUI, they will
+be reported seperately from user's selections. In script side, such an
+installation attempt will fail with a report.
+
+- Signing utilities improved. Combined S19 file can be signed by
+  signing utilities dialog, and only image.cfg and shx_map as
+  neccessry parameter. There also be a script to sign combined S19
+  file, /vob/ilj_release/devkit/scripts/signing/sign_images.pl
+
+Known Problems
+---------------
+- Help system can not be launched in those machines without Mozilla directly.
+  There is a work around: 
+  Set environment variable MOZILLA_FIVE_HOME to the directory containing the Firefox install.
+  For example:
+  $export MOZILLA_FIVE_HOME=/usr/lib/firefox-1.0.8 
+ 
+Executable Files
+---------------
+  Name				Comments
+  ============================================================
+  itool				PCK start up command
+  pck.sh			PCK command line interface
+  createimage.sh		Wrapper for operations which require sudo privilege
+   
+Release Location in VOB
+---------------
+  Label: "PCK_ILJ_R_1.10.0"
+  /vob/ilj_release/devkit/pck
+
+ 
+Config Spec 
+---------------- 
+  element * PCK_ILJ_R_1.10.0
+  element * SBOX_ILJ_R_1.0.1
+  element * LINUXOS_B2_00.01.00
+  element * LINUXOS_N_02.10.00I
+  element * /main/LATEST
+ 
+
+Installation
+---------------
+  None
+ 
+Support
+---------------
+  Any questions about this release, please send mail to: 
+  iden_linux_tools@sc.mcel.mot.com
+

@@ -1,0 +1,116 @@
+\documentclass[11pt,leqno]{article}
+%define the title
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\pagestyle{fancy}
+\rhead{pengliu2}
+\lhead{Peng Liu}
+\author{Peng Liu(pengliu2, I2CS graduate)}
+\title{Solutions for Homework 5}
+\begin{document}
+\lstset{language=C}
+% generates the title
+\maketitle
+% insert the table of contents
+%\tableofcontents
+\section*{Problem 1}
+
+\begin{enumerate}
+\item[Part A] Solution:
+
+The virtual address space \textbf{IS} larger than the physical address space.
+
+The page offset in a virtual address is \textbf{21 bits long}.
+
+The virtual page number is \textbf{43 bits long}.
+
+\textbf{The most significant bits} is the page number in.
+
+A physical page number is \textbf{27 bits long}.
+
+The page offset in a physical address is \textbf{21 bits long}.
+
+\textbf{16 pages or 32MB} is covered by a 16 entry TLB.
+
+\textbf{0x7FFFC800089}
+
+\item[Part B] Solution:
+	\begin{enumerate}
+	\item[A.]
+	65 72 20 67
+	\item[B.]
+	There is one. It's virtual page 000
+	\item[C.]
+	There are two. They are virtual page 001 and 100
+	\item[D.]
+	There is none.
+	\item[E.]
+	73 61 79 20
+	\item[F.]
+	There will be an exception because virtual address is mapped to a physical page outside of installed physical memory. 
+	\end{enumerate}
+
+\end{enumerate}
+
+\section*{Problem 2}
+\begin{enumerate}
+\item[Part A] Solution:
+The 20 bits from bit 20 to bit 39 are used to obtain the translation.\\
+Because the TLB is fully-associative, so these bits are to be compared with the tags of each TLB entry to address the TLB entry. And the physical page number is read from this TLB entry.
+
+\item[Part B] Solution:
+
+Bits 0-3 are used as block offset, directly from the virtual address.\\
+Bits 4-11 are used as index, directly from the virtual address.\\
+Bits 12-19 are used as tag.
+
+\end{enumerate}
+
+\section*{Problem 3}
+\begin{enumerate}
+\item[Part A] Solution:
+The miss penalty is $8 + 50 + 25 \times 4 = 158$ cycles.
+
+The CPI would be $1.5 + 158 \times 2\%= 4.66$.
+
+\item[Part B] Solution:
+The CPI would be $1.5 + 158 \time 80\% \time 2\% = 4.028$.
+
+So the speedup would be $4.66/4.028 = 1.156901688$. 
+
+\item[Part C] Solution:
+The miss penalty would be $8 + 50 + 25 \time 2 = 108$ cycles.
+
+CPI is $1.5 + 108 \times 2\% = 3.66$, which is faster than that in Part B.
+
+\end{enumerate}
+
+\section*{Problem 4}
+	\begin{enumerate}
+	\item[Part A] Solution:
+	The answer is it depends on the size of a cache line. Given a cache line is x bytes long. Then the minimum associativity must be 
+	\[
+	2^{\log (128 \times 1K) - (12 - \log x) - \log x} 
+	\]
+
+	\item[Part B] Solution:
+	
+	Assume the L1 cache has to use 1 LSB to form a index. Then if the TLB has following entries in it, and the first words of both physical page 0 and 1 are in cache, then the cache will return incorrect data when the processor want to access the first word of either page.
+	
+	\begin{tabular}{|l|l|}
+	Virtual Page Number & Physical Page Number \\
+	\hline
+	\hline
+	1 & 0\\
+	\hline
+	0 & 1\\
+	\hline
+	\end{tabular}
+	
+	\item[Part C] Solution:
+	The system can work in this way. The OS should ensure the 3 least significant bits of physical page number and virtual page number be identical when it'd mapping pages.
+	
+	\end{enumerate}
+
+\end{document}

@@ -1,0 +1,15 @@
+#!/bin/sh
+if [ -z "$1" ]; then
+	echo "$0: called with no interface" 1>&2
+	exit 1
+fi
+
+if [ "$1" = "eth0" ]; then
+	if [ "$2" = "up" ]; then
+		/usr/local/sbin/setproxy on
+		exit 0
+	fi
+fi
+
+/usr/local/sbin/setproxy off
+

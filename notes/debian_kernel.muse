@@ -1,0 +1,31 @@
+* build Debian kernel
+
+** prerequisites
+
+   - linux-source
+   - kernel-package
+   - fakeroot
+   - libncurses5-dev - for menuconfig
+
+** settings
+
+*** debuginfo
+
+   - Kernel hacking -> compile the kernel with debug info
+   - General settings -> Kprobe
+
+** commands
+
+   - make-kpkg clean
+   - fakeroot make-kpkg --revision=custom.1.0 kernel_image kennel_headers
+   - make-kpkg --rootcmd fakeroot -initrd --append-to-version=-my-1.0 kernel_image kernel_headers kernel_manual kernel_doc
+
+** Also See
+
+   - [[http://kernel-handbook.alioth.debian.org/ch-common-tasks.html][Debian Linux Kernel Handbook - Common kernel-related tasks ]]
+
+   - [[http://forums.debian.net/viewtopic.php?t=4468&start=0][Kernel compile and install on Debian systems]]
+
+** Notes
+
+   _Debian make-kpkg has a bug 514048 to declare dependence on zlib1g-dev._

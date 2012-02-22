@@ -1,0 +1,241 @@
+*2007/02/02 18:11:02 A better java database framework
+
+We didn't know much of an idea of how much work was being triggered by
+a single request or have much of a chance to optimize our SQL.
+
+*2007/02/08 14:17:22 list all elements with version with ClearCase
+
+clt find /proj/pck_tag/source/gui/ -branch "brtype
+(GCNcq00004228_a22543_x86image)" -exec 'cleartool ls -s $CLEARCASE_PN'
+
+*2007/02/12 21:44:57 fund adventure
+
+目前：富国天合（积极配置，周蔚文）5.5，华夏现金增利3.9，现金17，公积金
+5.5，总共32
+
+近期支出：五一前购车，需要10，五一房租2，六月香港2，上半年共需要15
+
+比例：目前货币基金3.9，需要再投入11，还有11.5，其中2投入股票型基金，4
+投入短债券，公积金到手后再决断
+
+待选公司：上投摩根，嘉实，易方达，富国，
+
+待选基金：上投摩根阿尔法（股票，风险偏低，金融，材料），上投摩根中国优
+势（股票，风险高，金融，材料，吕俊），上投摩根成长先锋（新，股票，金融，
+材料，消费品，公用事业，唐建），上投摩根双息平衡（芮），易方达策略成长
+贰号（新，积极，肖坚），富国天利增长债券（饶刚）
+
+最终选择：4到易方达策略成长贰号（积极），2到嘉实超短债，6到华夏现金，5
+到博时现金收益
+
+其他关注：华夏大盘精选（王亚伟），华夏成长（巩怀志）
+
+*2007/02/14 15:25:35 LJ 7.1 Software Arch
+
+** Applications & Application Framework & User Interface
+
+** Daemons, Shared Reentrant object & System Libraries
+
+** Kernel Module
+
+** IPC and Base Band Processor
+
+** Comminucation mechanism
+
+Communication between the Engine and Service Application is via UNIX
+domain sockets. UI and engine use Qt signal/slot for communication,
+which is similar to the Observer design pattern in OO
+methodology. This design will ensure that the UI is isolated from the
+engine so that the engine module can be reused when different UI style
+is supported. An example is that two totally different UI styles
+(Tactium and Chameleon) are supported with one engine.
+
+** SME Seamless Mobile Engine
+
+Introduced for LJ06.3
+
+** PM
+
+We refer to a specific configuration of process and bus voltages and
+frequencies as an operating point.
+
+** Database
+
+1) Current EzX database service architecture is based on SleepyCat
+   Berkeley database engine and 2) A new architecture that is based on
+   Microsoft ODBC over SQLite embedded database engine.
+
+** Device Management
+
+Device management (DM) is a set of capabilities, software modules and
+techniques, deployed on the device, the personal computer and various
+nodes on the network, which is responsible for provisioning,
+upgrading, repairing and configuring software on the device, as well
+as facilitating remote problem diagnostic and troubleshooting. DM can
+be performed remotely (over-the-air, or OTA), in which case it is
+supported by standard protocol. It can also be done locally, by direct
+configuration editing on the device, by provisioning parameters from
+smart-cards.
+
+specifications:
+
+1) OMA Device Management v1.1.2
+2) OMA Client Provisioning v1.1
+
+** Application Manager
+
+The AM UI and the AM Engine use the application communication protocol
+- Action Command based on W3C standard.
+
+*** Application API (Action Command)
+
+Application API service provides an interface to other applications
+via the Action command. Action command is an application communication
+protocol utilizing QCopChannel communication channel. The action
+command string is based on the W3C application/x-www-form-urlencoded
+standard.
+
+The application framework requires an application to advertise its
+services in action command format by filling (provisioning) in the
+action command registry table. When a user and/or other application
+request a particular service from the AM, the AM gets the information
+from the action command registry and provides it to the associated
+provider (application) of this service. (Alternate: invokes the
+associated provider (application) of this service).
+
+*** Application Installation
+
+Until LJ06.3 release, AM only supports installation and registration
+of Java MIDlets. Starting LJ07.1, application manager provides support
+for installation and registration of native Qt/E applications.
+
+In LJ07.1, the application manager supports installation of a-packs
+(application packages). A-packs are ZIP files, compressed and zipped
+in the known MPKG format/extension. A-packs headers include
+application package information - package type (installation or
+updates), application version, application types, icons, application
+classes, application access paths and licensing information. The AM
+utilizes the A-pack header information to install the application and
+register the application with the AppRegistry.
+
+** TAPI/NAPI
+
+The TAPI/NAPI interface is considered as a gateway to Baseband
+Processor (BP) from the Application Processor (AP) by the
+applications. The applications can access the services of the
+underlying radio access technology only through TAPI/NAPI. Apart from
+supporting over the air services, TAPI also has interfaces for some
+miscellaneous services like power management, accessory devices,
+Bluetooth, battery, etc.
+
+
+
+*2007/02/16 00:54:26 cycle bike
+
+xuxu: BYA412 or (another name) BYA14 price 999, 锦大 14011 860/660,
+
+pipi: giant conway 2.0 598, Dahon YT810 500-600, Dahon TS511 588,
+Dahon YA612 1300
+
+** Dahon
+
+国贸店：
+地址：东三环光华桥向东800米路南
+电话:010-51003241
+　　 010-51003242
+手机： 13391596220
+
+ DAHON望京店:
+地址： 朝阳区四元桥沿京顺公路向北第一个路口（将台路口）右转，将台
+　　　 桥下北侧(有停车位)
+电话： 010-8006106080
+
+ 上地店：
+地址： 海淀区农大南路88号（万林之春体育商城二层）
+电话： 13810894111
+
+52bike
+
+地址：北京市东城区东直门内大街4-1号（东直门桥西100米路南）
+
+电话：010-84074520 / 15901336952 / 13001077266
+
+坐公共汽车的朋友，106、107、117、24、815路，到东直门内大街下车，站牌后
+就是（路南），SEVEN-ELEVEN便利店马路正对面！
+
+
+坐地铁的朋友东直门站D出口，往回走到东直门桥头，沿路左转向西，路过2个工
+地的第一家就是了
+
+** Giant
+
+旗舰店  	 
+	
+电　　话：
+	82275718
+地　　址：
+	朝阳区北土城西路7号国恒基业大厦 E 座101室
+乘车路线：
+	653、21、849、645健德门桥下向东30米路北
+
+红庙店
+
+地址：朝阳区红庙柴家湾5号
+乘车路线：815、电车101、108红庙下车
+电话：65925080
+
+
+
+
+
+
+*2007/02/27 11:56:01 RPM packaging
+
+** naming convention
+
+name-version-release.architecture.rpm
+
+** format
+
+*** identification area
+
+*** signature
+
+*** header
+
+*** payload
+
+The payload section contains the actual files used in the
+package. These files are installed when you install the package. To
+save space, data in the archive section is compressed in GNU gzip
+format.
+
+Once uncompressed, the data is in cpio  format, which is how the
+rpm2cpio command (introduced in the "Other RPM commands" section later
+in this chapter) can do its work.
+
+** Database
+
+The RPM database itself is stored in the directory /var/lib/rpm/.
+
+The file __db.001 and similar files are lock files used by the RPM
+system. The other files are databases in Berkeley DB format. The most
+important file is Packages. The Packages  file contains the header tag
+information for each package indexed by an index number for each
+package.
+
+** Obsoletes
+
+For example, a new version of the perl interpreter may make an older
+version obsolete. In most cases, the obsoletes dependency should be
+used when the name of a package changes.
+
+** repackage
+
+When installing, removing, or upgrading, you can use the --repackage
+command-line option to save a version of something like the old
+package to a file, making a backup of the older package contents.
+
+The package created by the --repackage option is not a complete RPM
+package. You can use the rpmbuild command to make it into a complete
+package, but by itself, it will not be a complete package. 

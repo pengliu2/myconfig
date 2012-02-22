@@ -1,0 +1,16 @@
+* Plugin Framework
+
+** References
+
+*** heavywight
+- Microsoft's COM
+- Mozilla's XPCOM (Cross-platform COM)
+
+*** basic
+- Qt's plugin's
+- DynObj
+
+*** Plugin-Based System Architecture
+
+
+

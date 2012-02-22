@@ -1,0 +1,12 @@
+* Bioinformatics A concept-based Introduction
+
+ - Authors: Venkatarajan S. Mathura & Pandjassarame Kangueane
+
+** Chapter One
+
+ - National Center for Biological Information maintains genetic sequence database GenBank.
+ - As of August 2005 it contained approoximately 47 million sequences. 
+
+** Questions:
+
+ - What's the meaning of DNA? How is it different from protein?

@@ -1,0 +1,11 @@
+* 2009/02/02 22:53:44 letter
+
+Zhiming, here I write down what we were talking about before the Chinese Festival. I also have some new thoughts about the development and I put them here as well.
+
+1. Low level design and code review can be more efficient if more teams are involved. Now the reviews of my team are limited within four or five team members in the team, on the other hand, I've never take part in reviews owned by other teams last year. In fact, our code change and design are always related to different external components, and we're also interested in some other components such as USB driver, profiling, etc.  
+
+2. The architecture team may help development team more if they spend more time on system level design and system level plan. Now 
+
+3. Design, performance measurement / tuning, API documentation could be the major tasks of OS team. BSP development is certainly the most important task of OS team's. However, there still are a few other kinds of things where OS team shows its value. 
+
+4. OS team can not only introduce tools to other teams, but also define the efficient development methods. The netmux and IPC driers for CDMA have been assigned to other team. From my investigation, some of our teams are facing the 

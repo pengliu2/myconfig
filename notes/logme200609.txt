@@ -1,0 +1,49 @@
+*2006/09/04 12:04:22 Eclipse Viewer Cell Editor
+
+** TableViewer.setColumnProperties
+
+Set properties conresponding with columns of table control which are
+used to identify a column in a cell modifier.
+
+*2006/09/14 09:10:12 Aethena
+
+** Interface
+
+Interface seems satisfied original PCK SDS.
+
+** Error code
+
+It seems Aethena_build.pl returns zero meaning success or one
+meaning failure.
+
+** Tracking
+
+Songjun had sent a mail to Ralph, but no reply yet.
+
+** Integration
+
+The perl script we got invokes Win32 binary. If there is no one for
+linux yet. PCK team can build a stub for UI unit test.
+
+*2006/09/15 07:13:34 Upgrade/Downgrade TS comments
+
+1. Document ID conflicts
+2. Add downgrade in keywords
+3. User shall acquire sudo privilege only for createimage.sh
+4. Give a brief for each file in Appendix
+5. Validation returns true by now
+6. Task arrangement: 
+Round 1: Chen Feng: all case; Liu Peng: TC015-TC022 in
+ScratchBox; Binglei: TC001-TC014
+Due date: Next Mon.
+
+Round 2: Chen Feng: all case in fl08; Binglei: all case with
+ScratchBox and without ScratchBox.
+Due date: Next Wed.
+
+*2006/09/19 21:17:44 Issue
+
+I have designed and implemented a information management software
+system for child's immunity during off time, which has been deployed
+in one district of Tianjin city. It is going to be popularized by
+Tianjin Bureau of Public Health with applause.

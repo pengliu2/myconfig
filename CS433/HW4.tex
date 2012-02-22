@@ -1,0 +1,166 @@
+\documentclass[11pt,leqno]{article}
+%define the title
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\pagestyle{fancy}
+\rhead{pengliu2}
+\lhead{Peng Liu}
+\author{Peng Liu(pengliu2, I2CS graduate)}
+\title{Solutions for Homework 4}
+\begin{document}
+\lstset{language=C}
+% generates the title
+\maketitle
+% insert the table of contents
+%\tableofcontents
+\section*{Problem 1}
+
+\begin{enumerate}
+\item[(Part A)]
+(1) needs $4 \times 64 = 256$ cycles.\\
+(2) needs $4 \times 64 \times 64 = 16384$ cycles.\\
+(4) needs $4 \times 64 \times 32 = 8192$ cycles.\\
+(3) also needs $10 \times 64 \times 64 = 40960$ cycles if there is no cache-miss. But actually all 16384 bytes has to be loaded in 1024 cache-load operations, so we need additional $(40-10) \times 1024 = 30720$ cycles.\\
+(4) needs $10 \times 64 \times 32 = 20480$ cycles if there is no cache-miss. But it still needs extra 30720 for cache-load.\\
+
+So this fragment needs totally 147712 cycles, and 2308 for each outer-loop iteration.
+
+\item[(Part B)]
+Because there is still a 40 cycle latency after a prefetch is issued before the cache line is really loaded, unrolling the loop can get add operation of current iteration and prefetch operation for future iteration(s) overlapped, so that the total cycle number is reduced.\\
+We need to unroll the inner loops by 4, because it reads adherent 4-byte data in order, and our cache block is 16 bytes. 
+
+\item[(Part C)]
+
+\begin{verbatim}
+
+for(i = 0; i < 64; i++)           /* 1 */
+{
+    for(j= 0; j < 64; j += 4){    /* 2 */
+        prefetch(a[i][j+4]);      /* 3 */
+        sum1 += a[i][j];          /* 4 */
+        sum1 += a[i][j+1];        /* 5 */
+        sum1 += a[i][j+2];        /* 6 */
+        sum1 += a[i][j+3];        /* 7 */
+    }
+
+    for(j = 0; j < 32; j += 4){   /* 8 */
+        prefetch(b[i][2j+4]);     /* 9 */
+        prefetch(b[i][2j+8]);     /* 10 */
+        sum2 += b[i][2*j];        /* 11 */
+        sum2 += b[i][2*(j+1)];    /* 12 */
+        sum2 += b[i][2*(j+2)];    /* 13 */
+        sum2 += b[i][2*(j+3)];    /* 14 */
+    }
+}
+
+\end{verbatim}
+
+\item[(Part D)]
+
+We decreased the cycles for the for statements by 4096 cycles and 2048 cycles.\\
+The cache misses now only happend for two times for each inner loop, so they need 160 cycles.\\
+We added 1024 prefetch statements, so they introduced extra 1024 cycles.\\
+So now we need $147712 - 12288 - 6144 - (30720 + 30720 - 160) + 1024 = 68880$ cycles. Or about 2.14 times speedup.
+
+\item[(Part E)]
+
+The processor might provide hardware prefetching which can archive the same objetive as loop unrolling. When addresses of two successive cache misses are close, the hardware will prefetch the next cache block. For the first inner loop of this example, hardware issues the prefetching in the 5th iteration, and for the second inner loop, in the 3rd iteration. This can achieve approximately same effect as software prefetching does, while it also depends on the implementation of hardware.
+
+\end{enumerate}
+
+\section*{Problem 2}
+\begin{enumerate}
+\item[(Part A)]
+
+  \begin{enumerate}
+    \item[(i.)]
+      hit timeL1 = 1ns,\\
+      miss rateL1 = 2\%,\\
+      hit timeL2 = 15ns,\\
+      miss rateL2 = 80\%
+    \item[(ii.)]
+      $\text{miss penaltyL2} = \text{block size} / \text{bus width} / \text{bus frequency} + \text{memory latency}$\\
+      The bus freq is 100MHz, bus width is 8 bytes, so a block would be loaded from memory to L2 in 80ns.\\
+      So miss panaltyL2 = 100ns.
+
+    \item[(iii.)]
+      $AMAT = \text{hit timeL1} + \text{miss rateL1} \times (\text{hit timeL2} + \text{miss rateL2} \times \text{miss penaltyL2})$
+      
+    \item[(iv.)]
+      The result is 1.7.
+
+  \end{enumerate}
+
+\item[(Part B)]
+  \begin{enumerate}
+    \item[(i.)]
+      miss rateL1 for data reads is 5\%.
+    \item[(ii.)]
+      $AMAT = 1 + 5\% \times (15 + 20\% \times 100) = 2.75$
+
+  \end{enumerate}
+\item[(Part C)]
+  \begin{enumerate}
+    \item[(i.)]
+      miss penaltyL2 is 15ns.
+
+    \item[(ii.)]
+      write timeL2Buff is $15 \times 80\% + (100+15) \times 20\% = 35$
+
+    \item[(iii.)]
+      $AMAT = 5\% \times 35 = 1.75$
+
+  \end{enumerate}
+
+\end{enumerate}
+
+\section*{Problem 3}
+\begin{enumerate}
+\item[(Part A)]
+Sorry. I have no idea about this.
+\item[(Part B)]
+Sorry. I have no idea about this.
+\item[(Part C)]
+The table
+
+\begin{tabular}{|l|c|}
+  \hline
+  Cache Access Case & Cache State Change\\
+                    & Way prediction entry\\
+  \hline
+ Desired data is in the predicted way & no change\\
+ \hline
+ Desired data is in the non-predicted way & flip the prediction bit\\
+ \hline
+ Desired is not in L2 cache & load the cache block.reset predicton bit\\
+  \hline
+\end{tabular}
+
+\item[(Part D)]
+2K entries by 3 bits per entry.
+
+\item[(Part E)]
+32K entries by 1 bit per entry.
+
+\item[(Part F)]
+For e), R10000 can use part of the addresses to locate an entry. 
+
+\end{enumerate}
+
+\section*{Problem 4}
+\begin{enumerate}
+\item[(a)]
+Because each iteration accesses a new cache block, there is a 10 cycles stall.\\
+Because the memory can service multipe request, the rest transfer won't block anything.\\
+Total cycles number is $6 \times (4 + 4 + 10 ) = 108$
+\item[(b)]
+Because statement 2 accesses the 12th word in a cache line. So the stall would be 32 cycles.\\
+Total cycles number is $6 \times (4 + 4 + 32) = 240$
+
+\item[(c)]
+It would be $6 \times (4 + 4 + 40) = 288$
+
+\end{enumerate}
+
+\end{document}

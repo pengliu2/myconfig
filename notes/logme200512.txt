@@ -1,0 +1,865 @@
+*2005/12/01 13:43:34 学习 Emacs Lisp
+
+从 gnu.org 上下载了一本书: Intro-Elisp, Elisp 很简单, 适合做实验用.
+
+*2005/12/01 15:37:38 Pathname Lookup
+
+Each process has a root directory.
+
+If the first character of the pathname is / , the pathname is
+absolute, and the search starts from the directory identified by
+current->fs->root (the process root directory).  Otherwise, the
+pathname is relative and the search starts from the directory
+identified by current->fs->pwd (the process-current directory).
+
+*2005/12/01 22:01:33 VFS System calls and File Locking
+
+File Locking can lock an arbitrary region of a file (even a signle
+byte) or to lock whole file (including data appended in the
+future). Since a process can choose to lock just a part of file, it
+can alse hold mutiple locks on different parts of the file.
+
+This kind of lock does not keep out another process that is ignorant
+of locking. Like a critical region in code, the lock is considered
+"advisory" because it doesn't work unless other processes cooperate in
+checking the existence of a lock before accessing the file. Therefore,
+POSIX's locks are known as advisory locks.
+
+All lock_file structures that refer to the same file on disk are
+collected in a simply linked list, whose first element is pointed to
+by the i_flock field of the inode object. The fl_next field of the
+lock_file structure specifies the next element in the list.
+
+struct flock
+{
+	short l_type;
+	short l_whence;
+	off_t l_start;
+	off_t l_len;
+	pid_t l_pid;
+};
+
+*2005/12/02 09:25:25 Cache and Buffer in bootloader
+
+MACRO CPWAIT
+MRC P15, 0, R0, C2, C0, 0
+MOV R0, R0
+SUB PC, PC, #4
+EMDM
+
+Enable instruction cache: set bit 12 in coprocessor 15, register 1
+(Control Register).
+
+MRC P15, 0, R0, C1, C0, 0
+ORR R0, R0, #0x100
+MCR P15, 0, R0, C1, C0, 0
+CPWAIT
+
+Invaliding the instruction cache: 
+
+MCR P15, 0, R1, C7, C5, 0
+CPWAIT
+
+不加 cache 用串口传的速度是 10800cps+. 
+
+只加了 i cache 也是这个速度. 
+
+Enable data cache: 
+
+MCR p15, 0, r0, c7, c10, 4
+MRC p15, 0, r0, c1, c0, 0
+ORR r0, r0, #4
+MCR p15, 0, r0, c1, c0, 0
+
+Global Clean and Invalidate Operation:
+
+Maybe no need yet.
+
+加了 d cahce 还是这个速度, 肯定是串口本身的问题.
+*2005/12/05 09:42:01 Siemens MUX
+
+** CMUX_OnDatain, 里面处理了从串口接收到的数据. 
+
+可以看出: 
+
+1. 可以有多个 BASIC_FLAG;
+
+2. BASIC_FLAG 后面的 addr 结构: bit 2-7 为 DLCI. bit 1 为 C/R. EA 总为
+   1.
+
+3. CTRL 字段包括 bit 4 为 Poll/Final, 其他位表示 Frame Type. 
+
+4. 如果 LEN1 字段 bit 0 为 0, 有 LEN2 字段. 
+
+5. 通道 0 为控制通道, 必须首先建立. 建立控制通道时候, 发送 SABM/P=1
+   Frame. 返回 UA:F=1 表示通道建立起来了, 返回 DM:F=1 表示没有建立起来.
+
+6. 用 UIH:P=0,C/R=1 发送 information.
+
+7. 用 DISC:P=1 断开通道.
+
+8. Multiplexer control channel command field: 第一个字节是 type, 第二
+   个字节是 length, 后面是值. type bit 0: EA. bit 1: C/R. others:
+   coding of the command type. length bit 0: EA. others: number of 值.
+
+9. Multiplexer close down (CLD) 命令的 type 为: 0xC1/0xC3
+
+10. Modem status commadn (MSC) 的格式为: command field 1 oct, lenght
+    field 1 oct, DLCI field 1 oct, V.24 signals field 1 oct, Break
+    signals (optional) field 1 oct. command field will be
+    0xE1/0xE3. length will be 2, and EA-Bit = 1, so length field will
+    be 0x05. DLCI = 3. V.24 signals: bit 0: 1, 1: FlowControl, 2: RTC,
+    3: RTR, 4: reserved, 5: reserved, 6: RING, 7: DCD.
+
+** CMUX_ProcRxFrame
+
+typedef struct
+{
+	int		DLCI;			/* 通道标识	*/
+	int		type;			/* 帧类型	*/
+	int		CR_bit, PF_bit;	/* C/R, P/F位*/
+	UINT8	data[MAX_FRAME_SIZE];	/* 帧信息	*/
+	int		datalen;		/* 信息长度	*/
+}	FRAME;
+
+这里传进来的 frame 是除去了 flag, addr, ctrl, len_1, len_2, fcs 的纯数
+据帧. 
+
+*2005/12/05 13:02:08 Cool Techniques
+** enum
+
+#define _WEEKDAYS_METADAYS(_m)\
+_m(Sunday)\
+_m(Monday)\
+_m(Tuesday)\
+_m(Wednesday)\
+_m(Thursday)\
+_m(Friday)\
+_m(Saturday)
+
+#define _ENUM_WEEKDAY(Name) eWd_##Name,
+
+enum
+{
+_WEEKDAYS_METADAYS(_ENUM_WEEKDAY)
+};
+
+The preprocessor will create all the eWd_Sunday, eWd_Monday etc.
+
+** struct
+
+#define _BITFIELD_WEEKDAY(Name) bool f##Name: 1;
+
+struct WEEKDAYS_BITFIELDS
+{
+_WEEKDAYS_METADAYS(_BITFIELD_WEEKDAY)
+};
+
+This will create a bit defination of weekdays in struct.
+
+** string
+
+#define _STR_WEEKDAY(Name) ##Name,
+
+static const LPCTSTR _aWdName[] = 
+{
+_WEEKDAYS_METADAYS(_STR_WEEKDAY)
+};
+
+
+** to distinguish
+
+#define _WEEKDAYS_METADAYS(_m)\
+_m##_WEEKEND(Sunday)\
+_m(Monday)\
+_m(Tuesday)\
+_m(Wednesday)\
+_m(Thursday)\
+_m(Friday)\
+_m##_WEEKEND(Saturday)
+
+#define _ENUM_WEEKDAY(Name) eWd_##Name,
+#define _ENUM_WEEKDAY_WEEKEND(Name) eWd_##Name,
+enum
+{
+_WEEKDAYS_METADAYS(_ENUM_WEEKDAY)
+};
+
+produces all weekdays enum.
+
+#define _ENUM_WEEKDAY2(Name)
+#define _ENUM_WEEKDAY2_WEEKEND(Name) eWd_##Name,
+
+enum
+{
+_WEEKDAYS_METADAYS(_ENUM_WEEKDAY2)
+};
+
+produces only two weekend days.
+
+
+*2005/12/05 22:12:01 device driver
+** 80x86 overview
+
+80x86 使用32条地址线里的16条寻址 I/O 设备, 用64根数据线里的8, 16, 32条
+传输数据. 
+
+内核使用 resource 跟踪为每一个硬件设备分配的 I/O 口. 所有 resource 包
+括在一个树里, 树的根节点是 ioport_resource. 
+
+和 resource 相关的函数:
+
+request_resource()Assigns a given range to an I/O device.
+
+check_resource()Checks whether a given range is free or whether some
+subrange has already been assigned to an I/O device
+
+release_resource()Releases a given range previously assigned to an I/O
+device.
+
+内核还定义了一些快捷方式, request_region() 分配特定的内部 I/O 口,
+check_region() 检查给定内部 I/O 口是否空闲, release_region() 释放内部
+I/O 口. 所有 I/O 地址可以由 /proc/ioports 文件读到. 
+
+I/O shared memory of the ISA bus: usually mapped into the physical
+addresses ranging from 0xa0000 to 0xfffff; this gives rise to the
+"hole" between 640 KB and 1MB mentioned.
+
+I/O shared memory of the PCI bus: mapped into very large physical
+addresses, well above the end of RAM's physical addresses. THIS KIND
+OF DEVICE IS MUCH SIMPLER TO HANDLE.
+
+ioremap() and ioremap_nocache() 函数, 类似 vmalloc(), 调用
+get_vm_area() 建立一个新的 vm_struct descriptor.
+
+io_mem = ioremap(0xfb000000, 0x200000);
+
+
+t2 = *((unsigned char *)(io_mem + 0x100000));
+
+第一个语句得到一个新的 2MB 线性地址空间, 映射了物理地址的 0xfb000000
+开始 2MB 的空间. 第二个语句 从 0xfc000000 读一个字节. 用 iounmap() 可
+以移除这个映射.
+** Block device driver
+the kernel must determine whether the device file is already opened,
+when a block device file is being opened. If the file is already
+opened, the kernel must not initialize the corresponding block device
+driver.
+
+To keep track of which block device drivers are currently in use, the
+kernel uses a hash table indexed by the major and minor numbers. The
+hash table array is stored in bdev_hashtable variable; it includes 64
+lists of block device descriptors.
+
+我的第一个 SLAB 函数: kmem_cache_alloc(bdev_cachep, SLAB_KERNEL)
+
+** Sectors, Blocks, Buffers
+
+Each data transfer operation for a block device acts on a group of
+adjacent bytes called a sector. In most disk devices, the size of a
+sector is 512 bytes. Notice that the sector should be considered the
+basic unit of data transfer. The kernel stores the sector size of each
+hardware block device in a table named hardsect_size.
+
+Block device drivers transfer a large number of adjacent bytes called
+a block in a single operation.
+
+Buffer's state (stored in buffer_head's b_state field): BH_Uptodate,
+BH_Dirty, BH_Lock, BH_Req, BH_Mapped, BH_New, BH_Async, BH_Wait_IO,
+BH_launder, BH_JBD
+
+** Block and Page I/O Operations
+
+There are two fundamental kinds of I/O data transfer for block
+devices:
+
+*** Blck I/O operations
+
+Block I/O operations are most often used when the kernel reads or
+writes single blocks in a filesystem (for example, a block containing
+an inode or a superblock).
+
+bread function reads a single block from a block device and stores it
+in a buffer. (fs/buffer.c in 2.4.18) 
+
+*** Page I/O operations
+
+Page I/O operations are used mainly for reading and writes files for
+accessing files through the memory mapping, and for swapping.
+
+这个方式, 从 brw_page 讲起, 没有看到显式等在 page->wait 上的进程.
+
+*2005/12/06 10:35:51 HX8306A LCD Panel
+
+在 h:/BTP-04_BETA_2.12/src_ads/drivers/lcd/xslcd.c.bak
+
+** to reduce the power consumption of LCD system
+
+1. standby mode
+
+2. sleep mode
+
+3. 8-color display mode
+
+** Pin
+
+既然 IM3-0 是定好的, 那么无法改变 LCD Panel 的使用方式了. 这个 LCD
+Panel 可以从两组引脚输入数据, 一组是 system interface: DB0-17, 这组据
+说适合用作静态图像的传输, 这个是没有同步信号的. 另外一组是 rgb
+interface: PD0-17, 这组用于动态图像的传输, 有同步信号. 这两组都是传到
+GRAM 里.
+
+** Frame-Frequency Adjustment Function page 67
+
+** System interface vs RGB interface
+
+*** 改变状态: System interface to RGB interface
+
+1. System interface mode
+
+2. Set HWM = 1, AM = 0
+
+3. Set AD15-0
+
+4. Set RGB interface mode (DM1-0 = 01, RM = 1)
+
+5. Set IR to R22h
+
+6. Wait more than 1 frame
+
+7. Write data through RGB interface
+
+*** RGB interface to System interface
+
+1. Set system interface mode (DM1-0 = 00, RM = 0)
+
+2. Wait more than 1 frame
+
+*** Write data through RGB to write data through system
+
+1. Set (DM1-0 = 01, RM = 0) with RGB interface mode
+
+2. HWM = 1/0
+
+3. Set AD15-0
+
+4. Set IR to R22h
+
+5. Write data to RAM through system interface
+
+*** Write data through system to write data through RGB
+
+1. HWM = 1, AM = 0
+
+2. Set AD15-0
+
+3. Set RGB interface mode (DM1-0 = 01, RM = 0)
+
+4. Set IR to R22h
+
+5. RGB interface operation
+
+*** registers
+
+HWM (R03h bit 9)
+
+AM (R03h bit 3)
+
+DM1-0 (R0Ch bit 5-4)
+
+RM (R0Ch bit 8)
+
+AD15-0 (R21h bit 15-0)
+
+*** Refresh on demand
+
+要解决闪屏的问题, 需要让 LCD panel 的 enable 引脚为高. EPL 是 R01h bit
+11, 我们已经给这位置0了. 也就是让 L_BIAS 为高, 这个引脚是和 GPIO77 复
+用的. 
+
+DMA controller fetches the next descriptor from (the address in the
+DDADRx register + 32 bytes) if DDADRx[BREN] and DCSRx[CMPST] are
+set. If either of this bits is clear, the DMA controller fetches the
+next descriptor from the address in the DDADRx register. 不, 用这个测
+试一帧结束不行, DMA 完事了, lcdc 输出不一定完事.
+
+还是用 ABC (AC Bias Count Status)吧. The AC bias-count status (ABC)
+bit it set each time the AC bias pin (L_BIAS) toggles a particular
+number of times as specified by the AC bias pin transitions per
+interrupt (API) field in LCCR3. If API is programmed with a non-zero
+value, a counter is loaded with the value in API and is decremented
+each time the L_BIAS pin reverses state.  When the counter reaches
+zero, the ABC bit is set, which signals an interrupt request to the
+interrupt controller. The counter reloads using the value in API, but
+does not start to decrement again until ABC is cleared by users.
+
+ABC bit is LCSR0 bit 3.
+
+ACB: AC Bias Pin Frequency. It will be ignored in active mode.
+
+*2005/12/07 17:38:19 Bootloader 修改按键
+
+在 h:/BTP-04_BETA_2.7/src_ads/hilo/hilo/hilo.c
+
+*2005/12/07 17:41:29 menu command
+
+瞎按也能长见识, M-` 是开菜单.
+
+*2005/12/08 10:04:20 MMU in bootloader
+** The Intel XScale core allows system software to associate the various
+attributes with regions of memory:
+
+1. cacheable
+
+2. bufferable
+
+3. line allocate policy
+
+4. write policy
+
+5. I/O
+
+6. mini Data Cache
+
+7. Coalecsing
+
+8. an ASSP definable attribute
+
+** Linux's __create_page_table will create a temporary page table
+
+** Our MakeStartupPdir will create a temporary page table
+
+4096个 pgd 元素初始化为0. RAM_SIZE >> PGDIR_SHIFT, 后者是20, 这样得到系
+统共有多少 pgd 元素. 对于 PHYS_OFFSET 和 PAGE_OFFSET 开始的 RAM_SIZE 大
+小的内存区域, 设置偏移量为 PHYS_OFFSET + i << PGDIR_SHIFT，其实就是线性
+影射. PGD_SYS_RAM 的值为 0x1E. 意为 Section 方式映射, Domain 为 0, 开
+启 cache 和 write back.
+
+既然是 Section 方式映射, 不知道为什么后面还有一段设置 pte 的. 
+
+我应该把 0x00000000 到 0xBFFFFFFF 的所有地址都做线性映射, 到
+0x00000000 - 0xBFFFFFFF. 这样开关 MMU 对于 bootloader 的其他位置都没有
+什么影响. 不过这些地址里面要分段, 0x00000000 - 0x5BFFFFFF 是外设寄存器,
+不需要开启 cache 和 buffer, 0x80000000 - 0xBFFFFFFF 是内存, 需要开启
+cache 和 buffer.
+
+现在我的 bootloader 位置在最后 1M. kernel 放在开始 2M 以后. 所以 page
+table 可以放在内存开始的地方. 
+
+MMU bootloader 传的速度是 330000+cps.
+
+我还得再把 MMU 关了, 进入 kernel 的地址. cmds.c 的 cmd_go 里面要关闭
+MMU, platform.c 里面的 platform_boot_os 需要关闭 MMU.
+
+这样的 bootloader 启动 HOPEN 没有问题了, 可是不能启动 Linux. 还需要看
+看
+** Our cpu_mmu_start enable MMU
+
+*2005/12/08 12:58:00 Sleep HX8306A LCD Panel
+** Display on/off flow at page 119
+*** Display off flow
+
+1. CE = 0
+2. GON = 1, DTE = 1, D1-0 = 10
+3. wait 2 frames or more
+4. GON = 1, DTE = 0, D1-0 = 10
+5. wait 2 frames or more
+6. GON = 0, DTE = 0, D1-0 = 00
+7. SAP2-0 = 000, AP2-0 = 000, PON = 0, VCOMG = 0
+
+*** Display on flow
+
+1. Power Setting
+2. SAP2-0
+3. GON = 0, DTE = 0, D1-0 = 01
+4. wait 2 frames or more
+5. GON = 1, DTE = 0, D1-0 = 01
+6. GON = 1, DTE = 0, D1-0 = 11
+7. wait 2 frames or more
+8. GON = 1, DTE = 1, D1-0 = 11
+
+**Sleep Mode setting sequence at page 120
+
+
+*2005/12/10 17:16:13 Poll
+
+应用 POLL 系统调用和直接用 sleep 的区别在于, 系统在 poll 里面, 做了一
+些处理, 把 poll_table 里面的所有描述符都加入到唤醒的源里面, 然后进行调
+度.
+
+*2005/12/12 13:32:50 Dictionary of Algorithms and Data Structures
+
+http://www.nist.gov/dads/
+
+列出了很多很多算法和数据结构的参考网页! 
+*2005/12/12 13:50:34 The Page Cache
+
+To avoid unnecessary disk accesses, the kernel never tries to read a
+page from disk without looking into the page cache and verifying that
+it does not already include the requested data. To take the maximum
+advantage from the page cache, searching into it should be a very fast
+operation.
+
+** address_space
+
+address_space object establishes the relationship between pages and
+methods that operate on the pages.
+
+If a page belongs to a regular file that is stored in an Ext2
+filesystem, the owner of the page is an inode object. The i_mapping
+field of this object points to an address_space object.
+
+每一个 inode 对应一组 pages, 还有一个 address_space, 这个
+address_space 给出了一组对 pages 的操作.
+
+** Page Cache Data Structures
+*** The page hash table
+
+page_hasl_table contains the address of the page hash table.
+
+*** The list of page descriptors in the address_space object
+
+*** Page descriptor fields related to the page cache
+
+*2005/12/12 15:27:30 Buffer Cache
+
+Beside the BUF_DIRTY list, the kernel manages two doubly linked lists
+of dirty buffers for every inode object. They are used whenever the
+kernel must flush all dirty buffers of a given file — for instance,
+when servicing the fsync( ) or fdatasync( ) service calls (see Section
+14.2.4.3 later in this chapter).
+
+The first of the two lists includes buffers containing the file's
+control data (like the disk inode itself), while the other list
+includes buffers containing the file's data. The heads of these lists
+are stored in the i_dirty_buffers and i_dirty_data_buffers fields of
+the inode object, respectively. The b_inode_buffers field of any
+buffer head stores the pointers to the next and previous elements of
+these lists. Both of them are protected by the lru_list_lock spin lock
+just mentioned. The buffer_insert_inode_queue( ) and
+buffer_insert_inode_data_queue( ) functions are used, respectively, to
+insert a buffer head in the i_dirty_buffers and i_dirty_data_buffers
+lists. The inode_remove_queue( ) function removes a buffer head from
+the list that includes it.
+
+The addresses of the buffer heads belong to the buffer cache are
+inserted into a hash table whose name is hash_table.
+
+In fact, for reasons of efficiency, buffers are not allocated as
+single memory objects; instead, buffers are stored in dedicated pages
+called buffer pages. All the buffers within a single buffer page must
+have the same size; hence, on the 80 x 86 architecture, a buffer page
+can include from one to eight buffers, depending on the block size.
+
+*2005/12/12 16:50:43 Writing Dirty Buffers to Disk
+
+A dirty buffer might stay in main memory until the last possible
+moment -- that is, until system shutdown. But, pushing the
+delayed-write strategy to its limits has drawbacks.
+
+There are three motheds to flush dirty buffers to disk:
+
+1. bdflush kernel thread
+
+2. kupdate kernel thread
+
+3. sync system call
+
+*2005/12/13 10:18:27 TI overview
+** BAT
+
+BAT means sending AT command in binary format.
+
+** General Protocol Stack Framework
+
+** TI 1.5 OpenMAX
+
+TI 1.5 OpenMAX provides a framework which allows an application to
+interact with a number of codecs in a very similar manner regardless
+of the underlying codec design details.
+
+Typically TI 1.5 OpenMAX. framework is used by high level applications
+to communicate with codecs although almost any function may be wrapped
+in an OMX component. One example may be to wrap the power management
+functions in OMX component wrappers.
+
+*2005/12/14 11:53:40 Color Theme
+
+tty-dark 颜色不错, 就是申明变量的地方是深蓝, M-x也是, 比较难辨认.
+
+taylor 的颜色稍差, 不过自动补全用高亮显示, 很容易辨认.
+
+taming-mr-arneson 的 mode bar 和背景一样的颜色, 不知道是好是坏, 不过确
+实够酷.
+
+shaman 以淡色为主, 挺漂亮的, 还不那么惹眼.
+
+midnight 的条件编译语句高亮显示, 不过补全提示没有高亮
+
+
+linh dang dark 用了不同的字体区别.
+
+lethe 也满漂亮, 就是它把注释搞得很显眼, 不知道是怎么想的.
+
+
+*2005/12/21 20:36:21 Ext2 Disk Data Structures
+
+The first block in any Ext2 PARTITION is never managed by the Ext2
+filesystem, since it is reserved for the partition boot sector.
+
+Block groups reduce file fragmentation, since the kernel tries to keep
+the data blocks belonging to a file in the same block group, if
+possible. Each block in a block group contains one of the following
+pieces of information:
+
+1. A copy of the filesystem's superblock
+
+2. A copy of the group of block group descriptors
+
+3. A data block bitmap
+
+4. A group of inodes
+
+5. An inode bitmap
+
+6. A chunk of data that belongs to a file; i.e., a data block
+
+Both the superblock and the group descriptors are duplicated in each
+block group.
+
+*2005/12/22 09:39:53 给 intel 以及 Himax 的问题
+** intel
+
+我们用的 smart panel 有两种状态, 一种是写内部 frame buffer 的状态, 一种
+是保持当前 frame buffer 状态. 处于第二种状态的时候就可以把 bulverde 的
+lcdc 关了. 
+
+目前的问题是, 每次切换状态的时候, lcd panel 要求必须等待至少一帧, 再关
+闭 lcdc, 这个时间不好掌握. 
+
+我想用 AC Bias 引脚计数的功能来实现, 设置 LCCR3_ACB 和 LCCR3_API 全都为
+0b1111, 这样每输出255个 line pulse, 就会触发一个中断. 我们的屏有220行,
+这样可以保证一帧刷新完.
+
+但是光看手册不知道自己理解的对不对, 或者是否还有其他更好的解决方式. 如
+果能给出示例代码是最好了.
+
+随信附上 lcd panel 的手册, 关于两种模式转换的部分在 P.33. 
+
+** Himax
+
+为了省电的目的, 在不刷新显示内容的时候, 我们需要关闭 MCU 的 lcd 控制器,
+在刷新显示内容的时候, 再打开. 因为硬件设计时候没有连接 DB0-17, 而只连接
+了 PD0-17. 所以我们只能在 system interface mode 和 RGB interface mode
+之间切换, 来实现这种 on-demond refresh. 
+
+HX8306A 的手册上关于 system interface mode 和 RGB interface mode 转换的
+序列, 我有一点不太明白: 其中提到的 Wait more than 1 frame, 我如下的理解
+是否正确?  
+
+当转换是从 system interface mode 到 RGB interface mode 时, 1 frame 后启
+动 MCU 对 RGB interface 的信号, 包括 VSYNC, PD0-17等等; 当转换是从RGB
+interface mode 到 system interface mode 时, 1 frame 后停止 MCU 对RGB
+interface 的信号. 1 frame 后停止信号时, 并不要求和 VSYNC 信号同步.
+
+我们基于上述的理解, 做了一个实验, 结果是有时候 GRAM 的内容会变成条纹.
+这里面是否还有其他的技巧? 能否给出个示例代码?
+
+随信附上 MCU 和 HX8306A 的连接图. 
+
+*2005/12/22 11:13:28 lcd刷新设计
+
+计算确定需要 more than 1 frame 需要多少时间. 
+
+启动线程, LCD_IOC_UPDATE 时候判断是否已经开启 LCDC, 如果没有, 唤醒, 启
+动输出. 取消上一个 timer, 启动新的 timer, 计算何时关闭 LCDC.
+
+timeout 的工作是, 判断LCDC是否已经关闭, 如果没有, 唤醒线程, 关闭 LCDC. 
+
+线程的工作: 
+
+1. 等待
+
+2. 被唤醒后判断是开动 LCDC 还是关闭 LCDC, 判断是否已经做了响应的动作.
+   如果是, 返回1. 
+
+3. 做需要做的动作, 返回1.
+
+需要做的动作用一个变量 need_fresh 区别. 
+
+是否已经开启 LCDC 用一个变量 lcd_runnning 区别.
+
+timer 名字为 lcdc_timer.
+
+下午示波器好了用示波器看看一帧有多长, 用实测值来实验. 
+
+注意 HX8306A 的初始化也不能立刻进入 RGB mode, 而要等上层要求刷新时候再
+进入. 
+
+王总工说, 要注意线程等待命令和线程等待一段延时, 对于唤醒者来说没有什么
+区别, 除非添加一个变量, 这两种情况加以区分. 
+
+另外, 我还没有考虑到 lcd panel 关背光以后是 sleep mode. 
+
+LCDC 在等待了一百毫秒以上的时间以后再关闭, 仍然有出现蓝屏的情况. 
+
+*2005/12/22 18:19:27 sychip VP
+
+ｋｓｕｎ＠ｓｙｃｈｉｐ．ｃｏｍ
+
+张奇苗-->修正 说:
+我突然想起来给你的地址是否正确，这样吧！
+XP-珍惜生命，远离水木 说:
+嗯?
+张奇苗-->修正 说:
+我再给你一个
+张奇苗-->修正 说:
+ksun@sychip.com
+张奇苗-->修正 说:
+sun@sychip.com
+张奇苗-->修正 说:
+wfan@sychip.com.cn
+张奇苗-->修正 说:
+我的是qzhang@sychip.com
+张奇苗-->修正 说:
+qzhang@sychip.com.cn
+张奇苗-->修正 说:
+美国那个老总叫孙昆全
+张奇苗-->修正 说:
+孙昆权
+张奇苗-->修正 说:
+中国这个叫范为
+XP-珍惜生命，远离水木 说:
+好复杂
+
+*2005/12/23 10:46:44 semaphore VS mutex
+
+昨天网上看到说 semaphone 区别于 mutex 的比较本质的东西, 一为可以做到 A
+加锁, B 解开; 一为可以记住唤醒状态, mutex 如果没有等待者, 这次唤醒就费
+了, semaphone 因为记录了值, 下次要求锁定者可以直接获得.
+
+*2005/12/23 22:58:23 Ext2 Memory Data Structures
+** The ext2_sb_info and ext2_inode_info Structures
+
+ext2_sb_info is contianed in u field of the VFS superblock. This
+structure includes the following information:
+
+1. Most of the disk superblock fields
+
+2. The block bitmap cache, tracked by the s_block_bitmap and
+   s_block_bitmap_number arrays
+
+3. The inode bitmap cache, tracked by the s_inode_bitmap and
+   s_inode_bitmap_number arrays
+
+4. An s_sbh pointer to the buffer head of the buffer containing the
+   disk superblock
+
+5. An s_es pointer to the buffer containing the disk superblock
+
+6. The number of group descriptors, s_desc_per_block, that can be
+   packed in a block
+
+7. An s_group_desc pointer to an array of buffer heads of buffers
+   containing the group descriptors
+
+8. Other data related to mount state, mount options, and so on
+
+Similarly, when an inode object pertaining to an Ext2 file is
+initialized, the u field is loaded with a structure of type
+ext2_inode_info, which includes this information:
+
+1. Most of the fields found in the disk's inode structure that are not
+   kept in the generic VFS inode object
+
+2. The fragment size and the fragment number (not yet used)
+
+3. The block_group block group index at which the inode belongs
+
+4. The i_prealloc_block and i_prealloc_count fields, which are used
+   for data block preallocation
+
+5. The i_osync field, which is a flag specifying whether the disk
+   inode should be synchronously updated
+
+** Bitmap Caches
+
+Each cache is implemented by means of two arrays of
+EXT2_MAX_GROUP_LOADED elements.  One array contains the indexes of the
+block groups whose bitmaps are currently in the cache, while the other
+array contains pointers to the buffer heads that refer to those
+bitmaps.
+
+*2005/12/23 23:26:08 Creating the Ext2 Filesystem
+
+0         Boot block
+
+1         Superblock
+
+2         Block containing a single block group descriptor
+
+3         Data block bitmap
+
+4         Inode bitmap
+
+5-49      Inode table: inodes up to 10: reserved; inode 11: lost+found; inodes 12-360: free 
+
+50        Root directory (includes ., .., and lost+found) 
+
+51        lost+found directory (includes . and ..) 
+
+52-62     Reserved blocks preallocated for lost+found directory 
+*2005/12/23 23:40:02 Managing Ext2 Disk Space
+
+Space management must make every effort to avoid file fragmentation
+
+Space management must be time-efficient; thit is, the kernel should be
+able to quickly derive from a file offset the corresponding logical
+block number in the Ext2 partition. 
+
+
+** Creating Inodes
+
+ext2_new_inode() function creates an Ext2 disk inode.
+
+The descriptors are loaded in memory when a filesystem is mounted (SEE
+ext2_read_super).
+
+What are the inode bitmats stand for?
+
+Invokes load_inode_bitmap( ) to get the inode bitmap of the selected
+block group and searches for the first null bit into it, thus
+obtaining the number of the first free disk inode. 
+
+*2005/12/25 11:56:35 Ext2 file open and close, mount and umount
+
+From 12.4.2
+
+在 namespace.c 文件里: rootfs 的 read_super 函数是 rootfs_read_super, 设置 sb 的 s_op 为
+s_ops (空的?). inode 的 i_op 为 rootfs_dir_inode_operations, inode 的
+i_fop 为 rootfs_dir_operations.
+
+rootfs_dir_inode_operations 只有一个函数, lookup, 为 rootfs_lookup. 
+
+rootfs_dir_operations 有两个函数 read 为 generic_read_dir, 另一个是
+readdir 为 dcache_readdir. 不知道后面有没有用到这几个函数. 
+
+bdget: 如果 cache 里有这个 block_device, 直接返回它. 如果没有, 初始化一
+个 block_device. 对应的 inode 也是新生成的, 根据 bd_mnt->mnt_sb 结构生
+成的. 注意, 这个 bd_mnt 是一个叫做 bdev 的文件系统的 mount point.
+
+ext2 的 read_super 在 fs/ext2/super.c 里.
+
+super_block 结构的 u 成员, 是一个 union, 可以保存所有支持的文件系统的
+info.
+
+调用 sb_bread. 这个函数直接调用 bread. 返回一个 buffer_head.
+
+ext2 的 super block 具体结构在 ext2_super_block 中可以看到.
+
+super_block 的 s_op 设置为 ext2_sops, 分配一个 s_root 的 dentry, 并调用
+ext2_setup_super, 按照注释的话, 这样, 我们就可以 read an inode 了.
+
+*2005/12/31 18:04:00 Email APP
+
+mc.txt: 1.5 mins

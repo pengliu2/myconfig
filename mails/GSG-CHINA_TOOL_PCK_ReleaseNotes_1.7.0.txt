@@ -1,0 +1,118 @@
+================================================================================
+PCK Release Notes
+Version: 1.7.0
+Release Date: September 22, 2006
+Copyright 2006 Motorola Inc. All Rights reserved.
+================================================================================
+
+PCK, the abbreviation for Platform Creation Kit, Is a GUI tool, which helps developer to develop embedded programs. 
+ 
+PCK shall provide the functionalities,
+Such as components dependency checking, Installation order determination, Building from source, Picking up the base lined distributions, Generating the root file system and creating the image, etc. 
+ 
+For iDEN Samba Product,
+PCK could also be mentioned as Integration Tool, Since it covers a part of PCK functionalities, And focuses on the components integration.
+
+What's New
+---------------
+  - Support of multiple RPM version, including list of all available
+    versions, installation/re-installation with specific version,
+    version information in configuration files.
+  - Picking up new ScratchBox feature which avoids pollution to RootFS.
+
+Known Problems
+---------------
+  None
+  
+Files
+---------------
+  File Name           Comments
+  ========================================================================
+  itool               PCK start up command
+  pck.sh              PCK command line interface
+  createimage.sh      Wrapper for operations which requires sudo privilege
+
+Installation
+---------------
+  Set clearcase view with following config spec rule:
+
+  element * PCK_ILJ_R_1.7.0
+  element * SBOX_ILJ_R_1.0.1
+
+Support
+---------------
+Any questions about this release, please send to:
+    
+	elite_support@sc.mcel.mot.com
+
+
+
+
+
+
+
+
+
+
+
+** Following is a example, remove from this line to the endof  document *
+================================================================================
+Smobee Release Notes
+Version: 1.2.0
+Release Date: April 3rd, 2005
+Copyright 2005-2006 Motorola Inc. All Rights reserved.
+================================================================================
+
+Smobee is a kernel level emulator for Linux based mobile phone AP platform 
+emulation. It is a Linux based PC tool. The core concept of Smobee is to provide 
+Linux kernel and virtual device layer emulation, so that the service/middleware 
+layer and application layer of phone AP can be fully run, debugged and tested 
+upon it.
+
+Smobee can also be used to run/debug BP dependent application by means of real 
+BP connection mode (also called AP pass-through mode). 
+
+
+What's New
+---------------
+  - Support x86 rootfs based on LJ 6.1 "LJAP_N_01.03.40I" or later only. Refer to 
+    SCM-A11 CM release notes on http://compass.mot.com/go/189128209 
+  - Add devfs support in kernel
+  - Provide audio (apal) and video (v4l) devices in Smobee to support audio/video 
+    devices dependent APP development.
+  - integrate with new tool - strace
+
+
+Known Problems
+---------------
+  Because ARM equivalent x86 build for AP is not ready in CM release, the rootfs 
+  for Smobee in this release still base on LJAP_N_01.03.40I. In order to 
+  help Smobee user to easily generate x86 build for their own component, a mini-
+  HOWTO is provided. See "x86_build_howto_LJAP_N_01.03.40I.txt" for detail.
+
+  Because support the devfs mount on boot, the inittab script changed to use vc
+  devices to login to console. This version cannot boot rootfs released before.
+  
+Files
+---------------
+  File Name                       Comments
+  ============================================================
+  smobee_1.2.0.tar.bz2            Smobee 1.2.0 install package 
+  Smobee User Guide_1.2.0.pdf     Smobee 1.2.0 user guide  
+  ReleaseNotes_1.2.0.txt          Smobee 1.2.0 release notes
+  ChangeLog_1.2.0.txt             Smobee change logs
+
+Installation
+---------------
+Please refer the "Installation" section in "Smobee User Guide" and 
+x86_rootfs_ReleaseNotes_LJAP_N_01.03.40I.txt
+
+
+Support
+---------------
+Any questions about this smobee release, please send to:
+    
+	elite_support@sc.mcel.mot.com
+
+
+************** end of example ***************************************

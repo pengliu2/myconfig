@@ -1,0 +1,104 @@
+* TIPs
+
+** Beep
+
+*** Linux
+
+ - the option -l specifies the beep time interval in ms
+ - -l 3000 is OK for me 
+
+*** Cygwin
+
+ - create /dev/dsp in cygwin, see http://www.cygwin.com/cygwin-ug-net/using-specialnames.html
+ - cat `cygpath -W`/Media/ding.wav > /dev/dsp
+
+** Simple HTTP Server
+
+ - python -mSimpleHTTPServer to launch an http server at port 8000
+
+** Emacs
+
+You can use <b><i>`M-x check-parens'</i></b> to find any unbalanced parentheses and unbalanced string quotes in the buffer.
+
+ - `C-M-f' Move forward over a balanced expression (`forward-sexp').
+
+ - `C-M-b' Move backward over a balanced expression(`backward-sexp').
+
+ - `C-M-k' Kill balanced expression forward (`kill-sexp').
+
+ - `C-M-DEL' Kill balanced expression backward (`backward-kill-sexp').
+
+ - `C-M-t' Transpose expressions (`transpose-sexps').
+
+ - `C-M-@' Put mark after following expression (`mark-sexp').
+
+** Browsers
+
+ - Take this as a URL will pop up a google bookmark window 
+<src lang="java">
+javascript:( function(){ var a=window,b=document,c=encodeURIComponent,d=a.open("http://www.google.com/bookmarks/","bkmk_popup","left="+((a.screenX||a.screenLeft)+10)+",top="+((a.screenY||a.screenTop)+10)+",height=420px,width=850px,resizable=1,scrollbars=1");a.setTimeout(function(){d.focus()},300)})(); 
+</src>
+
+** Vim
+
+ - C-R C-W : insert the word under the cursor.
+ - :bufdo - do something in all buffers.
+ - :GrepBuffer
+ - C-v : to insert special characters.
+ - :%!xxd and %!xxd -r : to convert the buffer into/back from hex mode
+
+** twiki
+
+   * <strike>strikethrough</strike>.
+   * %COMMENT%
+   * indent paragraph with <div style='margin-left:4em'>...</div>
+
+** screen 
+   * screen [-D] -RR -h 20000 
+   * -x : to connect to a screen in multi display mode. 
+   * C-a C-c : to create a new window and switch to it. 
+   * C-a [0-9] : to switch to window [0-9]. 
+   * C-a H : to begins/ends logging of the current window to the file "screenlog.n".
+   * C-a k : to destroy current window. 
+   * C-a [ : to enter copy/paste mode. 
+   * C-a a : to send character a to window. 
+   * C-a w : to list windows. 
+   * space in copy/paster mode : to set marks. 
+
+** Greece Alphabet
+| <p>\x{03b1}</p> | <p>\x{0391}</p> | <p>alpha</p> |
+| <p>\x{03b2}</p> | <p>\x{0392}</p> | <p>beta</p> |
+| <p>\x{03b3}</p> | <p>\x{0393}</p> | <p>gamma</p> |
+| <p>\x{03b4}</p> | <p>\x{0394}</p> | <p>delta</p> |
+| <p>\x{03b5}</p> | <p>\x{0395}</p> | <p>epsilon</p> |
+| <p>\x{03b6}</p> | <p>\x{0396}</p> | <p>zeta</p> |
+| <p>\x{03b7}</p> | <p>\x{0397}</p> | <p>eta</p> |
+| <p>\x{03b8}</p> | <p>\x{0398}</p> | <p>theta</p> |
+| <p>\x{03b9}</p> | <p>\x{0399}</p> | <p>iota</p> |
+| <p>\x{03ba}</p> | <p>\x{039a}</p> | <p>kappa</p> |
+| <p>\x{03bb}</p> | <p>\x{039b}</p> | <p>lambda</p> |
+| <p>\x{03bc}</p> | <p>\x{039c}</p> | <p>mu</p> |
+| <p>\x{03bd}</p> | <p>\x{039d}</p> | <p>nu</p> |
+| <p>\x{03be}</p> | <p>\x{039e}</p> | <p>xi</p> |
+| <p>\x{03bf}</p> | <p>\x{039f}</p> | <p>omicron</p> |
+| <p>\x{03c0}</p> | <p>\x{03a0}</p> | <p>pi</p> |
+| <p>\x{03c1}</p> | <p>\x{03a1}</p> | <p>rho</p> |
+| <p>\x{03c3}</p> | <p>\x{03a3}</p> | <p>sigma</p> |
+| <p>\x{03c4}</p> | <p>\x{03a4}</p> | <p>tau</p> |
+| <p>\x{03c5}</p> | <p>\x{03a5}</p> | <p>upsilon</p> |
+| <p>\x{03c6}</p> | <p>\x{03a6}</p> | <p>phi</p> |
+| <p>\x{03c7}</p> | <p>\x{03a7}</p> | <p>chi</p> |
+| <p>\x{03c8}</p> | <p>\x{03a8}</p> | <p>psi</p> |
+| <p>\x{03c9}</p> | <p>\x{03a9}</p> | <p>omega</p> |
+
+** google
+
+*** gtalk 
+
+ - launch more than one instance of gtalk: "gtalk.exe /nomutex"
+
+** password-less authentication
+
+ - ssh-kengen -t rsa
+ - scp ~/.ssh/id_rsa.pub account@remote
+ - ssh account@remote cat id_rsa.pub >> ~/.ssh/authorized_keys2

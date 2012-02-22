@@ -1,0 +1,192 @@
+\documentclass[letter,11pt]{article}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{ulem}
+\pagestyle{fancy}
+\rhead{pengliu2}
+\lhead{Peng Liu}
+\author{Peng Liu}
+\title{Homework 1\\CS411 2011 Spring}
+
+\begin{document}
+\lstset{language=SQL}
+\maketitle
+
+\section*{Problem 1: ER Diagram Design}
+
+The company you work for wants to digitize their time cards. You have been asked to design the database for submitting and approving time cards. Draw the database ER diagram with the following information:
+
+\begin{itemize}
+ \item A timecard should have hours worked and date submitted
+ \item Each timecard is associated with exactly one employee
+ \item Each timecard should have a unique id
+ \item Each timecard has a status: it is either approved, not approved, or pending
+ \item Each employee has a unique id
+ \item Each employee has a name and address
+ \item Each employee submits a time card every pay period. i.e. In 1 year, they will submit multiple time cards
+ \item Each employee either has direct deposit or physical check as their method of payment
+ \item Each employee is associated with exactly one manager
+ \item Each manager has a unique id and a name
+ \item Each manager is in charge of multiple employees
+ \item Each manager approves time cards for multiple employees
+\end{itemize}
+
+\section*{Answer}
+
+\includegraphics[width=0.75\linewidth]{HW1}
+
+\section*{If you feel that you must make some assumptions, please state them clearly so that they are easily understood by the graders. Remember to indicate the key for each entity, as well as the multiplicity of each relationship (e.g. one-to-many) using the appropriate notation.\\
+There exists a database of people who take measurements of trees in various locations. A person may take measurements of multiple trees, and each tree may be measured multiple times throughout a number of days. Use the following ER diagram of this database, denoted as Figure 1, for problems 2, 3 and 4:}
+
+\includegraphics[width=0.75\linewidth]{hw1q3}
+
+\section*{Problem 2: More ER Fun}
+
+Answer the following questions based on the original ER Diagram in Figure 1:
+
+\begin{enumerate}
+\item Could the "Date of Measure" attribute of the Measurement entity be the key for the entity, instead of the "MeasureID"? Why or Why Not?
+\subsection*{Answer:} No. There can be more than one measurement taken in one day.
+
+\item We want to add a "Tools Used" attribute, which will store the tool(s) used to make measurements, but are not sure where this attribute belongs. We do know that one person might use multiple tools for different trees, and also that more than one tool may be used to measure the same tree (for example, different tools may be necessary to measure the same tree in the summer, than in the winter.) Where could we add this attribute? Choose one or more answers from the 3 entities and 2 relationships (we would add the attribute only once, but if you believe there are multiple possible places to add the attribute, we ask you to identify all potential candidates):
+  \begin{enumerate}
+  \item the entity 
+  \item the relationship 
+  \item the entity 
+  \item the relationship 
+  \item the entity Tree
+  \end{enumerate}
+\subsection*{Answer:} c
+
+\item There are two roles that people can have, a Ranger and a Volunteer. Using what you know of subclassing, add these as two new entities in the ER Diagram. Add a reasonable attribute to each of the new entities. Just redraw the relevant part of the diagram that needs to change. Can we eliminate the role attribute from Person?
+\subsection*{Answer:} I don't think we still need the Role attribute for Person. The is-a relationships can take the place of it. However, if the Role was not assigned as an attribute for Person, but for the relation Takes, we have to keep it even if we have defined the new entities Ranger and Volunteer, because this time Role indicates the role the person takes in the specific measurement. Or, in other words, the person may be a ranger in an organization and a volunteer in another organization, but in a very measurement activity, the person can only take one role, either a ranger or a volunteer.
+
+\includegraphics[width=0.75\linewidth]{hw1p2}
+
+\end{enumerate}
+
+\section*{Problem 3: ER Diagram Translation}
+
+Use the original ER Diagram in Figure 1 for this problem (without any changes you may have made during your work in problem 2).
+
+\begin{enumerate}
+\item Translate the ER diagram to a relational design. Try to minimize the number of relations your solution has, and merge relations where appropriate. Don’t forget to specify the keys.
+\subsection*{Answer:}
+
+Three tables represent the ER diagram. 
+
+Tree(\uline{ID}, Species, Latitude, Longitude)\\
+Person(\uline{UserID}, Name, Role, Address)\\
+Measurement(\uline{MeasureID}, Date of Measurement, Height, Diameter, Person, Tree)
+
+\item  Assume now that we have changed the ER diagram in Figure 1 so that the Takes relationship is now many-many, with the interpretation that it might take several people to determine a single measurement. How will this change the relational design?
+\subsection*{Answer:}
+This will prevent the Takes relationship between Measurement and Person from being merged into table Measurement.
+
+\item Explain briefly, with a short example, of when using each approach is good: OO, ER, and NULL value.
+\subsection*{Answer:}
+Take the answer for Problem 2.3 as an example. 
+
+OO: Person(\uline{UserID}, Name, Address),\\
+Ranger(\uline{UserID}, Name, Address, Salary),\\
+Volunteer(\uline{UserID}, Name, Address, Salary)
+
+ER: Person(\uline{UserID}, Name, Address),\\
+Ranger(\uline{UserID}, Salary),\\
+Volunteer(\uline{UserID}, workhour)
+
+NULL: Person(\uline{UserID}, Name, Address, Salary, workhour)
+
+The NULL method wastes some storage if not all person are both Ranger and Volunteer, but for all queries, it only looks up one relation.
+
+The ER method only duplicates the keys of entities in relationships. For some queries, like how many rangers' first name is Mike, more than one relations have to be looked up. 
+
+The OO method is the most space-efficient one. While, for those queries about any common attributes will involve all relations.
+
+
+\end{enumerate}
+
+\section*{Problem 4: SQL Statements}
+
+Use the original ER Diagram in Figure 1 for this problem (without any changes you may have made during your work in problems 2 or 3).
+
+\begin{enumerate}
+\item Write the SQL command that would define each table. Your definition must include correct data types with correct sizes for each field, key and unique declarations, and NULL constraints for fields. Please assume the following data types and lengths: 
+  \begin{enumerate}
+  \item the three ID attributes are all of type char, length 10
+  \item Latitude and Longitude are of type decimal, precision value 10, scale value 6
+  \item Height and Diameter precision value 10, scale value 6
+  \item DateOfMeasure is of type date
+  \item the rest of the attributes are all of type varchar, length 50
+  \end{enumerate}
+\subsection*{Answer:}
+To create the table Tree:\\
+\begin{lstlisting}[frame=single]
+CREATE TABLE Tree(ID CHAR(10) UNIQUE,
+        Species VARCHAR(50),
+        Latitude DECIMAL(10,6),
+        Longitude DECIMAL(10,6))
+\end{lstlisting}
+
+To create the table Person:\\
+\begin{lstlisting}[frame=single]
+CREATE TABLE Person(UserID CHAR(10) UNIQUE,
+        Name VARCHAR(50),
+        Role VARCHAR(50),
+        Address VARCHAR(50))
+\end{lstlisting}
+
+To create the table Measurement:\\
+\begin{lstlisting}[frame=single]
+CREATE TABLE Measurement(MeasureID CHAR(10) UNIQUE,
+        DateOfMeasurement DATE,
+        Height DECIMAL(10,6),
+        Diameter DECIMAL(10,6))
+\end{lstlisting}
+
+\item Write the SQL command to insert one tuple of data into each table. The data you insert can be of your choosing, but must adhere to the data types and constraints of the tables.
+\subsection*{Answer:}
+
+Insert a tuple into Tree:\\
+\begin{lstlisting}[frame=single]
+INSERT INTO Tree VALUES(0000000001,
+        'Cypress',
+        40.109665,
+        -88.204247);
+\end{lstlisting}
+
+Insert a tuple into Person:\\
+\begin{lstlisting}[frame=single]
+INSERT INTO Person VALUES(0000000001,
+        'Peter',
+        'Volunterr',
+        '123 Green Str.');
+\end{lstlisting}
+
+Insert a tuple into Measurement:\\
+\begin{lstlisting}[frame=single]
+INSERT INTO Measurement VALUES(0000000001,
+        DATE'2011-02-03',
+        5,
+        0.1);
+\end{lstlisting}
+
+\item We have decided that the Address property is no longer relevant. We do however wish to be able to email staff members. Change the Person table to remove the Address field and add an Email field.
+\subsection*{Answer:}
+\begin{lstlisting}[frame=single]
+ALTER TABLE Person DROP Address;
+ALTER TABLE Person ADD Email VARCHAR(50);
+\end{lstlisting}
+
+\item Write a SQL Statement to add an Email address to the person you inserted into the Person table, now that the table has an Email field and not an Address field.
+\subsection*{Answer:}
+\begin{lstlisting}[frame=single]
+UPDATE Person
+        SET Email='peter@email.com'
+        WHERE UserID=0000000001;
+\end{lstlisting}
+
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,162 @@
+\documentclass[letter,11pt]{article}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{ulem}
+\usepackage{amsmath}
+\pagestyle{fancy}
+\rhead{pengliu2}
+\lhead{Peng Liu}
+\author{Peng Liu, I2CS student}
+\title{Homework 4\\CS411 2011 Spring}
+
+\begin{document}
+\lstset{language=SQL}
+\maketitle
+
+\section*{Problem 1: SQL aggresgation functions + views}
+
+\begin{enumerate}
+\item[1.] 
+
+\begin{verbatim}
+SELECT name
+FROM Developer
+WHERE employees =
+        (SELECT MAX(employees)
+        FROM Developer
+        )
+ORDER BY name
+\end{verbatim}
+
+\item[2.] 
+
+\begin{verbatim}
+SELECT AVG(Game.price)
+FROM Game, OnPlatform
+WHERE Game.game_id = OnPlatform.game_id
+        AND OnPlatform.platform_name = 'xbox 360'
+\end{verbatim}
+
+\item[3.]
+ 
+\begin{verbatim}
+SELECT SUM(employees)
+FROM (
+        (SELECT employees
+        FROM Developer, Game
+        WHERE Developer.dev_name = Game.dev_name
+                AND Game.genre = 'RTS'
+        )
+        UNION
+        (SELECT employees
+        FROM Producer, Game
+        WHERE Producer.prod_name = Game.prod_name
+                AND Game.genre = 'RTS'
+        )
+     )
+\end{verbatim}
+
+\item[4.]
+
+\begin{verbatim}
+SELECT COUNT(*)
+FROM Developer
+WHERE Developer.location = 'Champaign, IL'
+\end{verbatim}
+
+\item[5.]
+
+\begin{verbatim}
+CREATE VIEW MultiPlatformGame AS
+SELECT Game.name AS name, Game.genre AS genre
+FROM Game, OnPlatform
+WHERE Game.game_id = OnPlatform.game_id AND
+GROUP BY Game.game_id
+HAVING COUNT(*) > 1
+\end{verbatim}
+
+\end{enumerate}
+
+\section*{Problem 2: Constraints and Triggers}
+
+\begin{enumerate}
+  \item[1.]
+
+\begin{verbatim}
+CREATE TABLE ForSale (
+        Department char(20),
+        Price decimal(2,1000),
+        FOREIGN KEY (Item)
+                REFERENCES Inventory(Item)
+                ON DELETE CASCADE
+                ON UPDATE CASCADE
+        )
+
+\end{verbatim}
+    
+  \item[2.]
+
+    a. Yes
+
+    b. Yes
+
+  \item[3.]
+
+    a. No. Assertion can't modify database.
+
+    b. Yes. 
+
+
+\end{enumerate}
+
+\section*{Problem 3: Indexing on Sequential Files}
+
+\begin{enumerate}
+\item[1.]
+
+$100/10 = 10$ blocks.
+
+\item[2.]
+
+$100/10/2 = 5$ blocks.
+
+\item[3.]
+
+Given that an index is indexing a key, the data file records are not ordered by the key, then the index is called unclustered index. If an unclustered index is not a dense index, it's helpless when a record being looked for is not indexed. Because even if we find a record which's key is close to the record we're looking for, it doesn't help because the records are not ordered by the key, so the record being looked for can be saved anywhere. 
+
+\end{enumerate}
+
+\section*{Problem 4: B+ Tree}
+
+\begin{enumerate}
+\item[1.]
+
+  \includegraphics[width=0.75\linewidth]{hw5p4p1}
+
+\item[2.]
+
+  \includegraphics[width=0.75\linewidth]{hw5p4p2}
+
+\end{enumerate}
+
+\section*{Problem 5: Extensible Hash Table}
+
+\begin{enumerate}
+\item[1.]
+
+i = 2
+
+\includegraphics[width=0.75\linewidth]{hw5p5p1}
+
+\item[2.]
+
+i = 2
+
+\includegraphics[width=0.75\linewidth]{hw5p5p2}
+
+\end{enumerate}
+
+\end{document}
+
+

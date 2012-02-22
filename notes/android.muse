@@ -1,0 +1,88 @@
+* Android
+
+ - to access *.android.com, use http://sites.google.com/a/android.com/opensource/
+ - to access android developer, use http://androidappdocs.appspot.com/index.html
+
+** Anatomy and Physiology of Android
+
+http://sites.google.com/site/io/anatomy--physiology-of-an-android
+
+** useful tools
+
+ - unyaffs2 - to extract system.img and userdata.img from HTC
+ - as for ramdisk and zImage - http://android-dls.com/wiki/index.php?title=HOWTO:_Unpack%2C_Edit%2C_and_Re-Pack_Boot_Images
+
+** Makefile
+
+*** How to build multiple shared libraries in one Android.mk
+
+ - define LOCAL_PATH *once* at the start of the Android.mk, e.g.:
+
+LOCAL_PATH := $(call my-dir)
+
+ - to start a module, use CLEAR_VARS to clear all global variables related to module-specific definitions
+
+include $(CLEAR_VARS)
+
+ - define your module's variable (e.g. LOCAL_MODULE, LOCAL_SRC_FILES, etc...)
+
+ - then call the appropriate include to build either a static library, a shared one, or an executable, e.g.
+
+include $(BUILD_SHARED_LIBRARY)
+
+ - You can then start another module by including CLEAR_VARS again, and following the same instructions
+
+*** parallel builds on different branches
+
+ - define OUT_DIR
+
+*** packages management
+
+ - Production applications should be in PRODUCT_PACKAGES macro, or they can be built but not installed into any image. 
+
+** Android Window System
+
+SurfaceManager :: manages access to the display subsystem and seamlessly composites 2D and 3D graphic layers from multiple application
+
+WindowManager :: creates surfaces for the application, and application draw directly into those sufaces without going through the window manager; responsible for organizing the screen. 
+
+ActivityManager :: 
+
+watchdog :: it's a receiver of CHECKUP_ACTION request and REBOOT_ACTION request. If there's no such request in 60 seconds (15 seconds in debugging system), it reboot the phone. 
+
+** Anatomy and Physiology of Android
+
+http://sites.google.com/site/io/anatomy--physiology-of-an-android
+
+** Android recovery mode
+
+http://linux.chinaunix.net/techdoc/develop/2009/04/25/1108935.shtml
+
+Bootloader reads MISC partition for command. If it's not null, bootloader can kick off firmware update or load recovery.img (if MISC command is boot-recovery --wipe-cache).
+
+Loading recovery image, /init start /sbin/recovery to 
+
+It's even able to install packages. 
+
+** UI development
+
+*** Android Window System
+
+SurfaceManager :: manages access to the display subsystem and seamlessly composites 2D and 3D graphic layers from multiple application
+
+WindowManager :: creates surfaces for the application, and application draw directly into those sufaces without going through the window manager; responsible for organizing the screen. 
+
+ActivityManager :: 
+
+*** Service
+
+ - Service can be started with Context.startService() or Context.bindService().
+ - In AndroidManifest.xml, enable to catch android.intent.action.BOOT_COMPLETED, a standard broadcast action, and register your service by add <action android:name="android.intent.action.BOOT_COMPLETED" /> into its intent-filter field. http://www.cnblogs.com/ssqjd/archive/2009/02/08/1386460.html
+
+*** Intent
+
+** the Android Script Environment
+
+ - The scripts are stored in /data/sdcard/ase/.
+ - The script environment can create a shortcut of the script application on the home/launch window.
+

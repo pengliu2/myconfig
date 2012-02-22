@@ -1,0 +1,176 @@
+There are two LogFS's. One which focus on snapshot is created by
+padala as a part of google summer of code program, and we'll call it
+lfs. The other is a scalable flash file system.
+
+For the second one, there are two patches for 2.6.21 to support
+LogFS. I saved them as logfs.patch.577 and I_LOCK.patch.2. 
+
+* device abstraction
+
+Medium split into segments, segments can be written in any order,
+segments must be erased before being written, segments can be
+partially written.
+
+Eraseblock split into blocks, partial blocks cannot get written,
+writes within segments must happen in order.
+
+One or more eraseblock form a segment, one or more flash pages form a
+block.
+
+Three storage areas:
+Superblock (1 segment)
+Journal (2-8 segment)
+Object store
+
+* Files of LogFS
+
+Makefile
+(logfs.o compr.o dir.o file.o gc.o inode.o journal.o memtree.o
+readwrite.o segment.o super.o progs/fsck.o progs/mkfs.o)
+
+include/linux/logfs.h
+fs/logfs/logfs.h
+compr.c
+dir.c
+file.c
+gc.c
+inode.c
+journal.c
+memtree.c
+readwrite.c
+segment.c
+super.c
+progs/fsck.c
+progs/mkfs.c
+Locking
+
+* Structure of LogFS
+
+LogFS maintains an inode file in media. Each time a file is modified,
+Only inode of the file and inode file need to be changed.
+
+* LogFS super.c
+
+In logfs_get_sb, when device name is not an mtd, logfs_get_sb_bdev is
+invoked. The main flow is following logfs_get_sb_device.
+
+logfs_super stores device operations in s_devops field. It is
+mtd_devops for mtd device, while bd_devops for block device.
+
+logfs_super_operations is defined in inode.c.
+
+logfs_disk_super is on-medium superblock which is defined in
+include/linux/logfs.h
+
+** logfs_mkfs in mkfs.c
+
+Get whole file system size from super block. Erase each segment and
+record bad blocks in bb_array. Store the good segment offset into
+corresponding element in segment_offset array.
+
+Invoke make_rootdir, where (kzalloc is used to allocate memory and set
+them to zero), segment header and object header and disk inode are
+initialized, and write to the 4th(OFS_ROOTDIR) segment in sb.
+
+Invoke make_journal. journal occupies 2*blocksize. The second
+blocksize is called scratch. Write journal to 2nd(OFS_JOURNAL)
+segment.
+
+Invoke make_super to write super block to the first segment(OFS_SB).
+
+** initializing
+
+when file system is being mounted, get_sb is needed, where the
+parameter data is options of mounting and is omitted by logfs. finally
+logfs_read_sb and logfs_get_sb_final are invoked in
+logfs_get_sb_device.
+
+logfs_read_sb invokes logfs_init_rw: to kmalloc one s_rblock with 
+LOGFS_BLOCKSIZE and LOGFS_MAX_INDIRECT of s_wblock with
+LOGFS_BLOCKSIZE
+
+logfs_read_sb invokes logfs_init_areas->alloc_area to kzalloc one
+journal area and LOGFS_NO_AREAS of s_area, each of which has a
+a_wbuf. areas are segments currently being used for writing, each area
+has a write buffer stored in the journal, in entries 0x10..0x1f
+
+in logfs_get_sb_final, root inode is got with iget, dentry of root is
+created, then DO logfs_fsck.
+
+sb->s_op:
+const struct super_operations logfs_super_operations = {
+	.alloc_inode	= logfs_alloc_inode,
+	.delete_inode	= logfs_delete_inode,
+	.destroy_inode	= logfs_destroy_inode,
+	.drop_inode	= logfs_drop_inode,
+	.read_inode	= logfs_read_inode,
+	.write_inode	= logfs_write_inode,
+	.statfs		= logfs_statfs,
+};
+
+logfs_super->s_devops:
+static const struct logfs_device_ops bd_devops = {
+	.read	= bdev_read,
+	.write	= bdev_write,
+	.erase	= bdev_erase,
+	.sync	= bdev_sync,
+};
+
+
+** logfs_fsck in fsck.c
+
+*** invoke logfsck_blocks
+
+get total free bytes of this file system by invoking logfs_free_bytes
+on each segment. total number of free types is stored in free_types.
+
+*** invoke logfsck_dirs
+
+get inode of root dir. invoke __logfsck_dirs on root inode.
+
+__logfsck_dirs: 
+
+*** invoke logfsck_inodes
+
+
+*** invoke logfsck_stats
+
+* LogFS inode file
+
+inodes will be stored in a inode file. The inode of inode file cannot
+be written to the inode file, so it is stored in the journal instead. 
+
+More explanation is declaimed in inode.c.
+
+* Wandering tree and inode file:
+
+To use the wandering tree, hard link problem is hard to resolve. When
+using inode file, all inodes are stored in a file and directory
+entries simply contain the inode number, which is used as an offset
+within the inode file.
+
+When an inode is changed, inode file will be updated. Directory
+entries still contain the unchanged offsets as inode number. When a
+program reads those directories, inode file be searched and the new
+inode data will be found out with logical offset.
+
+* init_journal
+
+->logfs_scan_journal(we have 4 segments for journal, BUT, there is no
+  wear level metrics!)
+->scan_segment: 
+
+* find a file
+
+__logfs_dir_walk: read each dentry in inode in a loop
+
+
+-> read_dir
+-> logfs_inode_read: pos is shift left by blocksize, that is, per block.
+-> logfs_read_block: 
+-> logfs_read_direct / logfs_read_loop
+
+The file master inode referred contains all other inodes of file
+system. ino << blocksize_bits is the possition one inode in inode file.
+
+* write a file
