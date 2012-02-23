@@ -28,13 +28,13 @@ mount_fuse() {
 }
 
 mount_fuse /localrepo/a22543 localrepo
-#mount_fuse / desktop
+mount_fuse /home/a22543 desktop
 mount_fuse /var/www/ pmdashboard
 
 ls -l ${HOME}/.fuse/localrepo/il93lnxdroid43.pcs.mot.com
-#ls -l ${HOME}/.fuse/desktop/10.22.178.81
+ls -l ${HOME}/.fuse/desktop/10.22.178.241
 ls -l ${HOME}/.fuse/pmdashboard/10.22.71.222
 
 ln -s ${HOME}/.fuse/localrepo/il93lnxdroid43.pcs.mot.com ${HOME}/remote/localrepo
-#ln -s ${HOME}/.fuse/desktop/10.22.178.81 ${HOME}/remote/desktop
+ln -s ${HOME}/.fuse/desktop/10.22.178.241 ${HOME}/remote/desktop
 ln -s ${HOME}/.fuse/pmdashboard/10.22.71.222 ${HOME}/remote/pmdashboard
