@@ -3,5 +3,5 @@ xmodmap -e 'pointer = 1 2 3 4 5 6 7 8 9 10 11 12 13'
 /usr/local/sbin/setproxy off
 ~/usr/bin/u
 adb kill-server
-~/usr/bin/disper  -r 1360x768
+~/usr/bin/disper -s -r 1360x768
 
