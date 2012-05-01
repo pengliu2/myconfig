@@ -1,2 +1,2 @@
 #!/bin/sh
-~/usr/bin/disper -d DFP-0,CRT-0 -e -t right
+~/usr/bin/disper -d DFP-0,CRT-0 -e -t left
