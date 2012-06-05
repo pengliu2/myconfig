@@ -80,6 +80,7 @@
 
 (require 'iswitchb)
 (iswitchb-mode 1)
+(setq iswitchb-default-method 'always-frame)
 
 (require 'recentf)
 (recentf-mode 1)
