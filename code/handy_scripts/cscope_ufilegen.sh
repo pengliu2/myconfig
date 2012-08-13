@@ -4,4 +4,4 @@ find  $LNX                                                                \
         -name "*.[chxsS]" -print > ${LNX}/cscope.files
 
 cd ${LNX}
-cscope -b -q -k
+cscope -b -q
