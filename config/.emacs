@@ -311,6 +311,7 @@
 (add-hook 'c-mode-common-hook
           (lambda ()
             ;; Add kernel style
+            (setq default-tab-width 8)
             (c-add-style
              "linux-tabs-only"
              '("linux" (c-offsets-alist
