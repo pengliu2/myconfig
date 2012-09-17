@@ -358,24 +358,24 @@
 
 (add-hook 'c-mode-hook
 	  (lambda ()
-	    (interactive) (column-marker-1 80)))
+	    (interactive) (column-marker-3 80)))
 
 (add-hook 'java-mode-hook
 	  (lambda ()
-	    (interactive) (column-marker-1 80)))
+	    (interactive) (column-marker-3 80)))
 
 (add-hook 'c++-mode-hook
 	  (lambda ()
-	    (interactive) (column-marker-1 80)))
+	    (interactive) (column-marker-3 80)))
 
 (add-hook 'sh-mode-hook
 	  (lambda ()
-	    (interactive) (column-marker-1 80)))
+	    (interactive) (column-marker-3 80)))
 
 (add-hook 'python-mode-hook
 	  (lambda ()
 	    (setq indent-tabs-mode nil tab-width 4)
-	    (interactive) (column-marker-1 80)))
+	    (interactive) (column-marker-3 80)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming Goodies and Mode Hooks End
