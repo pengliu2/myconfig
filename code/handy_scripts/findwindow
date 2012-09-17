@@ -13,7 +13,7 @@ if [ -z window_key ];then
 fi
 
 # width of left monitor
-w_l_monitor=1280
+w_l_monitor=1920
 
 case "$window_key" in
     "c")
