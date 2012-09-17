@@ -53,5 +53,11 @@
 <node TEXT="screen" POSITION="right" ID="ID_1488802927" CREATED="1320193655909" MODIFIED="1320193657571">
 <node TEXT="C-s doesn&apos;t work issue: C-z f" ID="ID_188161656" CREATED="1320194547366" MODIFIED="1320194563956"/>
 </node>
+<node TEXT="elitebook 8540w" POSITION="left" ID="ID_1820541567" CREATED="1346468635762" MODIFIED="1346468647178">
+<node TEXT="download the new firmware from linuxwireless.org into /lib/firmware/" ID="ID_1564916921" CREATED="1346468655414" MODIFIED="1346468678638"/>
+<node TEXT="Suggestion: increase the VM dirty writeback time from 5.00 to 15 seconds with:&#xa;  echo 1500 &gt; /proc/sys/vm/dirty_writeback_centisecs" ID="ID_812750192" CREATED="1346599094190" MODIFIED="1346599111986"/>
+<node TEXT="Suggestion: Disable &apos;hal&apos; from polling your cdrom with:  &#xa;hal-disable-polling --device /dev/cdrom" ID="ID_550344007" CREATED="1346599681821" MODIFIED="1346599683343"/>
+<node TEXT="Suggestion: Enable USB autosuspend by pressing the U key or adding &#xa;usbcore.autosuspend=1 to the kernel command line in the grub config: edit /etc/default/grub and add the new parameter to GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet&quot;" ID="ID_1293295406" CREATED="1346599742847" MODIFIED="1347414888987"/>
+</node>
 </node>
 </map>
