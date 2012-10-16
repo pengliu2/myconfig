@@ -9,7 +9,7 @@ if __name__ == "__main__":
     while gtk.events_pending():
         gtk.main_iteration(False)
 
-    desired_dfp = 1
+    focus = 1
     top = [None, None]
     window_list = default.get_windows_stacked()
     if len(window_list) == 0:
@@ -19,13 +19,14 @@ if __name__ == "__main__":
             xp,yp,wp,hp = win.get_geometry()
             if win.is_most_recently_activated():
                 if xp < 1920:
-                    desired_dfp = 1
+                    focus = 0
                 else:
-                    desired_dfp = 0
+                    focus = 1
                 break
-            if xp < 1920:
-                top[0] = win
             else:
-                top[1] = win
+                if xp < 1920:
+                    top[0] = win
+                else:
+                    top[1] = win
     if top[desired_dfp] is not None:
         top[desired_dfp].activate(0)

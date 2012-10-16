@@ -46,6 +46,10 @@
 <font BOLD="true"/>
 </node>
 </node>
+<node TEXT="mostly used commands" ID="ID_528385156" CREATED="1348002600274" MODIFIED="1348002612210">
+<node TEXT="specifying source directories when the ones in vmlinuz are relative paths&#xa;directory" ID="ID_496250504" CREATED="1348002613043" MODIFIED="1348002887403"/>
+<node TEXT="if in vmlinuz are absolute paths, we can substitue them&#xa;set substitute-path &lt;the one in vmlinuz&gt; /home/nelhage/src/linux-2.6.32/" ID="ID_451459830" CREATED="1348002865718" MODIFIED="1348002968963"/>
+</node>
 </node>
 </node>
 </map>

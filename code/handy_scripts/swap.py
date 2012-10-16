@@ -34,17 +34,8 @@ if __name__ == "__main__":
             else:
                 top[1] = win
             if win.is_most_recently_activated():
-                if xp < 1920:
-                    inactive_display = 1
-                    offset = 1920
-                else:
-                    inactive_display = 0
-                    offset = -1920
-                active_win = win
                 break
-    if top[inactive_display] is not None:
-        move_to_other_display(top[inactive_display], -offset)
-        top[inactive_display].activate(0)
-    if active_win is not None:
-        move_to_other_display(active_win, offset)
-        active_win.activate(0)
+    move_to_other_display(top[0], 1920)
+    top[0].activate(0)
+    move_to_other_display(top[1], -1920)
+    top[1].activate(0)

@@ -1,0 +1,52 @@
+#!/bin/bash
+#++++++++++++++++
+# Monitor Switch
+#
+# Moves currently focused window from one monitor to the other.
+# Designed for a system with two monitors.
+# Script should be triggered using a keyboard shortcut.
+#++++++++++++++++
+# width of left monitor
+w_l_monitor=1920
+
+window_key=`zenity --entry --text "(E)macs,(T)erm,(F)irefox, (M)ind or (C)alc?"`
+
+if [ -z window_key ];then
+    return
+fi
+
+
+case "$window_key" in
+    "t")
+        window_name='\<Terminal -'
+        ;;
+    "e")
+        window_name='\<Emacs -'
+        ;;
+    "f")
+        window_name='Pentadactyl$'
+        ;;
+    "c")
+        window_name='\<Calculator'
+        ;;
+    "m")
+        window_name=' Freeplane '
+        ;;
+    ";")
+        window_name='move'
+        ~/usr/bin/movewindow
+        exit 0
+        ;;
+esac
+
+if [ -z window_name ]; then
+    return
+fi
+
+window=`wmctrl -l | egrep $window_name | head -n 1 | cut -f 1 -d " "`
+if [ -z $window ]; then
+    exit 0
+fi
+#echo "window id is [$window]"
+
+wmctrl -i -R $window

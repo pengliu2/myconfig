@@ -78,6 +78,9 @@ case "$window_key" in
     "c")
         window_name='\<Calculator'
         ;;
+    "m")
+        window_name=' Freeplane '
+        ;;
     "T")
         window_name='\<Terminal -'
         swap=1
@@ -93,6 +96,10 @@ case "$window_key" in
     "C")
         swap=1
         window_name='\<Calculator'
+        ;;
+    "M")
+        swap=1
+        window_name=' Freeplane '
         ;;
     ";")
         window_name='move'
