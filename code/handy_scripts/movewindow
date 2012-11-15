@@ -19,7 +19,7 @@ y_rel=`xwininfo -id $window | grep "Relative upper-left Y" | awk '{print $4}'`
 w=`xwininfo -id $window | grep "Width" | awk '{print $2}'`
 
 # unmaximize
-wmctrl -i -r $window -b remove,maximized_horz
+wmctrl -i -r $window -b remove,maximized_horz,maximized_vert
 
 # calculate new x position
 if [ "$x" -lt "$w_l_monitor" ]; then
@@ -36,6 +36,6 @@ xdotool windowmove $window $new_x $new_y
 
 if [ "$w" -eq "$w_l_monitor" ]; then
 	# maximize
-	wmctrl -i -r $window -b add,maximized_horz
+	wmctrl -i -r $window -b add,maximized_horz,maximized_vert
 fi
 

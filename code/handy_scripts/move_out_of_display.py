@@ -37,13 +37,13 @@ if __name__ == "__main__":
             else:
                 top[1] = win
     if active_win is not None:
-        m = active_win.is_maximized_horizontally()
+        m = active_win.is_maximized()
         if m:
-            active_win.unmaximize_horizontally()
+            active_win.unmaximize()
         xp,yp,wp,hp = active_win.get_geometry()
         new_x = xp + offset
         active_win.set_geometry('current','x',new_x,yp,wp,hp)
         if m:
-            active_win.maximize_horizontally()
+            active_win.maximize()
     if top[display] is not None:
         top[display].activate(0)

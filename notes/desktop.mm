@@ -34,6 +34,7 @@
 <node TEXT="keymap:&#xa;dmesg | grep Microsoft&#xa;to get a key raw code: keymap -i input/event6&#xa;&#xa;keymap file in /lib/udev/keymaps" ID="ID_820066665" CREATED="1302397605894" MODIFIED="1302397663566"/>
 <node TEXT="evtest is to capture raw key event input" ID="ID_1536802055" CREATED="1314373034450" MODIFIED="1314373050590"/>
 <node TEXT="xev is to capture X key event" ID="ID_890133525" CREATED="1314373051586" MODIFIED="1314373060039"/>
+<node TEXT="setxkbmap -option &apos;altwin:ctrl_win&apos;" ID="ID_192734641" CREATED="1350510869123" MODIFIED="1350510898146"/>
 </node>
 <node TEXT="xinput configuration" POSITION="right" ID="ID_463117385" CREATED="1304081826739" MODIFIED="1304081834417">
 <node TEXT="disable mouse or disable touchpad" ID="ID_974901907" CREATED="1304081835202" MODIFIED="1304081848239">
@@ -45,8 +46,7 @@
 <node TEXT="firefox" POSITION="left" ID="ID_1454072227" CREATED="1307719224574" MODIFIED="1307719226953">
 <node TEXT="pentadacyl" ID="ID_1089221318" CREATED="1307719227976" MODIFIED="1307719231838">
 <node TEXT="passthrough key" ID="ID_44583076" CREATED="1307719232712" MODIFIED="1307719239236">
-<node TEXT=":set passkeys+=&apos;https://www\.google\.com/reader&apos;:jkv&#xa;:set passkeys+=&apos;https://mail\.google\.com/&apos;:xljkroae&lt;CR&gt;,gi&#xa;:mkp!" ID="ID_374163404" CREATED="1307719239928" MODIFIED="1307720479447"/>
-<node TEXT=":set passkeys=mail.google.com:xljke&lt;CR&gt;,gi&#xa;:set passkeys+=www.google.com/reader:jkv&#xa;:mkp!" ID="ID_1616275678" CREATED="1307719239928" MODIFIED="1313678665528"/>
+<node TEXT=":set passkeys=mail.google.com:xljke&lt;CR&gt;&#xa;:set passkeys+=www.google.com/reader:jkv&#xa;:mkp!" ID="ID_1616275678" CREATED="1307719239928" MODIFIED="1350506226327"/>
 </node>
 </node>
 </node>

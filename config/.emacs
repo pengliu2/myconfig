@@ -95,10 +95,6 @@
 ;;(require 'maxframe)
 ;;    (add-hook 'window-setup-hook 'maximize-frame t))
 
-(require 'git)
-
-(require 'git-blame)
-
 (require 'xgtags)
 
 (require 'column-marker)
@@ -108,10 +104,6 @@
 
 (add-to-list 'load-path "~/.elisp/color-theme-6.6.0")
 (require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-))
 (require 'color-theme-tango-2)
 (color-theme-tango-2)
 

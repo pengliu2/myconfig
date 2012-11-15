@@ -19,6 +19,7 @@
 <node TEXT="to compile wxWidgets with nmake" ID="ID_957438861" CREATED="1349373815171" MODIFIED="1349803100304">
 <node TEXT="cl.exe must be in PATH" ID="ID_850744564" CREATED="1349373833461" MODIFIED="1349373840342"/>
 <node TEXT="vcvarsall.bat must be executed before all other things" ID="ID_169498613" CREATED="1349373841895" MODIFIED="1349373860468"/>
+<node TEXT="WXWIN must be set globally" ID="ID_523238307" CREATED="1352312947645" MODIFIED="1352312957389"/>
 </node>
 <node TEXT="project based on wxWidgets" ID="ID_402270760" CREATED="1349803101069" MODIFIED="1349803112453"/>
 </node>

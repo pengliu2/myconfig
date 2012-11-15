@@ -9,12 +9,40 @@
 # width of left monitor
 w_l_monitor=1920
 
+moving_window(){
+# get active window position and width
+    obj=$1
+    x=`xwininfo -id $obj | grep "Absolute upper-left X" | awk '{print $4}'`
+    y_abs=`xwininfo -id $obj | grep "Absolute upper-left Y" | awk '{print $4}'`
+    y_rel=`xwininfo -id $obj | grep "Relative upper-left Y" | awk '{print $4}'`
+    w=`xwininfo -id $obj | grep "Width" | awk '{print $2}'`
+
+# unmaximize
+    wmctrl -i -r $obj -b remove,maximized_vert,maximized_horz
+
+# calculate new x position
+    if [ "$x" -lt "$w_l_monitor" ]; then
+	# window on left monitor
+	    new_x=$(($x+$w_l_monitor))
+#move window. Need to subtract the relative y-position.
+        new_y=$(($y_abs-$y_rel))
+        xdotool windowmove $obj $new_x $new_y
+    fi
+
+    if [ "$w" -eq "$w_l_monitor" ]; then
+	# maximize
+	    wmctrl -i -r $obj -b add,maximized_vert,maximized_horz
+    fi
+
+}
+
 window_key=`zenity --entry --text "(E)macs,(T)erm,(F)irefox, (M)ind or (C)alc?"`
 
 if [ -z window_key ];then
     return
 fi
 
+moving=0
 
 case "$window_key" in
     "t")
@@ -27,10 +55,33 @@ case "$window_key" in
         window_name='Pentadactyl$'
         ;;
     "c")
-        window_name='\<Calculator'
+        window_name='\<galculator'
         ;;
     "m")
         window_name=' Freeplane '
+        ;;
+    "t")
+        window_name='\<Terminal -'
+        ;;
+    "E")
+        window_name='\<Emacs -'
+        moving=1
+        ;;
+    "F")
+        window_name='Pentadactyl$'
+        moving=1
+        ;;
+    "C")
+        window_name='\<galculator'
+        moving=1
+        ;;
+    "M")
+        window_name=' Freeplane '
+        moving=1
+        ;;
+    "T")
+        window_name='\<Terminal -'
+        moving=1
         ;;
     ";")
         window_name='move'
@@ -48,5 +99,10 @@ if [ -z $window ]; then
     exit 0
 fi
 #echo "window id is [$window]"
+
+if [ $moving = 1 ]
+then
+    moving_window $window
+fi
 
 wmctrl -i -R $window

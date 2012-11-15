@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+# - coding: utf-8 -
+#Accepts input like
+#[tag[/tag[...]]]][/description.]
+
+import subprocess
+import sys, os
+
+fact_dict = {
+    'work':['admin','coding','debug','doc','emails','meeting','review',
+            'testing','weekly'],
+    'away':['dining','break'],
+    'personal':['blogging','reading','linux','project','internet']
+    }
+purple_status = {
+    'work':'unavailable',
+    'away':'away',
+    'personal':'available',
+    'admin':'available',
+    'emails':'available',
+    'unknown':'available'
+    }
+tags = []
+desc = ""
+if len(sys.argv) == 2:
+    tags = sys.argv[1].strip().split("/")
+    if tags[-1].endswith("."):
+        desc = tags[-1]
+        tags = tags[:-1]
+activity = os.path.basename(sys.argv[0]).split("_")[1]
+category = 'unknown'
+tmp = ''
+for tmp in fact_dict.keys():
+    if activity in fact_dict[tmp]:
+        category = tmp
+        break
+status = "available"
+if activity in purple_status.keys():
+    status = purple_status[activity]
+elif category in purple_status.keys():
+    status = purple_status[category]
+
+hamster_command = "/usr/bin/hamster-cli start \"%s@%s"\
+    %(activity, category)
+if desc:
+    hamster_command = "%s, %s" %(hamster_command, desc[:-1])
+elif tags:
+    hamster_command = "%s,"%hamster_command
+if tags:
+    pidgin_command = "/usr/bin/purple-remote \"setstatus?status=%s&message=%s: %s\""\
+        %(status, activity, tags[-1])
+    for t in tags:
+        hamster_command = "%s #%s"%(hamster_command, t)
+else:
+    pidgin_command = "/usr/bin/purple-remote \"setstatus?status=%s&message=%s\""\
+        %(status, activity)
+hamster_command = "%s\""%hamster_command
+
+print "purple command is %s"%pidgin_command
+
+subprocess.call(hamster_command, shell=True)
+subprocess.call(pidgin_command, shell=True)

@@ -1,0 +1,18 @@
+startup_message off
+defscrollback 100000
+shell -$SHELL
+escape ^zz
+autodetach on
+bind k
+bind ^k
+bind .
+bind ^\
+bind \\
+bind ^h
+bind h
+bind ^G
+bind ^Q
+bind q
+#hardstatus string "%{.kB}%-w%{..M}%n %t%{-}%+w %=%{..B} %H(%l) %{..B} %Y/%m/%d %c:%s "
+hardstatus string "%n@%H"
+#hardstatus lastline
