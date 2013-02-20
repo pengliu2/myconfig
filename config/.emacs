@@ -68,8 +68,10 @@
 ;; Packages Start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(cond
- ('peng-laptop (load-theme 'zenburn t)))
+(if peng-laptop
+ (load-theme 'zenburn t)
+ (load-theme 'manoj-dark t)
+ )
 
 (require 'dired-sort-map)
 
@@ -107,6 +109,11 @@
 
 (require 'xcscope)
 (setq cscope-do-not-update-database 1)
+
+(setq byte-compile-warnings
+      '(not obsolete))
+
+(load "/home/a22543/.elisp/nxhtml/autostart.el")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages End
