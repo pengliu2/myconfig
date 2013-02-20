@@ -4,4 +4,5 @@
 ~/usr/bin/m
 /usr/bin/pidgin &
 /usr/bin/setxkbmap -option 'altwin:ctrl_win'
+~/usr/bin/kk_emails
 /usr/bin/purple-remote "setstatus?status=available&message=email"

@@ -52,7 +52,7 @@ case "$window_key" in
         window_name='\<Emacs -'
         ;;
     "f")
-        window_name='Pentadactyl$'
+        window_name='Vimperator$'
         ;;
     "c")
         window_name='\<galculator'

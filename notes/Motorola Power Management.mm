@@ -74,6 +74,26 @@
 </node>
 </node>
 </node>
+<node TEXT="meetings" POSITION="right" ID="ID_1725165716" CREATED="1353359004022" MODIFIED="1353359006755">
+<node TEXT="meeting Oct-23" ID="ID_1315372349" CREATED="1351009794029" MODIFIED="1351009814732">
+<node TEXT="accept a text file as overall stats" ID="ID_483966259" CREATED="1351010765672" MODIFIED="1351010822920"/>
+<node TEXT="send the sample report to Adam" ID="ID_592786881" CREATED="1351011163752" MODIFIED="1351011233081"/>
+</node>
+<node TEXT="meeting Nov-19" ID="ID_279874167" CREATED="1353359011692" MODIFIED="1353359018027">
+<node TEXT="We can move the UI to bug2go settings. We&apos;re to provide a content provider in EM.apk." ID="ID_1424410498" CREATED="1353359159218" MODIFIED="1353359522999">
+<node TEXT="Ask John for the sample" ID="ID_1432857361" CREATED="1353359652744" MODIFIED="1353359663646"/>
+</node>
+<node TEXT="we can talk to Josh, Dave Bolt about the persistence of EM.apk. We probably can have some manipulation on the manifest of EM.apk" ID="ID_19247539" CREATED="1353359333584" MODIFIED="1353359996026">
+<node TEXT="we probably want to make it a system service" ID="ID_1882226675" CREATED="1353360059631" MODIFIED="1353360067393"/>
+</node>
+<node TEXT="EM data reporting" ID="ID_770271982" CREATED="1353359915652" MODIFIED="1353359923611">
+<node TEXT="bt_discharge_summary is controlled by UT team" ID="ID_306843062" CREATED="1353359928932" MODIFIED="1353360343175"/>
+<node TEXT="no B2G report intent, so we don&apos;t have a chance to flush the logs" ID="ID_1238740491" CREATED="1353360122283" MODIFIED="1353360234817"/>
+<node TEXT="deam.xml is to define actions for different dropbox actions" ID="ID_1321467026" CREATED="1353360345459" MODIFIED="1353360366782"/>
+</node>
+</node>
+<node TEXT="meeting Dec-04" ID="ID_417989684" CREATED="1354655173863" MODIFIED="1354655178270"/>
+</node>
 <node TEXT="energy monitor" POSITION="right" ID="ID_390216440" CREATED="1350582103492" MODIFIED="1350582109546">
 <node TEXT="analysis" ID="ID_745746687" CREATED="1350582110364" MODIFIED="1350582116418">
 <node TEXT="scripts" ID="ID_205683522" CREATED="1350582117204" MODIFIED="1350582122035">
@@ -131,10 +151,15 @@
 <node TEXT="/sdcard/energy_monitor/trash/" ID="ID_1124978772" CREATED="1352420015620" MODIFIED="1352420034767"/>
 <node TEXT="/sdcard/energy_monitor/20121108102839_energy.bin" ID="ID_1188914205" CREATED="1352419455857" MODIFIED="1352419477961"/>
 </node>
-<node TEXT="meeting Oct-23" ID="ID_1315372349" CREATED="1351009794029" MODIFIED="1351009814732">
-<node TEXT="accept a text file as overall stats" ID="ID_483966259" CREATED="1351010765672" MODIFIED="1351010822920"/>
-<node TEXT="send the sample report to Adam" ID="ID_592786881" CREATED="1351011163752" MODIFIED="1351011233081"/>
+<node TEXT="parser" ID="ID_1474427486" CREATED="1353535351318" MODIFIED="1353535353377">
+<node TEXT="parser to create outputs in different formats" ID="ID_1767537165" CREATED="1353535354854" MODIFIED="1353535370854">
+<node TEXT="summary as a well-formatted file" ID="ID_471719506" CREATED="1353535402374" MODIFIED="1353535424939"/>
+<node TEXT="summary as a readable file" ID="ID_858028507" CREATED="1353535426014" MODIFIED="1353535441444"/>
 </node>
+</node>
+</node>
+<node TEXT="EM data frontend" POSITION="right" ID="ID_578884523" CREATED="1353356753733" MODIFIED="1353356759570">
+<node TEXT="a comprehensive database design" ID="ID_998126126" CREATED="1353356761989" MODIFIED="1353356790185"/>
 </node>
 </node>
 </map>

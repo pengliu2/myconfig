@@ -1,11 +1,10 @@
 ;;This configuration needs following elisps:
-;;color-theme    goto-last-change.el  setnu.el
+;;goto-last-change.el  setnu.el
 ;;browse-kill-ring.el  cygwin-mount.el      igrep.el             
 ;;color-moccur.el      dired-sort-map.el    erin.el
 ;;ecb                  muse
 ;;maxframe.el
 ;;git.le		    git-blame.el
-;;color-theme-6.6.0
 
 ;;ChangeLogs
 ;;11-07-2010	Peng Liu	Remove the Windows stuffs.
@@ -61,6 +60,7 @@
 (setq read-quoted-char-radix 16)
 (setq tramp-default-method "ssh")
 (setq-default fill-column 80)
+(load-theme 'tsdh-dark t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing Settings End
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -101,11 +101,6 @@
 
 (column-number-mode 1)
 (global-font-lock-mode t)
-
-(add-to-list 'load-path "~/.elisp/color-theme-6.6.0")
-(require 'color-theme)
-(require 'color-theme-tango-2)
-(color-theme-tango-2)
 
 (require 'xcscope)
 (setq cscope-do-not-update-database 1)
@@ -303,13 +298,14 @@
 (add-hook 'c-mode-common-hook
           (lambda ()
             ;; Add kernel style
-            (setq default-tab-width 8)
+            (setq tab-width 8)
             (c-add-style
              "linux-tabs-only"
              '("linux" (c-offsets-alist
                         (arglist-cont-nonempty
                          c-lineup-gcc-asm-reg
-                         c-lineup-arglist-tabs-only))))))
+                         c-lineup-arglist-tabs-only)))))
+	  )
 (add-hook 'c-mode-hook
 	  '(lambda ()
 	     (outline-minor-mode)

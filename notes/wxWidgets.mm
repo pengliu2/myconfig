@@ -14,6 +14,12 @@
 <node TEXT="Sizer" ID="ID_878434366" CREATED="1348783307468" MODIFIED="1348783319284">
 <node TEXT="wxFrame widget has a special built-in sizer! Only one widget can be put inside the wxFrame container." ID="ID_1329587365" CREATED="1348783320167" MODIFIED="1348783363671"/>
 </node>
+<node TEXT="window deletion" ID="ID_44678951" CREATED="1359067455914" MODIFIED="1359067471887">
+<node TEXT="when the user clicks on the system close button or system close command, in a frame or a dialog, wxWidgets calls wxWindow::Close, which in turn generates an EVT_CLOSE event" ID="ID_1584503373" CREATED="1359067813767" MODIFIED="1359067860942"/>
+<node TEXT="OnCloseWindow() is from wxTopLevelWindowBase" ID="ID_1446186325" CREATED="1359068287223" MODIFIED="1359068303859"/>
+<node TEXT="this-&gt;Destroy() must be called to delete the window" ID="ID_1588876386" CREATED="1359068690396" MODIFIED="1359068732577"/>
+<node TEXT="wxWindow::SetSizer(): The window will then own the object, and will take care of its deletion." ID="ID_1268461390" CREATED="1359088400419" MODIFIED="1359088408266"/>
+</node>
 </node>
 <node TEXT="cross platform" POSITION="right" ID="ID_1744752287" CREATED="1349373800530" MODIFIED="1349373807914">
 <node TEXT="to compile wxWidgets with nmake" ID="ID_957438861" CREATED="1349373815171" MODIFIED="1349803100304">
