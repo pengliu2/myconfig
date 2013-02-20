@@ -60,7 +60,6 @@
 (setq read-quoted-char-radix 16)
 (setq tramp-default-method "ssh")
 (setq-default fill-column 80)
-(load-theme 'tsdh-dark t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing Settings End
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -68,6 +67,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages Start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(cond
+ ('peng-laptop (load-theme 'zenburn t)))
+
 (require 'dired-sort-map)
 
 (require 'rect)
