@@ -6,10 +6,11 @@
 import subprocess
 import sys, os
 
+# key is hamster category, values are hamster acitivities
 fact_dict = {
     'work':['admin','coding','debug','doc','emails','meeting','review',
             'testing','weekly'],
-    'away':['dining','break'],
+    'away':['dining','break','workout','stop'],
     'personal':['blogging','reading','linux','project','internet']
     }
 purple_status = {

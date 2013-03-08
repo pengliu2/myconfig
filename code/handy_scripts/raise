@@ -9,7 +9,7 @@
 # width of left monitor
 w_l_monitor=1920
 
-moving_window(){
+moving_window_right(){
 # get active window position and width
     obj=$1
     x=`xwininfo -id $obj | grep "Absolute upper-left X" | awk '{print $4}'`
@@ -22,8 +22,35 @@ moving_window(){
 
 # calculate new x position
     if [ "$x" -lt "$w_l_monitor" ]; then
-	# window on left monitor
+	# window on left monitor, then moving it right
 	    new_x=$(($x+$w_l_monitor))
+#move window. Need to subtract the relative y-position.
+        new_y=$(($y_abs-$y_rel))
+        xdotool windowmove $obj $new_x $new_y
+    fi
+
+    if [ "$w" -eq "$w_l_monitor" ]; then
+	# maximize
+	    wmctrl -i -r $obj -b add,maximized_vert,maximized_horz
+    fi
+
+}
+
+moving_window_left(){
+# get active window position and width
+    obj=$1
+    x=`xwininfo -id $obj | grep "Absolute upper-left X" | awk '{print $4}'`
+    y_abs=`xwininfo -id $obj | grep "Absolute upper-left Y" | awk '{print $4}'`
+    y_rel=`xwininfo -id $obj | grep "Relative upper-left Y" | awk '{print $4}'`
+    w=`xwininfo -id $obj | grep "Width" | awk '{print $2}'`
+
+# unmaximize
+    wmctrl -i -r $obj -b remove,maximized_vert,maximized_horz
+
+# calculate new x position
+    if [ "$x" -ge "$w_l_monitor" ]; then
+	# window on right monitor
+	    new_x=$(($x-$w_l_monitor))
 #move window. Need to subtract the relative y-position.
         new_y=$(($y_abs-$y_rel))
         xdotool windowmove $obj $new_x $new_y
@@ -38,18 +65,18 @@ moving_window(){
 
 window_key=`zenity --entry --text "(E)macs,(T)erm,(F)irefox, (M)ind or (C)alc?"`
 
-if [ -z window_key ];then
-    return
+if [ -z $window_key ];then
+    exit 0
 fi
 
-moving=0
+left=0
 
 case "$window_key" in
     "t")
         window_name='\<Terminal -'
         ;;
     "e")
-        window_name='\<Emacs -'
+        window_name="\<Emacs - "
         ;;
     "f")
         window_name='Vimperator$'
@@ -58,51 +85,55 @@ case "$window_key" in
         window_name='\<galculator'
         ;;
     "m")
-        window_name=' Freeplane '
+        window_name='\<VYM - View Your Mind'
         ;;
     "t")
         window_name='\<Terminal -'
         ;;
     "E")
-        window_name='\<Emacs -'
-        moving=1
+        window_name="\<Emacs - "
+        left=1
         ;;
     "F")
-        window_name='Pentadactyl$'
-        moving=1
+        window_name='Vimperator$'
+        left=1
         ;;
     "C")
         window_name='\<galculator'
-        moving=1
+        left=1
         ;;
     "M")
-        window_name=' Freeplane '
-        moving=1
+        window_name='\<VYM - View Your Mind'
+        left=1
         ;;
     "T")
         window_name='\<Terminal -'
-        moving=1
+        left=1
         ;;
-    ";")
-        window_name='move'
-        ~/usr/bin/movewindow
+    "*")
         exit 0
         ;;
 esac
 
-if [ -z window_name ]; then
+if [ -z $window_name ]; then
     return
 fi
 
-window=`wmctrl -l | egrep $window_name | head -n 1 | cut -f 1 -d " "`
+#echo "window name is : $window_name"
+window=`wmctrl -l | grep "$window_name" | head -n 1 | cut -f 1 -d " "`
+#echo "window nuber is: $window"
 if [ -z $window ]; then
     exit 0
 fi
 #echo "window id is [$window]"
 
-if [ $moving = 1 ]
+if [ $left = 1 ]
 then
-    moving_window $window
+    moving_window_left $window
+else
+    active_window=`xdotool getactivewindow`
+    moving_window_left $active_window
+    moving_window_right $window
 fi
 
 wmctrl -i -R $window

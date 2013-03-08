@@ -69,7 +69,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (if peng-laptop
- (load-theme 'zenburn t)
+ (load-theme 'tsdh-dark t)
  (load-theme 'manoj-dark t)
  )
 
