@@ -82,7 +82,7 @@ case "$window_key" in
         window_name='Vimperator$'
         ;;
     "c")
-        window_name='\<galculator'
+        window_name='\<Qalculate!'
         ;;
     "m")
         window_name='\<VYM - View Your Mind'
@@ -99,7 +99,7 @@ case "$window_key" in
         left=1
         ;;
     "C")
-        window_name='\<galculator'
+        window_name='\<Qalculate!'
         left=1
         ;;
     "M")

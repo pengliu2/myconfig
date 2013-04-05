@@ -1,0 +1,1 @@
+~/usr/bin/disper -r 1920x1080 -d CRT-0,DFP-0 -e -t left
