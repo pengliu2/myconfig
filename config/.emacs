@@ -494,3 +494,9 @@
     (find-file
      (if arg (nth arg recently-killed-list)
        (car recently-killed-list)))))
+
+(when (and (equal emacs-major-version 24)
+           (equal emacs-minor-version 2))
+  (eval-after-load "mumamo"
+    '(setq mumamo-per-buffer-local-vars
+           (delq 'buffer-file-name mumamo-per-buffer-local-vars))))
