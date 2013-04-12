@@ -6,7 +6,7 @@
 project your_project_id "Your Project Title"  2011-11-11-0:00--0500 +4m {
   # Set the default time zone for the project. If not specified, UTC
   # is used.
-  timezone "America/New_York"
+  timezone "America/Chicago"
   # Hide the clock time. Only show the date.
   timeformat "%Y-%m-%d"
   # Use US format for numbers
@@ -17,7 +17,7 @@ project your_project_id "Your Project Title"  2011-11-11-0:00--0500 +4m {
   # the project reports. If not specified, the current day will be
   # used, but this will likely be outside of the project range, so it
   # can't be seen in the reports.
-  now 2011-12-24
+  #now 2011-12-24
   # The currency for all money values is the Euro.
   currency "USD"
 
@@ -38,7 +38,7 @@ project your_project_id "Your Project Title"  2011-11-11-0:00--0500 +4m {
   #}
 }
 
-copyright "Claim your rights here"
+copyright "All rights reserved to Peng Liu"
 
 # If you have any text block that you need multiple times to describe
 # your project, you should define a macro for it. Macros can even have
@@ -61,26 +61,28 @@ flags important, hidden
 
 # If you want to do budget planning for you project, you need to
 # define some accounts.
-account cost "Project Cost" {
-  account dev "Development"
-  account doc "Documentation"
-}
-account rev "Customer Payments"
+#account cost "Project Cost" {
+#  account dev "Development"
+#  account doc "Documentation"
+#}
+#account rev "Customer Payments"
 
 # The Profit&Loss analysis should be rev - cost accounts.
-balance cost rev
+#balance cost rev
 
 # Define you public holidays here.
-vacation "New Year's Day" 2012-01-02
-vacation "Birthday of Martin Luther King, Jr." 2012-01-16
-vacation "Washington's Birthday" 2012-02-20
-vacation "Memorial Day" 2012-05-28
-vacation "Independence Day" 2012-07-04
-vacation "Labor Day" 2012-09-03
-vacation "Columbus Day" 2012-10-08
-vacation "Veterans Day" 2012-11-12
-vacation "Thanksgiving Day" 2012-11-22
-vacation "Christmas Day" 2012-12-25
+vacation "New Year's Day" 2013-01-02
+vacation "Birthday of Martin Luther King, Jr." 2013-01-16
+#vacation "Washington's Birthday" 2013-02-20
+vacation "Memorial Day" 2013-05-28
+vacation "Independence Day" 2013-07-04
+vacation "Labor Day" 2013-09-03
+#vacation "Columbus Day" 2013-10-08
+#vacation "Veterans Day" 2013-11-12
+vacation "Thanksgiving Eve" 2013-11-21
+vacation "Thanksgiving Day" 2013-11-22
+vacation "Christmas Eve" 2013-12-24
+vacation "Christmas Day" 2013-12-25
 
 # The daily default rate of all resources. This can be overridden for each
 # resource. We specify this, so that we can do a good calculation of

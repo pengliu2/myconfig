@@ -7,4 +7,4 @@ adb kill-server
 /usr/bin/hamster-cli stop
 /usr/bin/purple-remote "quit"
 #dbus-send --system --print-reply --dest="org.freedesktop.Hal" /org/freedesktop/Hal/devices/computer org.freedesktop.Hal.Device.SystemPowerManagement.Hibernate
-xfce4-session-logout --halt
+#xfce4-session-logout --halt
