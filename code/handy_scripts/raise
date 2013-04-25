@@ -131,8 +131,8 @@ if [ $left = 1 ]
 then
     moving_window_left $window
 else
-    active_window=`xdotool getactivewindow`
-    moving_window_left $active_window
+#    active_window=`xdotool getactivewindow`
+#    moving_window_left $active_window
     moving_window_right $window
 fi
 

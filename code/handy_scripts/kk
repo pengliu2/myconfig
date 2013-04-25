@@ -8,17 +8,24 @@ import sys, os
 
 # key is hamster category, values are hamster acitivities
 fact_dict = {
-    'work':['admin','coding','debug','doc','emails','meeting','review',
-            'testing','weekly'],
-    'away':['dining','break','workout','stop'],
-    'personal':['blogging','reading','linux','project','internet']
+    'rd':['doc', 'meeting'],
+    'test':['testing', 'testdev'],
+    'dev':['coding','debugging', 'review'],
+    'pm':['emails', 'conference', 'weekly'],
+    'admin':['config', 'townhall', 'training'],
+    'away':['dining','break','workout'],
+    'personal':['blogging','reading','linux','project','browsing']
     }
 purple_status = {
-    'work':'unavailable',
+    'rd':'unavailable',
+    'meeting':'away',
+    'test':'unavailable',
+    'dev':'unavailable',
+    'plan':'unavailable',
+    'admin':'away',
     'away':'away',
+    'break':'available',
     'personal':'available',
-    'admin':'available',
-    'emails':'available',
     'unknown':'available'
     }
 tags = []
@@ -35,7 +42,7 @@ for tmp in fact_dict.keys():
     if activity in fact_dict[tmp]:
         category = tmp
         break
-status = "available"
+status = "away"
 if activity in purple_status.keys():
     status = purple_status[activity]
 elif category in purple_status.keys():
