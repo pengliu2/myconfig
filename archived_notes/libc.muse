@@ -1,8 +1,0 @@
-* The GNU C Library
-
-**  BSD facilities
-
- - symbolic links
- - select function
- - BSD signal functions
-

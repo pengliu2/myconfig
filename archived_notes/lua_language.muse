@@ -1,5 +1,0 @@
----++++++ Ways to use the scripting language
-   * control the behavior of a program, treating the C code as an implementation detail of a program that is really written in Lua.
-   * store and report data and configuration.
-   * mix and match above approaches.
-%T% An article at http://www.ibm.com/developerworks/opensource/library/l-embed-lua/index.html

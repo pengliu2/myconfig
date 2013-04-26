@@ -1,8 +1,0 @@
-* discrete math
-* computer system architecture
-* Operating System
-* Compiler Principle
-* Computer Networks
-* Formal Language and Automata
-* Number Theory
-* High Performance Computing
