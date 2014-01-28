@@ -1,8 +1,9 @@
 #!/bin/sh
-fusermount -u -z ${HOME}/.fuse/localrepo
-fusermount -u -z ${HOME}/.fuse/desktop
-fusermount -u -z ${HOME}/.fuse/pmdashboard
+rm ${HOME}/localrepo
+rm ${HOME}/kernelbsp
+#rm ${HOME}/remote/pmdashboard
 
-rm ${HOME}/remote/localrepo
-rm ${HOME}/remote/desktop
-rm ${HOME}/remote/pmdashboard
+fusermount -u -z ${HOME}/.fuse/localrepo
+fusermount -u -z ${HOME}/.fuse/kernelbsp
+#fusermount -u -z ${HOME}/.fuse/pmdashboard
+

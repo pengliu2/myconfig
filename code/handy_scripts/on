@@ -1,8 +1,9 @@
 #!/bin/sh
-#xmodmap -e 'pointer = 3 2 1 4 5 6 7 8 9 10 11 12 13'
-~/usr/bin/disper -r 1920x1080 -d DFP-1,DFP-0 -e -t left
+xmodmap -e 'pointer = 3 2 1 4 5 6 7 8 9 10 11 12 13'
+#~/usr/bin/disper -r 1920x1080 -d DFP-1,DFP-0 -e -t right
 ~/usr/bin/m
 /usr/bin/pidgin &
 /usr/bin/setxkbmap -option 'altwin:ctrl_win' -option 'ctrl:nocaps'
-~/usr/bin/kk_emails
-/usr/bin/purple-remote "setstatus?status=available&message=email"
+#~/usr/bin/kk_emails
+#/usr/bin/purple-remote "setstatus?status=available&message=email"
+xset -b

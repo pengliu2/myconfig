@@ -10,59 +10,85 @@ import sys, os
 fact_dict = {
     'rd':['doc', 'meeting'],
     'test':['testing', 'testdev'],
-    'dev':['coding','debugging', 'review'],
-    'pm':['emails', 'conference', 'weekly'],
-    'admin':['config', 'townhall', 'training'],
+    'dev':['coding','debugging', 'review', 'scm'],
+    'plan':['emails', 'conference', 'weekly'],
+    'admin':['it', 'townhall', 'training', 'paperwork'],
     'away':['dining','break','workout'],
-    'personal':['blogging','reading','linux','project','browsing']
-    }
+    'blogging':['techwrite', 'weibo'],
+    'relax':['interrupt','rss'],
+    'config':['linux','emacs','windows'],
+}
+
+auto_categories = {
+    'work': ['rd', 'test', 'dev', 'plan', 'admin'],
+    'personal': ['blogging', 'play', 'config', 'relax']
+}
+
 purple_status = {
     'rd':'unavailable',
-    'meeting':'away',
+    'meeting': 'unavailable',
     'test':'unavailable',
     'dev':'unavailable',
     'plan':'unavailable',
     'admin':'away',
     'away':'away',
     'break':'available',
-    'personal':'available',
-    'unknown':'available'
+    'blogging':'available',
+    'relax':'available',
+    'config':'unavailable',
     }
+
+category = ''
 tags = []
 desc = ""
+
 if len(sys.argv) == 2:
-    tags = sys.argv[1].strip().split("/")
-    if tags[-1].endswith("."):
-        desc = tags[-1]
-        tags = tags[:-1]
+    params = sys.argv[1].strip().split("/")
+    if params[-1].endswith("."):
+        desc = params[-1]
+        params = params[:-1]
+    if len(params):
+        tags = params
+
 activity = os.path.basename(sys.argv[0]).split("_")[1]
-category = 'unknown'
-tmp = ''
+fact = 'unknown'
 for tmp in fact_dict.keys():
     if activity in fact_dict[tmp]:
-        category = tmp
+        fact = tmp
         break
+
+for tmp in auto_categories.keys():
+    if fact in auto_categories[tmp]:
+        category = tmp
+        break;
+if len(category):
+    tags.append(category)
+
 status = "away"
 if activity in purple_status.keys():
     status = purple_status[activity]
-elif category in purple_status.keys():
-    status = purple_status[category]
+elif fact in purple_status.keys():
+    status = purple_status[fact]
 
 hamster_command = "/usr/bin/hamster-cli start \"%s@%s"\
-    %(activity, category)
+    %(activity, fact)
+
 if desc:
     hamster_command = "%s, %s" %(hamster_command, desc[:-1])
-elif tags:
-    hamster_command = "%s,"%hamster_command
-if tags:
     pidgin_command = "/usr/bin/purple-remote \"setstatus?status=%s&message=%s: %s\""\
-        %(status, activity, tags[-1])
-    hamster_command = "%s #%s"%(hamster_command, tags[0])
-#    for t in tags:
-#        hamster_command = "%s #%s"%(hamster_command, t)
+        %(status, activity, desc[:-1])
 else:
+    hamster_command = "%s, " %hamster_command
     pidgin_command = "/usr/bin/purple-remote \"setstatus?status=%s&message=%s\""\
-        %(status, activity)
+                     %(status, activity)
+
+if tags:
+    final_tags = ''
+    for tag in tags:
+        final_tags = '%s#%s'%(final_tags,tag)
+
+    hamster_command = "%s %s"%(hamster_command, final_tags)
+
 hamster_command = "%s\""%hamster_command
 
 print "hamster command is %s"%hamster_command

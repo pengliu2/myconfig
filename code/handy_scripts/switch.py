@@ -13,7 +13,7 @@ if __name__ == "__main__":
     top = [None, None]
     window_list = default.get_windows_stacked()
     if len(window_list) == 0:
-        print "No Windows Found"
+        pass
     else:
         for win in window_list:
             xp,yp,wp,hp = win.get_geometry()

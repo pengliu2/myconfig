@@ -9,6 +9,7 @@
 
 # width of left monitor
 w_l_monitor=1920
+h_l_monitor=1080
 
 window=`xdotool getactivewindow`
 
@@ -17,6 +18,8 @@ x=`xwininfo -id $window | grep "Absolute upper-left X" | awk '{print $4}'`
 y_abs=`xwininfo -id $window | grep "Absolute upper-left Y" | awk '{print $4}'`
 y_rel=`xwininfo -id $window | grep "Relative upper-left Y" | awk '{print $4}'`
 w=`xwininfo -id $window | grep "Width" | awk '{print $2}'`
+h=`xwininfo -id $window | grep "Height" | awk '{print $2}'`
+h=$(($y_abs+$h))
 
 # unmaximize
 wmctrl -i -r $window -b remove,maximized_horz,maximized_vert
@@ -34,7 +37,7 @@ fi
 new_y=$(($y_abs-$y_rel))
 xdotool windowmove $window $new_x $new_y
 
-if [ "$w" -eq "$w_l_monitor" ]; then
+if [ "$w" -eq "$w_l_monitor" -o "$h" -eq "$h_l_monitor" ]; then
 	# maximize
 	wmctrl -i -r $window -b add,maximized_horz,maximized_vert
 fi

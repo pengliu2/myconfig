@@ -204,6 +204,9 @@
      (lambda () "*.[ch]"))
 (global-set-key [?\M-s ?g] 'igrep)
 (global-set-key [?\M-s ?f] 'igrep-find)
+
+(setq igrep-options "-I")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; intelligent grep ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -250,6 +253,7 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-set-key [(meta g)] 'goto-line)
+(global-set-key [(meta o)] 'other-window)
 
 ;;(global-set-key [(control f4)] 'bookmark-set)
 ;;(global-set-key [f4] 'bookmark-jump)

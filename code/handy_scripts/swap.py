@@ -35,7 +35,7 @@ if __name__ == "__main__":
                 top[1] = win
             if win.is_most_recently_activated():
                 break
-    move_to_other_display(top[1], -1920)
-    top[1].activate(0)
     move_to_other_display(top[0], 1920)
     top[0].activate(0)
+    move_to_other_display(top[1], -1920)
+    top[1].activate(0)

@@ -15,6 +15,8 @@ if __name__ == "__main__":
         pass
     else:
         for win in window_list:
+            if win.get_name() == 'xfce4-panel' or win.get_name() == 'Desktop':
+                continue
             xp,yp,wp,hp = win.get_geometry()
             if xp < 1920:
                 top = win

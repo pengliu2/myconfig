@@ -8,6 +8,7 @@
 #++++++++++++++++
 # width of left monitor
 w_l_monitor=1920
+h_l_monitor=1080
 
 moving_window_right(){
 # get active window position and width
@@ -16,6 +17,8 @@ moving_window_right(){
     y_abs=`xwininfo -id $obj | grep "Absolute upper-left Y" | awk '{print $4}'`
     y_rel=`xwininfo -id $obj | grep "Relative upper-left Y" | awk '{print $4}'`
     w=`xwininfo -id $obj | grep "Width" | awk '{print $2}'`
+    h=`xwininfo -id $window | grep "Height" | awk '{print $2}'`
+    h=$(($y_rel+$h))
 
 # unmaximize
     wmctrl -i -r $obj -b remove,maximized_vert,maximized_horz
@@ -24,12 +27,12 @@ moving_window_right(){
     if [ "$x" -lt "$w_l_monitor" ]; then
 	# window on left monitor, then moving it right
 	    new_x=$(($x+$w_l_monitor))
-#move window. Need to subtract the relative y-position.
+        #move window. Need to subtract the relative y-position.
         new_y=$(($y_abs-$y_rel))
         xdotool windowmove $obj $new_x $new_y
     fi
 
-    if [ "$w" -eq "$w_l_monitor" ]; then
+    if [ "$w" -eq "$w_l_monitor" -o "$h" -eq "$h_l_monitor" ]; then
 	# maximize
 	    wmctrl -i -r $obj -b add,maximized_vert,maximized_horz
     fi
@@ -72,41 +75,45 @@ fi
 left=0
 
 case "$window_key" in
-    "t")
-        window_name='\<Terminal -'
-        ;;
-    "e")
-        window_name="\<Emacs - "
-        ;;
-    "f")
-        window_name='Vimperator$'
-        ;;
-    "c")
-        window_name='\<Qalculate!'
-        ;;
-    "m")
-        window_name='\<VYM - View Your Mind'
-        ;;
-    "t")
+    "T")
         window_name='\<Terminal -'
         ;;
     "E")
         window_name="\<Emacs - "
-        left=1
         ;;
     "F")
         window_name='Vimperator$'
-        left=1
         ;;
     "C")
         window_name='\<Qalculate!'
-        left=1
         ;;
     "M")
         window_name='\<VYM - View Your Mind'
+        ;;
+    "G")
+        window_name='Google Chrome$'
+        ;;
+    "g")
+        window_name='Google Chrome$'
         left=1
         ;;
-    "T")
+    "e")
+        window_name="\<Emacs - "
+        left=1
+        ;;
+    "f")
+        window_name='Vimperator$'
+        left=1
+        ;;
+    "c")
+        window_name='\<Qalculate!'
+        left=1
+        ;;
+    "m")
+        window_name='\<VYM - View Your Mind'
+        left=1
+        ;;
+    "t")
         window_name='\<Terminal -'
         left=1
         ;;
