@@ -10,7 +10,7 @@
 w_l_monitor=1920
 h_l_monitor=1080
 
-moving_window_right(){
+moving_window_main(){
 # get active window position and width
     obj=$1
     x=`xwininfo -id $obj | grep "Absolute upper-left X" | awk '{print $4}'`
@@ -39,13 +39,15 @@ moving_window_right(){
 
 }
 
-moving_window_left(){
+moving_window_second(){
 # get active window position and width
     obj=$1
     x=`xwininfo -id $obj | grep "Absolute upper-left X" | awk '{print $4}'`
     y_abs=`xwininfo -id $obj | grep "Absolute upper-left Y" | awk '{print $4}'`
     y_rel=`xwininfo -id $obj | grep "Relative upper-left Y" | awk '{print $4}'`
     w=`xwininfo -id $obj | grep "Width" | awk '{print $2}'`
+    h=`xwininfo -id $window | grep "Height" | awk '{print $2}'`
+    h=$(($y_rel+$h))
 
 # unmaximize
     wmctrl -i -r $obj -b remove,maximized_vert,maximized_horz
@@ -59,7 +61,7 @@ moving_window_left(){
         xdotool windowmove $obj $new_x $new_y
     fi
 
-    if [ "$w" -eq "$w_l_monitor" ]; then
+    if [ "$w" -eq "$w_l_monitor" -o "$h" -eq "$h_l_monitor" ]; then
 	# maximize
 	    wmctrl -i -r $obj -b add,maximized_vert,maximized_horz
     fi
@@ -72,7 +74,7 @@ if [ -z $window_key ];then
     exit 0
 fi
 
-left=0
+main=0
 
 case "$window_key" in
     "T")
@@ -93,29 +95,43 @@ case "$window_key" in
     "G")
         window_name='Google Chrome$'
         ;;
+    "P")
+        window_name='\<Foxit Reader'
+        ;;
+    "L")
+        window_name='\<a22543@peng-8540w'
+        ;;
+    "l")
+        window_name='\<a22543@peng-8540w'
+        main=1
+        ;;
+    "p")
+        window_name='\<Foxit Reader'
+        main=1
+        ;;
     "g")
         window_name='Google Chrome$'
-        left=1
+        main=1
         ;;
     "e")
         window_name="\<Emacs - "
-        left=1
+        main=1
         ;;
     "f")
         window_name='Vimperator$'
-        left=1
+        main=1
         ;;
     "c")
         window_name='\<Qalculate!'
-        left=1
+        main=1
         ;;
     "m")
         window_name='\<VYM - View Your Mind'
-        left=1
+        main=1
         ;;
     "t")
         window_name='\<Terminal -'
-        left=1
+        main=1
         ;;
     "*")
         exit 0
@@ -134,13 +150,13 @@ if [ -z $window ]; then
 fi
 #echo "window id is [$window]"
 
-if [ $left = 1 ]
+if [ $main = 1 ]
 then
-    moving_window_left $window
+    moving_window_main $window
 else
 #    active_window=`xdotool getactivewindow`
 #    moving_window_left $active_window
-    moving_window_right $window
+    moving_window_second $window
 fi
 
 wmctrl -i -R $window

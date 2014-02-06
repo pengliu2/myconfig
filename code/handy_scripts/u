@@ -1,6 +1,6 @@
 #!/bin/sh
 rm ${HOME}/localrepo
-rm ${HOME}/kernelbsp
+rm ${HOME}/remote/kernelbsp
 #rm ${HOME}/remote/pmdashboard
 
 fusermount -u -z ${HOME}/.fuse/localrepo

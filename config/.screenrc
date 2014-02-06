@@ -1,7 +1,7 @@
 startup_message off
 defscrollback 50000
 shell -$SHELL
-escape ^zz
+escape ^``
 autodetach on
 bind k
 bind ^k
@@ -13,6 +13,6 @@ bind h
 bind ^G
 bind ^Q
 bind q eval "scrollback 0" "scrollback 50000"
-#hardstatus string "%{.kB}%-w%{..M}%n %t%{-}%+w %=%{..B} %H(%l) %{..B} %Y/%m/%d %c:%s "
-hardstatus string "%n@%H"
-#hardstatus lastline
+#hardstatus alwayslastline "%{.kB}%-w%{..M}%n %t%{-}%+w %=%{..B} %H(%l) %{..B} %Y/%m/%d %c:%s "
+#hardstatus alwayslastline "%?%F%{.R.}%?%3n %t%? [%h]%?"
+hardstatus alwayslastline '%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<'

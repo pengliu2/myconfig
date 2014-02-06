@@ -113,7 +113,7 @@
 (setq byte-compile-warnings
       '(not obsolete))
 
-(load "/home/a22543/.elisp/nxhtml/autostart.el")
+;;(load "/home/a22543/.elisp/nxhtml/autostart.el")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages End
@@ -266,7 +266,7 @@
       scroll-conservatively 10000000)
 
 (defun switch-to-other-buffer () (interactive) (switch-to-buffer (other-buffer)))
-(global-set-key [(control meta l)] 'switch-to-other-buffer)
+(global-set-key "\C-\M-l" 'switch-to-other-buffer)
 (global-set-key [\C-\M-\tab] 'other-window)
 (global-set-key "\C-w" 'clipboard-kill-region)
 (global-set-key "\M-w" 'clipboard-kill-ring-save)
