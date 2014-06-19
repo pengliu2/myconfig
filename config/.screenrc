@@ -1,7 +1,7 @@
 startup_message off
 defscrollback 50000
 shell -$SHELL
-escape ^``
+escape ^oo
 autodetach on
 bind k
 bind ^k

@@ -10,8 +10,8 @@ if which zenity > /dev/null; then
 fi
 
 if which ogg123 > /dev/null; then
-        if [ -f "/home/peng/Documents/ding.ogg" ]; then
-                ogg123 -q /home/peng/Documents/ding.ogg 2>&1 > /dev/null
+        if [ -f "/home/a22543/Documents/ding.ogg" ]; then
+                ogg123 -q /home/a22543/Documents/ding.ogg 2>&1 > /dev/null
         fi
 fi
 

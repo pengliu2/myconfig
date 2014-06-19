@@ -110,6 +110,24 @@
 (require 'xcscope)
 (setq cscope-do-not-update-database 1)
 
+(defun xcscope-select-entry-other-window-kill-buf()
+  (interactive)
+  (cscope-select-entry-other-window)
+  (setq buf (get-buffer "*cscope*"))
+  (if buf
+      (kill-buffer buf))
+)
+
+(define-key cscope-list-entry-keymap [return] 'xcscope-select-entry-other-window-kill-buf)
+(define-key cscope-list-entry-keymap (kbd "RET") 'xcscope-select-entry-other-window-kill-buf)
+
+(defun xcscope-select-entry-other-window-no-kill()
+  (interactive)
+  (cscope-select-entry-other-window)
+)
+
+(define-key cscope-list-entry-keymap (kbd "o") 'xcscope-select-entry-other-window-no-kill)
+
 (setq byte-compile-warnings
       '(not obsolete))
 
@@ -204,8 +222,6 @@
      (lambda () "*.[ch]"))
 (global-set-key [?\M-s ?g] 'igrep)
 (global-set-key [?\M-s ?f] 'igrep-find)
-
-(setq igrep-options "-I")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; intelligent grep ends

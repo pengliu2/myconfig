@@ -32,16 +32,16 @@ mount_fuse /localrepo/a22543 localrepo
 mount_fuse /home/a22543 kernelbsp
 #mount_fuse /var/www/ pmdashboard
 
-ls -l ${HOME}/.fuse/localrepo/ilclbld38.pcs.mot.com
-ls -l ${HOME}/.fuse/kernelbsp/wolfenstein.am.mot.com
+ls -l ${HOME}/.fuse/localrepo/ilclbld38.mot.com
+ls -l ${HOME}/.fuse/kernelbsp/wolfenstein.mot.com
 #ls -l ${HOME}/.fuse/pmdashboard/10.22.71.222
 
 if [ ! -d ${HOME}/localrepo ]; then
-    ln -s ${HOME}/.fuse/localrepo/ilclbld38.pcs.mot.com ${HOME}/localrepo
+    ln -s ${HOME}/.fuse/localrepo/ilclbld38.mot.com ${HOME}/localrepo
 fi
 
-if [ ! -d ${HOME}/kernelbsp ]; then
-    ln -s ${HOME}/.fuse/kernelbsp/wolfenstein.am.mot.com ${HOME}/remote/kernelbsp
-fi
+#if [ ! -d ${HOME}/kernelbsp ]; then
+#    ln -s ${HOME}/.fuse/kernelbsp/wolfenstein.mot.com ${HOME}/remote/kernelbsp
+#fi
 #ln -s ${HOME}/.fuse/desktop/10.22.178.241 ${HOME}/remote/desktop
 #ln -s ${HOME}/.fuse/pmdashboard/10.22.71.222 ${HOME}/remote/pmdashboard

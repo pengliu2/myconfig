@@ -74,64 +74,40 @@ if [ -z $window_key ];then
     exit 0
 fi
 
-main=0
+display=0
 
 case "$window_key" in
-    "T")
-        window_name='\<Terminal -'
-        ;;
-    "E")
-        window_name="\<Emacs - "
-        ;;
-    "F")
-        window_name='Vimperator$'
-        ;;
-    "C")
-        window_name='\<Qalculate!'
-        ;;
-    "M")
-        window_name='\<VYM - View Your Mind'
-        ;;
-    "G")
-        window_name='Google Chrome$'
-        ;;
-    "P")
-        window_name='\<Foxit Reader'
-        ;;
-    "L")
-        window_name='\<a22543@peng-8540w'
+    "t")
+        window_name='\<Terminal'
+        display=1
         ;;
     "l")
         window_name='\<a22543@peng-8540w'
-        main=1
+        display=2
         ;;
     "p")
-        window_name='\<Foxit Reader'
-        main=1
+        window_name='Adobe Reader$'
+        display=2
         ;;
     "g")
         window_name='Google Chrome$'
-        main=1
+        display=1
         ;;
     "e")
         window_name="\<Emacs - "
-        main=1
+        display=2
         ;;
     "f")
         window_name='Vimperator$'
-        main=1
+        display=2
         ;;
     "c")
         window_name='\<Qalculate!'
-        main=1
+        display=1
         ;;
     "m")
         window_name='\<VYM - View Your Mind'
-        main=1
-        ;;
-    "t")
-        window_name='\<Terminal -'
-        main=1
+        display=2
         ;;
     "*")
         exit 0
@@ -150,13 +126,12 @@ if [ -z $window ]; then
 fi
 #echo "window id is [$window]"
 
-if [ $main = 1 ]
+active_window=`wmctrl -v -r :ACTIVE: -e dummy 2>&1 | grep Using | cut -f 3 -d " "`
+if [ $display = 2 ]
 then
     moving_window_main $window
 else
-#    active_window=`xdotool getactivewindow`
-#    moving_window_left $active_window
+#    moving_window_second $active_window
     moving_window_second $window
 fi
-
 wmctrl -i -R $window

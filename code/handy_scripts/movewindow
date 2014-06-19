@@ -15,6 +15,7 @@ window=`xdotool getactivewindow`
 
 # get active window position and width
 x=`xwininfo -id $window | grep "Absolute upper-left X" | awk '{print $4}'`
+x_rel=`xwininfo -id $window | grep "Relative upper-left X" | awk '{print $4}'`
 y_abs=`xwininfo -id $window | grep "Absolute upper-left Y" | awk '{print $4}'`
 y_rel=`xwininfo -id $window | grep "Relative upper-left Y" | awk '{print $4}'`
 w=`xwininfo -id $window | grep "Width" | awk '{print $2}'`
@@ -27,10 +28,10 @@ wmctrl -i -r $window -b remove,maximized_horz,maximized_vert
 # calculate new x position
 if [ "$x" -lt "$w_l_monitor" ]; then
 	# window on left monitor
-	new_x=$(($x+$w_l_monitor))
+	new_x=$(($x+$w_l_monitor-$x_rel))
 else
 	# window on right monitor
-	new_x=$(($x-$w_l_monitor))
+	new_x=$(($x-$w_l_monitor-$x_rel))
 fi
 
 #move window. Need to subtract the relative y-position.
