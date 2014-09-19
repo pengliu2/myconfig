@@ -42,6 +42,7 @@
 (setq load-path (add-to-list 'load-path "~/usr/share/emacs/site-lisp/"))
 (setq Info-default-directory-list (add-to-list 'Info-default-directory-list "/home/peng/usr/share/info/"))
 
+(set-scroll-bar-mode 'left)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing Settings Start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -60,6 +61,7 @@
 (setq read-quoted-char-radix 16)
 (setq tramp-default-method "ssh")
 (setq-default fill-column 80)
+(setq select-active-regions nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing Settings End
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

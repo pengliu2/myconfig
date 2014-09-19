@@ -3,7 +3,7 @@
 #~/usr/bin/disper -r 1920x1080 -d DFP-1,DFP-0 -e -t right
 ~/usr/bin/m
 #/usr/bin/pidgin &
-/usr/bin/setxkbmap -option 'altwin:ctrl_win' -option 'ctrl:nocaps'
+#/usr/bin/setxkbmap -option 'altwin:ctrl_win' -option 'ctrl:nocaps'
 #~/usr/bin/kk_emails
 #/usr/bin/purple-remote "setstatus?status=available&message=email"
 alias localrepo="ssh -X a22543@ilclbld38.mot.com"
