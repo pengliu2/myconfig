@@ -1,11 +1,11 @@
 #!/bin/sh
 if which zenity > /dev/null; then
 	if [ -z $1 ]; then
-        notify-send ${PWD} &
-		zenity --info --text=${PWD} &
+	        notify-send ${PWD} &
+#		zenity --info --text=${PWD} &
 	else
-        notify-send $1 &
-		zenity --info --text=$1 &
+	        notify-send $1 &
+#		zenity --info --text=$1 &
 	fi
 fi
 

@@ -39,7 +39,7 @@ if [ ! -d ${HOME}/localrepo ]; then
     ln -s ${HOME}/.fuse/localrepo/ilclbld38.mot.com ${HOME}/localrepo
 fi
 
-if [ ! -d ${HOME}/kernelbsp ]; then
+if [ ! -d ${HOME}/remote/kernelbsp ]; then
     ln -s ${HOME}/.fuse/kernelbsp/wolfenstein.mot.com ${HOME}/remote/kernelbsp
 fi
 #ln -s ${HOME}/.fuse/desktop/10.22.178.241 ${HOME}/remote/desktop

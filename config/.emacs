@@ -31,16 +31,34 @@
  '(mouse-avoidance-mode (quote banish) nil (avoid))
  '(shell-file-name "bash")
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
- '(transient-mark-mode t)
 )
+(transient-mark-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Automatical settings end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(message "customizing GNU Emacs for Linux")
-(setq load-path (cons "~/.elisp/" load-path))
-(setq load-path (add-to-list 'load-path "~/usr/share/emacs/site-lisp/"))
-(setq Info-default-directory-list (add-to-list 'Info-default-directory-list "/home/peng/usr/share/info/"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; package.el starts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'package)
+(package-initialize)
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; package.el ends
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; org mode starts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(setq org-catch-invisible-edits 1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; org mode starts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (set-scroll-bar-mode 'left)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -67,50 +85,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Packages Start
+;; Cscope Starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(if peng-laptop
- (load-theme 'tsdh-dark t)
- (load-theme 'manoj-dark t)
- )
-
-(require 'dired-sort-map)
-
-(require 'rect)
-
-(require 'color-moccur)
-
-(require 'browse-kill-ring)
-
-(require 'goto-last-change)
-
-(require 'iswitchb)
-(iswitchb-mode 1)
-(setq iswitchb-default-method 'always-frame)
-
-(require 'recentf)
-(recentf-mode 1)
-
-(require 'ispell)
-(setq ispell-program-name "aspell")
-
-;;(require 'session)
-;;(add-hook 'after-init-hook 'session-initialize)
-
-;;(when window-system
-;;(require 'maxframe)
-;;    (add-hook 'window-setup-hook 'maximize-frame t))
-
-(require 'xgtags)
-
-(require 'column-marker)
-
-(column-number-mode 1)
-(global-font-lock-mode t)
-
-(require 'xcscope)
-(setq cscope-do-not-update-database 1)
+(cscope-setup)
+(setq cscope-option-do-not-update-database 1)
 
 (defun xcscope-select-entry-other-window-kill-buf()
   (interactive)
@@ -118,7 +96,7 @@
   (setq buf (get-buffer "*cscope*"))
   (if buf
       (kill-buffer buf))
-)
+  )
 
 (define-key cscope-list-entry-keymap [return] 'xcscope-select-entry-other-window-kill-buf)
 (define-key cscope-list-entry-keymap (kbd "RET") 'xcscope-select-entry-other-window-kill-buf)
@@ -129,11 +107,46 @@
 )
 
 (define-key cscope-list-entry-keymap (kbd "o") 'xcscope-select-entry-other-window-no-kill)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Cscope Ends
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq byte-compile-warnings
-      '(not obsolete))
 
-;;(load "/home/a22543/.elisp/nxhtml/autostart.el")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Packages Start
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;(require 'dired-sort-map)
+
+;;(require 'rect)
+
+;;(require 'color-moccur)
+
+;;(require 'browse-kill-ring)
+
+;;(require 'goto-last-change)
+
+;;(require 'iswitchb)
+;;(iswitchb-mode 1)
+;;(setq iswitchb-default-method 'always-frame)
+
+;;(require 'recentf)
+;;(recentf-mode 1)
+
+;;(require 'ispell)
+;;(setq ispell-program-name "aspell")
+
+;;(require 'session)
+;;(add-hook 'after-init-hook 'session-initialize)
+
+;;(require 'xgtags)
+
+;;(require 'column-marker)
+;;(column-number-mode 1)
+
+(global-font-lock-mode t)
+
+;;(setq byte-compile-warnings
+;;      '(not obsolete))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages End
@@ -315,7 +328,6 @@
 ;;             (local-set-key "." 'semantic-complete-self-insert)
 ;;             (local-set-key ">" 'semantic-complete-self-insert) 
 	     (define-key c++-mode-map "\C-cc" 'compile)
-	     (xgtags-mode 1)
              ))
 
 (defun c-lineup-arglist-tabs-only (ignored)
@@ -341,7 +353,6 @@
 (add-hook 'c-mode-hook
 	  '(lambda ()
 	     (outline-minor-mode)
-	     (xgtags-mode 1)
 ;;	     (local-set-key "." 'semantic-complete-self-insert)
 ;;	     (local-set-key ">" 'semantic-complete-self-insert) 
 	     (define-key c-mode-map "\C-cc" 'compile)
@@ -360,9 +371,9 @@
 (add-hook 'java-mode-hook
 	  '(lambda ()
 	     (define-key java-mode-map "\C-cc" 'compile)
-	     (outline-minor-mode)
-	     (xgtags-mode 1)
-	     ))
+         (function cscope-minor-mode)
+         (interactive) (column-marker-1 80)
+         ))
 
 (add-hook 'sh-mode-hook
 	  '(lambda ()
@@ -378,24 +389,20 @@
 
 (add-hook 'c-mode-hook
 	  (lambda ()
-	    (interactive) (column-marker-3 80)))
-
-(add-hook 'java-mode-hook
-	  (lambda ()
-	    (interactive) (column-marker-3 80)))
+	    (interactive) (column-marker-1 80)))
 
 (add-hook 'c++-mode-hook
 	  (lambda ()
-	    (interactive) (column-marker-3 80)))
+	    (interactive) (column-marker-1 80)))
 
 (add-hook 'sh-mode-hook
 	  (lambda ()
-	    (interactive) (column-marker-3 80)))
+	    (interactive) (column-marker-1 80)))
 
 (add-hook 'python-mode-hook
 	  (lambda ()
 	    (setq indent-tabs-mode nil tab-width 4)
-	    (interactive) (column-marker-3 80)))
+	    (interactive) (column-marker-1 80)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming Goodies and Mode Hooks End
