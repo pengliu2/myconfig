@@ -56,8 +56,50 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 (setq org-catch-invisible-edits 1)
+(setq org-agenda-files (quote ("~/notes/gtd.org"
+			       "~/notes/edu.org"
+			       "~/notes/review.org"
+			       "~/notes/work.org"
+			       )))
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
+
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "red" :weight bold)
+              ("NEXT" :foreground "blue" :weight bold)
+              ("DONE" :foreground "forest green" :weight bold)
+              ("WAITING" :foreground "orange" :weight bold)
+              ("HOLD" :foreground "magenta" :weight bold)
+              ("CANCELLED" :foreground "forest green" :weight bold)
+              ("MEETING" :foreground "forest green" :weight bold)
+              ("PHONE" :foreground "forest green" :weight bold))))
+
+(setq org-use-fast-todo-selection t)
+
+(setq org-todo-state-tags-triggers
+      (quote (("CANCELLED" ("CANCELLED" . t))
+              ("WAITING" ("WAITING" . t))
+              ("HOLD" ("WAITING") ("HOLD" . t))
+              (done ("WAITING") ("HOLD"))
+              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+
+(setq org-directory "~/notes/")
+(setq org-default-notes-file "~/notes/journal/note.org")
+
+(global-set-key (kbd "C-c c") 'org-capture)
+
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/notes/gtd.org")
+               "* TODO %?\n%U\n")
+              ("n" "note" entry (file "~/notes/journal/note.org")
+               "* %? :NOTE:\n%U\n")
+)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; org mode starts
+;; org mode ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (set-scroll-bar-mode 'left)
@@ -342,7 +384,6 @@
 (add-hook 'c-mode-common-hook
           (lambda ()
             ;; Add kernel style
-            (setq tab-width 8)
             (c-add-style
              "linux-tabs-only"
              '("linux" (c-offsets-alist
@@ -352,7 +393,6 @@
 	  )
 (add-hook 'c-mode-hook
 	  '(lambda ()
-	     (outline-minor-mode)
 ;;	     (local-set-key "." 'semantic-complete-self-insert)
 ;;	     (local-set-key ">" 'semantic-complete-self-insert) 
 	     (define-key c-mode-map "\C-cc" 'compile)
