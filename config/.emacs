@@ -28,8 +28,8 @@
  '(igrep-files-default nil)
  '(ispell-program-name "aspell")
  '(make-backup-files nil)
- '(mouse-avoidance-mode (quote banish) nil (avoid))
- '(shell-file-name "bash")
+ '(mouse-avoidance-mode (quote jump) nil (avoid))
+;; '(shell-file-name "bash")
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
 )
 (transient-mark-mode 1)
@@ -41,16 +41,29 @@
 ;; package.el starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
-(package-initialize)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package.el ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; org mode starts
+;; ido starts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (require 'ido)
+;; (ido-mode t)
+; Use the current window when visiting files and buffers with ido
+;;(setq ido-default-file-method 'selected-window)
+;;(setq ido-default-buffer-method 'selected-window)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ido ends
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; org-mode starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
@@ -60,13 +73,19 @@
 			       "~/notes/edu.org"
 			       "~/notes/review.org"
 			       "~/notes/work.org"
+			       "~/notes/life.org"
+			       "~/notes/frommobile.org"
 			       )))
+
+(setq org-agenda-skip-scheduled-if-done t)
+(setq org-agenda-skip-deadline-if-done t)
+
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
 
 (setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
+      (quote (("TODO" :foreground "violet" :weight bold)
               ("NEXT" :foreground "blue" :weight bold)
               ("DONE" :foreground "forest green" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
@@ -76,6 +95,7 @@
               ("PHONE" :foreground "forest green" :weight bold))))
 
 (setq org-use-fast-todo-selection t)
+(setq org-treat-S-cursor-todo-selection-as-state-change nil)
 
 (setq org-todo-state-tags-triggers
       (quote (("CANCELLED" ("CANCELLED" . t))
@@ -89,8 +109,6 @@
 (setq org-directory "~/notes/")
 (setq org-default-notes-file "~/notes/journal/note.org")
 
-(global-set-key (kbd "C-c c") 'org-capture)
-
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/notes/gtd.org")
                "* TODO %?\n%U\n")
@@ -98,8 +116,80 @@
                "* %? :NOTE:\n%U\n")
 )))
 
+;; refiling
+(setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                 (org-agenda-files :maxlevel . 9))))
+; Use full outline paths for refile targets - we file directly with IDO
+(setq org-refile-use-outline-path t)
+
+; Targets complete directly with IDO
+(setq org-outline-path-complete-in-steps nil)
+
+; Allow refile to create parent tasks with confirmation
+(setq org-refile-allow-creating-parent-nodes (quote confirm))
+
+(setq org-completion-use-ido t)
+; Use the current window for indirect buffer display
+(setq org-indirect-buffer-display 'current-window)
+
+;;;; Refile settings
+; Exclude DONE state tasks from refile targets
+(defun bh/verify-refile-target ()
+  "Exclude todo keywords with a done state from refile targets"
+  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+
+(setq org-refile-target-verify-function 'bh/verify-refile-target)
+
+;;MobileOrg
+(require 'org-mobile)
+(setq org-mobile-inbox-for-pull "~/notes/frommobile.org")
+(setq org-mobile-directory "~/Dropbox/MobileOrg")
+(define-key org-mode-map "\C-cp" 'org-mobile-pull)
+(define-key org-agenda-mode-map "\C-cp" 'org-mobile-pull)
+
+;; Fork the work (async) of pushing to mobile
+;; https://gist.github.com/3111823 ASYNC org mobile push...
+(require 'gnus-async) 
+;; Define a timer variable
+(defvar org-mobile-push-timer nil
+  "Timer that `org-mobile-push-timer' used to reschedule itself, or nil.")
+;; Push to mobile when the idle timer runs out
+(defun org-mobile-push-with-delay (secs)
+   (when org-mobile-push-timer
+    (cancel-timer org-mobile-push-timer))
+  (setq org-mobile-push-timer
+        (run-with-idle-timer
+         (* 1 secs) nil 'org-mobile-push)))
+;; After saving files, start an idle timer after which we are going to push 
+(add-hook 'after-save-hook 
+ (lambda () 
+   (if (or (eq major-mode 'org-mode) (eq major-mode 'org-agenda-mode))
+     (dolist (file (org-mobile-files-alist))
+       (if (string= (expand-file-name (car file)) (buffer-file-name))
+           (org-mobile-push-with-delay 10)))
+     )))
+;; Run after midnight each day (or each morning upon wakeup?).
+;;(run-at-time "00:01" 86400 '(lambda () (org-mobile-push-with-delay 1)))
+;; Run 1 minute after launch, and once a day after that.
+;;(run-at-time "1 min" 86400 '(lambda () (org-mobile-push-with-delay 1)))
+
+;; watch mobileorg.org for changes, and then call org-mobile-pull
+;; http://stackoverflow.com/questions/3456782/emacs-lisp-how-to-monitor-changes-of-a-file-directory
+;;(org-mobile-pull)
+(defun install-monitor (file secs)
+  (run-with-timer
+   0 secs
+   (lambda (f p)
+     (unless (< p (second (time-since (elt (file-attributes f) 5))))
+       (org-mobile-pull)))
+   file secs))
+(install-monitor (concat (file-name-as-directory org-mobile-directory) org-mobile-capture-file) 30)
+;; Do a pull every 5 minutes to circumvent problems with timestamping
+;; (ie. dropbox bugs)
+;;(run-with-timer 0 (* 5 60) 'org-mobile-pull)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; org mode ends
+;; org-mode ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (set-scroll-bar-mode 'left)
@@ -369,7 +459,7 @@
              (outline-minor-mode)
 ;;             (local-set-key "." 'semantic-complete-self-insert)
 ;;             (local-set-key ">" 'semantic-complete-self-insert) 
-	     (define-key c++-mode-map "\C-cc" 'compile)
+	     (define-key c++-mode-map "\C-ck" 'compile)
              ))
 
 (defun c-lineup-arglist-tabs-only (ignored)
@@ -395,7 +485,7 @@
 	  '(lambda ()
 ;;	     (local-set-key "." 'semantic-complete-self-insert)
 ;;	     (local-set-key ">" 'semantic-complete-self-insert) 
-	     (define-key c-mode-map "\C-cc" 'compile)
+	     (define-key c-mode-map "\C-ck" 'compile)
 	     (setq indent-tabs-mode t)
 	     (c-set-style "linux-tabs-only")
          ))
@@ -410,7 +500,7 @@
 
 (add-hook 'java-mode-hook
 	  '(lambda ()
-	     (define-key java-mode-map "\C-cc" 'compile)
+	     (define-key java-mode-map "\C-ck" 'compile)
          (function cscope-minor-mode)
          (interactive) (column-marker-1 80)
          ))
