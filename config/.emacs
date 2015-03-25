@@ -210,7 +210,6 @@
 (put 'upcase-region 'disabled nil)
 (setq read-quoted-char-radix 16)
 (setq tramp-default-method "ssh")
-(setq-default fill-column 80)
 (setq select-active-regions nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing Settings End
@@ -494,7 +493,6 @@
 (add-hook 'text-mode-hook
 	  '(lambda ()
 	     (outline-minor-mode)
-	     (column-number-mode 1)
 	     (line-number-mode 1)
 ))
 
@@ -502,7 +500,6 @@
 	  '(lambda ()
 	     (define-key java-mode-map "\C-ck" 'compile)
          (function cscope-minor-mode)
-         (interactive) (column-marker-1 80)
          ))
 
 (add-hook 'sh-mode-hook
@@ -517,22 +514,9 @@
              (define-key Info-mode-map [(meta n)] '(lambda() (interactive)(scroll-up 1)))
              (define-key Info-mode-map [(meta p)] '(lambda() (interactive)(scroll-down 1)))))
 
-(add-hook 'c-mode-hook
-	  (lambda ()
-	    (interactive) (column-marker-1 80)))
-
-(add-hook 'c++-mode-hook
-	  (lambda ()
-	    (interactive) (column-marker-1 80)))
-
-(add-hook 'sh-mode-hook
-	  (lambda ()
-	    (interactive) (column-marker-1 80)))
-
 (add-hook 'python-mode-hook
 	  (lambda ()
-	    (setq indent-tabs-mode nil tab-width 4)
-	    (interactive) (column-marker-1 80)))
+	    (setq indent-tabs-mode nil tab-width 4)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming Goodies and Mode Hooks End
