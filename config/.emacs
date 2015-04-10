@@ -5,8 +5,10 @@
 ;;ecb                  muse
 ;;maxframe.el
 ;;git.le		    git-blame.el
+;;projectile
 
 ;;ChangeLogs
+;;04-09-2015	Peng Liu	Stop updating change logs because git does it all
 ;;11-07-2010	Peng Liu	Remove the Windows stuffs.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -63,6 +65,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; projectile starts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(projectile-global-mode)
+(setq projectile-indexing-method 'native)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; projectile ends
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-mode starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key "\C-cc" 'org-capture)
@@ -85,8 +98,8 @@
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
 
 (setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "violet" :weight bold)
-              ("NEXT" :foreground "blue" :weight bold)
+      (quote (("TODO" :foreground "sky blue" :weight bold)
+              ("NEXT" :foreground "violet" :weight bold)
               ("DONE" :foreground "forest green" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
@@ -122,6 +135,11 @@
 ; Use full outline paths for refile targets - we file directly with IDO
 (setq org-refile-use-outline-path t)
 
+; Use meta O as outline mode prefix
+(add-hook 'outline-minor-mode-hook
+	  (lambda () (local-set-key "\C-c\C-c"
+				    outline-mode-prefix-map)))
+
 ; Targets complete directly with IDO
 (setq org-outline-path-complete-in-steps nil)
 
@@ -146,6 +164,12 @@
 (setq org-mobile-directory "~/Dropbox/MobileOrg")
 (define-key org-mode-map "\C-cp" 'org-mobile-pull)
 (define-key org-agenda-mode-map "\C-cp" 'org-mobile-pull)
+
+(add-hook 'org-mode-hook
+	  (lambda()
+	    (local-set-key [(ctrl tab)] 'other-window)
+	    )
+)
 
 ;; Fork the work (async) of pushing to mobile
 ;; https://gist.github.com/3111823 ASYNC org mobile push...
@@ -183,6 +207,7 @@
      (unless (< p (second (time-since (elt (file-attributes f) 5))))
        (org-mobile-pull)))
    file secs))
+
 (install-monitor (concat (file-name-as-directory org-mobile-directory) org-mobile-capture-file) 30)
 ;; Do a pull every 5 minutes to circumvent problems with timestamping
 ;; (ie. dropbox bugs)
@@ -220,6 +245,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (cscope-setup)
 (setq cscope-option-do-not-update-database 1)
+(setq cscope-program "gtags-cscope")
 
 (defun xcscope-select-entry-other-window-kill-buf()
   (interactive)
@@ -238,6 +264,9 @@
 )
 
 (define-key cscope-list-entry-keymap (kbd "o") 'xcscope-select-entry-other-window-no-kill)
+(define-key cscope-list-entry-keymap (kbd "M-p") (lambda() (interactive)(scroll-down 1)))
+(define-key cscope-list-entry-keymap (kbd "M-n") (lambda() (interactive)(scroll-up 1)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cscope Ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -256,9 +285,9 @@
 
 ;;(require 'goto-last-change)
 
-;;(require 'iswitchb)
-;;(iswitchb-mode 1)
-;;(setq iswitchb-default-method 'always-frame)
+(require 'iswitchb)
+(iswitchb-mode 1)
+(setq iswitchb-default-method 'always-frame)
 
 ;;(require 'recentf)
 ;;(recentf-mode 1)
@@ -415,7 +444,7 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-set-key [(meta g)] 'goto-line)
-(global-set-key [(meta o)] 'other-window)
+(global-set-key [(ctrl tab)] 'other-window)
 
 ;;(global-set-key [(control f4)] 'bookmark-set)
 ;;(global-set-key [f4] 'bookmark-jump)
@@ -429,7 +458,6 @@
 
 (defun switch-to-other-buffer () (interactive) (switch-to-buffer (other-buffer)))
 (global-set-key "\C-\M-l" 'switch-to-other-buffer)
-(global-set-key [\C-\M-\tab] 'other-window)
 (global-set-key "\C-w" 'clipboard-kill-region)
 (global-set-key "\M-w" 'clipboard-kill-ring-save)
 (global-set-key "\C-y" 'clipboard-yank)
@@ -478,8 +506,9 @@
              '("linux" (c-offsets-alist
                         (arglist-cont-nonempty
                          c-lineup-gcc-asm-reg
-                         c-lineup-arglist-tabs-only)))))
-	  )
+                         c-lineup-arglist-tabs-only))))
+	    (local-set-key  (kbd "C-c o") 'ff-find-other-file)))
+
 (add-hook 'c-mode-hook
 	  '(lambda ()
 ;;	     (local-set-key "." 'semantic-complete-self-insert)
@@ -522,6 +551,29 @@
 ;; Programming Goodies and Mode Hooks End
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; hacks on 24.2 start
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(when (and (equal emacs-major-version 24)
+           (equal emacs-minor-version 2))
+  (eval-after-load "mumamo"
+    '(setq mumamo-per-buffer-local-vars
+           (delq 'buffer-file-name mumamo-per-buffer-local-vars))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; hacks on 24.2 ends
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; color theme settings start
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(load-theme 'zenburn)
+(setq sml/theme 'dark)
+(setq sml/no-confirm-load-theme t)
+(sml/setup)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; color theme settings end
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (defun paren-dwim ()
@@ -638,8 +690,3 @@
      (if arg (nth arg recently-killed-list)
        (car recently-killed-list)))))
 
-(when (and (equal emacs-major-version 24)
-           (equal emacs-minor-version 2))
-  (eval-after-load "mumamo"
-    '(setq mumamo-per-buffer-local-vars
-           (delq 'buffer-file-name mumamo-per-buffer-local-vars))))
