@@ -54,7 +54,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing Settings Start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(set-scroll-bar-mode 'left)
+(set-scroll-bar-mode 'right)
 (setq default-frame-alist (append (list
   '(top . 0)
   '(left . 0)
@@ -103,6 +103,18 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; projectile ends
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; outline starts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Use meta O as outline mode prefix
+(global-unset-key (kbd "M-o"))
+(add-hook 'outline-minor-mode-hook
+	  (lambda () (local-set-key (kbd "M-o")
+				    outline-mode-prefix-map)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; outline ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -160,17 +172,11 @@
                "* %? :NOTE:\n%U\n")
 )))
 
-;; refiling
+;;;; Refile settings
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9))))
 ; Use full outline paths for refile targets - we file directly with IDO
 (setq org-refile-use-outline-path t)
-
-; Use meta O as outline mode prefix
-(global-unset-key (kbd "M-o"))
-(add-hook 'outline-minor-mode-hook
-	  (lambda () (local-set-key (kbd "M-o")
-				    outline-mode-prefix-map)))
 
 ; Targets complete directly with IDO
 (setq org-outline-path-complete-in-steps nil)
@@ -178,17 +184,22 @@
 ; Allow refile to create parent tasks with confirmation
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 
-(setq org-completion-use-ido t)
+;(setq org-completion-use-ido t)
+(setq org-completion-use-iswitchb t)
 ; Use the current window for indirect buffer display
 (setq org-indirect-buffer-display 'current-window)
 
-;;;; Refile settings
 ; Exclude DONE state tasks from refile targets
 (defun bh/verify-refile-target ()
   "Exclude todo keywords with a done state from refile targets"
   (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-
 (setq org-refile-target-verify-function 'bh/verify-refile-target)
+
+(add-hook 'org-mode-hook
+	  (lambda()
+	    (local-set-key [(ctrl tab)] 'other-window)
+	    )
+)
 
 ;;MobileOrg
 (require 'org-mobile)
@@ -196,12 +207,6 @@
 (setq org-mobile-directory "~/Dropbox/MobileOrg")
 (define-key org-mode-map "\C-cp" 'org-mobile-pull)
 (define-key org-agenda-mode-map "\C-cp" 'org-mobile-pull)
-
-(add-hook 'org-mode-hook
-	  (lambda()
-	    (local-set-key [(ctrl tab)] 'other-window)
-	    )
-)
 
 ;; Fork the work (async) of pushing to mobile
 ;; https://gist.github.com/3111823 ASYNC org mobile push...
@@ -282,7 +287,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Autocompletion starts
+;; Autocompletion and History starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;(cond
 ;; ((string-match "linux" system-configuration)
@@ -347,20 +352,26 @@
 	 try-complete-lisp-symbol))
 (global-set-key [(meta ?/)] 'hippie-expand) 
 
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Autocompletion end
+;; Autocompletion and History end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; intelligent grep starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(autoload (function igrep) "igrep"                                            
-  "*Run `grep` PROGRAM to match EXPRESSION in FILES..." t)                   
-(autoload (function igrep-find) "igrep"                                       
-  "*Run `grep` via `find`..." t)                                             
-(autoload (function dired-do-igrep) "igrep"                                   
-  "*Run `grep` on the marked (or next prefix ARG) files." t)                 
-(autoload (function dired-do-igrep-find) "igrep"                              
+(autoload (function igrep) "igrep"
+  "*Run `grep` PROGRAM to match EXPRESSION in FILES..." t)
+(autoload (function igrep-find) "igrep"
+  "*Run `grep` via `find`..." t)
+(autoload (function dired-do-igrep) "igrep"
+  "*Run `grep` on the marked (or next prefix ARG) files." t)
+(autoload (function dired-do-igrep-find) "igrep"
   "*Run `grep` via `find` on the marked (or next prefix ARG) directories." t)
 (put 'igrep-files-default 'c-mode
      (lambda () "*.[ch]"))
