@@ -52,6 +52,36 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Editing Settings Start
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(set-scroll-bar-mode 'left)
+(setq default-frame-alist (append (list
+  '(top . 0)
+  '(left . 0)
+  '(width  . 100)  ; Width set to 100 characters
+  '(height . 36)) ; Height set to 36 lines
+  default-frame-alist)) 
+(setq inhibit-startup-message 0)
+(setq initial-scratch-message nil)
+(setq tool-bar-mode -1)
+(setq frame-title-format "Emacs - %S: %b %f")
+(setq blink-cursor nil)
+(put 'upcase-region 'disabled nil)
+(setq read-quoted-char-radix 16)
+(setq tramp-default-method "ssh")
+(setq select-active-regions nil)
+
+(require 'iswitchb)
+(iswitchb-mode 1)
+(setq iswitchb-default-method 'always-frame)
+
+(global-font-lock-mode t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Editing Settings End
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ido starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (require 'ido)
@@ -82,6 +112,7 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 (setq org-catch-invisible-edits 1)
+(setq org-agenda-window-setup 'current-window) 
 (setq org-agenda-files (quote ("~/notes/gtd.org"
 			       "~/notes/edu.org"
 			       "~/notes/review.org"
@@ -136,8 +167,9 @@
 (setq org-refile-use-outline-path t)
 
 ; Use meta O as outline mode prefix
+(global-unset-key (kbd "M-o"))
 (add-hook 'outline-minor-mode-hook
-	  (lambda () (local-set-key "\C-c\C-c"
+	  (lambda () (local-set-key (kbd "M-o")
 				    outline-mode-prefix-map)))
 
 ; Targets complete directly with IDO
@@ -217,35 +249,13 @@
 ;; org-mode ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(set-scroll-bar-mode 'left)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Editing Settings Start
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq default-frame-alist (append (list
-  '(top . 0)
-  '(left . 0)
-  '(width  . 100)  ; Width set to 100 characters
-  '(height . 36)) ; Height set to 36 lines
-  default-frame-alist)) 
-(setq inhibit-startup-message 0)
-(setq initial-scratch-message nil)
-(setq tool-bar-mode -1)
-(setq frame-title-format "Emacs - %S: %b %f")
-(setq blink-cursor nil)
-(put 'upcase-region 'disabled nil)
-(setq read-quoted-char-radix 16)
-(setq tramp-default-method "ssh")
-(setq select-active-regions nil)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Editing Settings End
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cscope Starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (cscope-setup)
 (setq cscope-option-do-not-update-database 1)
-(setq cscope-program "gtags-cscope")
+;;(setq cscope-program "gtags-cscope")
+(setq cscope-program "cscope")
 
 (defun xcscope-select-entry-other-window-kill-buf()
   (interactive)
@@ -269,47 +279,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cscope Ends
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Packages Start
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;(require 'dired-sort-map)
-
-;;(require 'rect)
-
-;;(require 'color-moccur)
-
-;;(require 'browse-kill-ring)
-
-;;(require 'goto-last-change)
-
-(require 'iswitchb)
-(iswitchb-mode 1)
-(setq iswitchb-default-method 'always-frame)
-
-;;(require 'recentf)
-;;(recentf-mode 1)
-
-;;(require 'ispell)
-;;(setq ispell-program-name "aspell")
-
-;;(require 'session)
-;;(add-hook 'after-init-hook 'session-initialize)
-
-;;(require 'xgtags)
-
-;;(require 'column-marker)
-;;(column-number-mode 1)
-
-(global-font-lock-mode t)
-
-;;(setq byte-compile-warnings
-;;      '(not obsolete))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Packages End
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -439,7 +408,6 @@
 (define-key mysearch-keymap "g" 'igrep)
 (define-key mysearch-keymap "f" 'igrep-find)
 (define-key mysearch-keymap "m" 'moccur)
-
 (define-key global-map "\C-cf" mysearch-keymap)
 
 (fset 'yes-or-no-p 'y-or-n-p)
