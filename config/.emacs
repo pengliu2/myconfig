@@ -46,6 +46,7 @@
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package.el ends
@@ -131,6 +132,7 @@
 			       "~/notes/work.org"
 			       "~/notes/life.org"
 			       "~/notes/frommobile.org"
+			       "~/notes/projects"
 			       )))
 
 (setq org-agenda-skip-scheduled-if-done t)
@@ -208,6 +210,9 @@
 (define-key org-mode-map "\C-cp" 'org-mobile-pull)
 (define-key org-agenda-mode-map "\C-cp" 'org-mobile-pull)
 
+(require 'filenotify)
+(require 'org-mobile-sync)
+(org-mobile-sync-mode 1)
 ;; Fork the work (async) of pushing to mobile
 ;; https://gist.github.com/3111823 ASYNC org mobile push...
 (require 'gnus-async) 
@@ -245,7 +250,7 @@
        (org-mobile-pull)))
    file secs))
 
-(install-monitor (concat (file-name-as-directory org-mobile-directory) org-mobile-capture-file) 30)
+;;(install-monitor (concat (file-name-as-directory org-mobile-directory) org-mobile-capture-file) 30)
 ;; Do a pull every 5 minutes to circumvent problems with timestamping
 ;; (ie. dropbox bugs)
 ;;(run-with-timer 0 (* 5 60) 'org-mobile-pull)
@@ -457,17 +462,17 @@
       '(add-to-list 'which-func-modes 'python-mode))
 (eval-after-load "which-func"
       '(add-to-list 'which-func-modes 'perl-mode))
-
+(eval-after-load "which-func"
+      '(add-to-list 'which-func-modes 'c-mode))
 
 (add-hook 'c++-mode-hook
           '(lambda ()
              (c-set-style "stroustrup")
              (outline-minor-mode)
-;;             (local-set-key "." 'semantic-complete-self-insert)
-;;             (local-set-key ">" 'semantic-complete-self-insert) 
 	     (define-key c++-mode-map "\C-ck" 'compile)
              ))
 
+;; from kenrel documentation
 (defun c-lineup-arglist-tabs-only (ignored)
   "Line up argument lists by tabs, not spaces"
   (let* ((anchor (c-langelem-pos c-syntactic-element))
@@ -476,7 +481,6 @@
          (steps (floor offset c-basic-offset)))
     (* (max steps 1)
        c-basic-offset)))
-
 (add-hook 'c-mode-common-hook
           (lambda ()
             ;; Add kernel style
@@ -487,13 +491,11 @@
                          c-lineup-gcc-asm-reg
                          c-lineup-arglist-tabs-only))))
 	    (local-set-key  (kbd "C-c o") 'ff-find-other-file)))
-
 (add-hook 'c-mode-hook
 	  '(lambda ()
-;;	     (local-set-key "." 'semantic-complete-self-insert)
-;;	     (local-set-key ">" 'semantic-complete-self-insert) 
 	     (define-key c-mode-map "\C-ck" 'compile)
 	     (setq indent-tabs-mode t)
+	     (setq show-trailing-whitespace t)
 	     (c-set-style "linux-tabs-only")
          ))
 
@@ -503,12 +505,6 @@
 	     (outline-minor-mode)
 	     (line-number-mode 1)
 ))
-
-(add-hook 'java-mode-hook
-	  '(lambda ()
-	     (define-key java-mode-map "\C-ck" 'compile)
-         (function cscope-minor-mode)
-         ))
 
 (add-hook 'sh-mode-hook
 	  '(lambda ()
