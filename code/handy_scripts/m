@@ -21,27 +21,26 @@ mount_fuse() {
     else
     # mount it 
         afuse \
-            -o mount_template="sshfs $ACCOUNT\@%r:$REMOTEDIR %m" \
+            -o mount_template="sshfs -o workaround=rename $ACCOUNT\@%r:$REMOTEDIR %m" \
             -o unmount_template="fusermount -u -z %m" \
             ~/$FUSEDIR/$MNTDIR
     fi
 }
 
-mount_fuse /localrepo/a22543 localrepo
-mount_fuse /home/a22543 kernelbsp
-#mount_fuse /var/www/ pmdashboard
+#mount_fuse /localrepo/a22543 localrepo
+#mount_fuse /home/a22543 kernelbsp
 
-#ls -l ${HOME}/.fuse/localrepo/ilclbld38.mot.com
-ls -l ${HOME}/.fuse/kernelbsp/wolfenstein.mot.com
-ls -l ${HOME}/.fuse/localrepo/ilclbld08.mot.com
-#ls -l ${HOME}/.fuse/pmdashboard/10.22.71.222
+#ls -l ${HOME}/.fuse/localrepo/ilclbld08.mot.com
+#ls -l ${HOME}/.fuse/kernelbsp/wolfenstein.mot.com
 
-if [ ! -d ${HOME}/localrepo ]; then
-    ln -s ${HOME}/.fuse/localrepo/ilclbld08.mot.com ${HOME}/localrepo
-fi
+#bindfs ${HOME}/.fuse/localrepo/ilclbld08.mot.com ${HOME}/localrepo
 
-if [ ! -d ${HOME}/remote/kernelbsp ]; then
-    ln -s ${HOME}/.fuse/kernelbsp/wolfenstein.mot.com ${HOME}/remote/kernelbsp
-fi
-#ln -s ${HOME}/.fuse/desktop/10.22.178.241 ${HOME}/remote/desktop
-#ln -s ${HOME}/.fuse/pmdashboard/10.22.71.222 ${HOME}/remote/pmdashboard
+#if [ ! -d ${HOME}/remote/kernelbsp ]; then
+#    ln -s ${HOME}/.fuse/kernelbsp/wolfenstein.mot.com ${HOME}/remote/kernelbsp
+#fi
+
+#smbnetfs ${HOME}/.smb/mnt
+#ls ${HOME}/.smb/mnt/samba01.mot.com/il427lnxdroid08/a22543
+#bindfs ${HOME}/.smb/mnt/samba01.mot.com/il427lnxdroid08/a22543 ${HOME}/localrepo
+
+sshfs ${USER}@ilclbld08.mot.com:/localrepo/a22543 ${HOME}/localrepo
