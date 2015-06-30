@@ -648,20 +648,32 @@
   (kill-buffer (buffer-name))
 )
 
-(defun undo-kill-buffer (arg)
-  "Re-open the last buffer killed.  With ARG, re-open the nth buffer."
-  (interactive "p")
-  (let ((recently-killed-list (copy-sequence recentf-list))
-	 (buffer-files-list
-	  (delq nil (mapcar (lambda (buf)
-			      (when (buffer-file-name buf)
-				(expand-file-name (buffer-file-name buf)))) (buffer-list)))))
-    (mapc
-     (lambda (buf-file)
-       (setq recently-killed-list
-	     (delq buf-file recently-killed-list)))
-     buffer-files-list)
-    (find-file
-     (if arg (nth arg recently-killed-list)
-       (car recently-killed-list)))))
+;; Reopen the last killed buffer
+;; Source: http://stackoverflow.com/questions/10394213/emacs-reopen-previous-killed-buffer
+(require 'cl)
+(require 'recentf)
+(recentf-mode 1)
+(defun undo-kill-buffer ()
+  (interactive)
+  (let ((active-files (loop for buf in (buffer-list)
+                            when (buffer-file-name buf) collect it)))
+    (loop for file in recentf-list
+          unless (member file active-files) return (find-file file))))
 
+;;(defun undo-kill-buffer (arg)
+;;  "Re-open the last buffer killed.  With ARG, re-open the nth buffer."
+;;  (interactive "p")
+;;  (let ((recently-killed-list (copy-sequence recentf-list))
+;;	 (buffer-files-list
+;;	  (delq nil (mapcar (lambda (buf)
+;;			      (when (buffer-file-name buf)
+;;				(expand-file-name (buffer-file-name buf)))) (buffer-list)))))
+;;    (mapc
+;;     (lambda (buf-file)
+;;       (setq recently-killed-list
+;;	     (delq buf-file recently-killed-list)))
+;;     buffer-files-list)
+;;    (find-file
+;;     (if arg (nth arg recently-killed-list)
+;;       (car recently-killed-list)))))
+;;
