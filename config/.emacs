@@ -72,10 +72,7 @@
 (setq tramp-default-method "ssh")
 (setq select-active-regions nil)
 
-(require 'iswitchb)
-(iswitchb-mode 1)
-(setq iswitchb-default-method 'always-frame)
-
+(ido-mode 1)
 (global-font-lock-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -127,7 +124,6 @@
 (setq org-catch-invisible-edits 1)
 (setq org-agenda-window-setup 'current-window) 
 (setq org-agenda-files (quote ("~/notes/gtd.org"
-			       "~/notes/edu.org"
 			       "~/notes/review.org"
 			       "~/notes/work.org"
 			       "~/notes/life.org"
@@ -186,8 +182,8 @@
 ; Allow refile to create parent tasks with confirmation
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 
-;(setq org-completion-use-ido t)
-(setq org-completion-use-iswitchb t)
+(setq org-completion-use-ido t)
+;(setq org-completion-use-iswitchb t)
 ; Use the current window for indirect buffer display
 (setq org-indirect-buffer-display 'current-window)
 
