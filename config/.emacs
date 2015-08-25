@@ -121,6 +121,7 @@
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\C-cl" 'org-store-link)
 (setq org-catch-invisible-edits 1)
 (setq org-agenda-window-setup 'current-window) 
 (setq org-agenda-files (quote ("~/notes/gtd.org"
@@ -453,13 +454,29 @@
 (which-func-mode 1)
 
 (eval-after-load "which-func"
-      '(add-to-list 'which-func-modes 'java-mode))
+  '(add-to-list 'which-func-modes 'java-mode))
 (eval-after-load "which-func"
-      '(add-to-list 'which-func-modes 'python-mode))
+  '(add-to-list 'which-func-modes 'python-mode))
 (eval-after-load "which-func"
-      '(add-to-list 'which-func-modes 'perl-mode))
+  '(add-to-list 'which-func-modes 'perl-mode))
 (eval-after-load "which-func"
-      '(add-to-list 'which-func-modes 'c-mode))
+  '(add-to-list 'which-func-modes 'c-mode))
+
+(defun linux-c-mode ()
+  "C mode with adjusted defaults for use with the Linux kernel."
+  (interactive)
+  (c-mode)
+  (setq c-indent-level 8)
+  (setq c-brace-imaginary-offset 0)
+  (setq c-brace-offset -8)
+  (setq c-argdecl-indent 8)
+  (setq c-label-offset -8)
+  (setq c-continued-statement-offset 8)
+  (setq indent-tabs-mode t)
+  (setq tab-width 8))
+
+(setq auto-mode-alist (cons '("/home/a22543/localrepo/[^/]+/kernel/.*\\.[ch]$" . linux-c-mode)
+			    auto-mode-alist))
 
 (add-hook 'c++-mode-hook
           '(lambda ()
@@ -468,33 +485,14 @@
 	     (define-key c++-mode-map "\C-ck" 'compile)
              ))
 
-;; from kenrel documentation
-(defun c-lineup-arglist-tabs-only (ignored)
-  "Line up argument lists by tabs, not spaces"
-  (let* ((anchor (c-langelem-pos c-syntactic-element))
-         (column (c-langelem-2nd-pos c-syntactic-element))
-         (offset (- (1+ column) anchor))
-         (steps (floor offset c-basic-offset)))
-    (* (max steps 1)
-       c-basic-offset)))
 (add-hook 'c-mode-common-hook
           (lambda ()
-            ;; Add kernel style
-            (c-add-style
-             "linux-tabs-only"
-             '("linux" (c-offsets-alist
-                        (arglist-cont-nonempty
-                         c-lineup-gcc-asm-reg
-                         c-lineup-arglist-tabs-only))))
 	    (local-set-key  (kbd "C-c o") 'ff-find-other-file)))
 (add-hook 'c-mode-hook
 	  '(lambda ()
 	     (define-key c-mode-map "\C-ck" 'compile)
-	     (setq indent-tabs-mode t)
 	     (setq show-trailing-whitespace t)
-	     (c-set-style "linux-tabs-only")
          ))
-
 
 (add-hook 'text-mode-hook
 	  '(lambda ()
