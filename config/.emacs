@@ -1,11 +1,15 @@
 ;;This configuration needs following elisps:
-;;goto-last-change.el  setnu.el
-;;browse-kill-ring.el  cygwin-mount.el      igrep.el             
-;;color-moccur.el      dired-sort-map.el    erin.el
-;;ecb                  muse
+;;org	org-mobile-sync
+;;goto-last-change.el
+;;browse-kill-ring.el  igrep.el             
+;;color-moccur.el
 ;;maxframe.el
-;;git.le		    git-blame.el
+;;magit		    git-blame.el
 ;;projectile
+;; DropBox
+;; xcscope
+;; smex - M-x interface with Ido-style fuzzy matching.
+;; zenburn-theme
 
 ;;ChangeLogs
 ;;04-09-2015	Peng Liu	Stop updating change logs because git does it all
@@ -126,7 +130,6 @@
 (setq org-agenda-window-setup 'current-window) 
 (setq org-agenda-files (quote ("~/notes/gtd.org"
 			       "~/notes/review.org"
-			       "~/notes/work.org"
 			       "~/notes/life.org"
 			       "~/notes/frommobile.org"
 			       "~/notes/projects"
@@ -210,47 +213,6 @@
 (require 'filenotify)
 (require 'org-mobile-sync)
 (org-mobile-sync-mode 1)
-;; Fork the work (async) of pushing to mobile
-;; https://gist.github.com/3111823 ASYNC org mobile push...
-(require 'gnus-async) 
-;; Define a timer variable
-(defvar org-mobile-push-timer nil
-  "Timer that `org-mobile-push-timer' used to reschedule itself, or nil.")
-;; Push to mobile when the idle timer runs out
-(defun org-mobile-push-with-delay (secs)
-   (when org-mobile-push-timer
-    (cancel-timer org-mobile-push-timer))
-  (setq org-mobile-push-timer
-        (run-with-idle-timer
-         (* 1 secs) nil 'org-mobile-push)))
-;; After saving files, start an idle timer after which we are going to push 
-(add-hook 'after-save-hook 
- (lambda () 
-   (if (or (eq major-mode 'org-mode) (eq major-mode 'org-agenda-mode))
-     (dolist (file (org-mobile-files-alist))
-       (if (string= (expand-file-name (car file)) (buffer-file-name))
-           (org-mobile-push-with-delay 10)))
-     )))
-;; Run after midnight each day (or each morning upon wakeup?).
-;;(run-at-time "00:01" 86400 '(lambda () (org-mobile-push-with-delay 1)))
-;; Run 1 minute after launch, and once a day after that.
-;;(run-at-time "1 min" 86400 '(lambda () (org-mobile-push-with-delay 1)))
-
-;; watch mobileorg.org for changes, and then call org-mobile-pull
-;; http://stackoverflow.com/questions/3456782/emacs-lisp-how-to-monitor-changes-of-a-file-directory
-;;(org-mobile-pull)
-(defun install-monitor (file secs)
-  (run-with-timer
-   0 secs
-   (lambda (f p)
-     (unless (< p (second (time-since (elt (file-attributes f) 5))))
-       (org-mobile-pull)))
-   file secs))
-
-;;(install-monitor (concat (file-name-as-directory org-mobile-directory) org-mobile-capture-file) 30)
-;; Do a pull every 5 minutes to circumvent problems with timestamping
-;; (ie. dropbox bugs)
-;;(run-with-timer 0 (* 5 60) 'org-mobile-pull)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-mode ends
