@@ -121,6 +121,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-mode starts
+;; http://doc.norang.ca/org-mode.html
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
@@ -133,6 +134,7 @@
 			       "~/notes/life.org"
 			       "~/notes/frommobile.org"
 			       "~/notes/projects"
+                   "~/notes/jobs"
 			       )))
 
 (setq org-agenda-skip-scheduled-if-done t)
@@ -172,7 +174,21 @@
                "* TODO %?\n%U\n")
               ("n" "note" entry (file "~/notes/journal/note.org")
                "* %? :NOTE:\n%U\n")
-)))
+              )))
+
+;; Customized Weekly Agenda
+(setq org-agenda-custom-commands
+      '(("W" "Weekly Review"
+         ((agenda "" ((org-agenda-ndays 1))) ;; review upcoming deadlines and appointments
+          ;; type "l" in the agenda to review logged items 
+          ;;          (stuck "") ;; review stuck projects as designated by org-stuck-projects
+          ;;          (todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
+          ;;          (todo "MAYBE") ;; review someday/maybe items
+          (todo "WAITING")
+          (todo "NEXT")
+          )) ;; review waiting items
+        ;; ...other commands here
+        ))
 
 ;;;; Refile settings
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
@@ -201,7 +217,55 @@
 	  (lambda()
 	    (local-set-key [(ctrl tab)] 'other-window)
 	    )
-)
+      )
+
+;; clocking
+(setq org-clock-in-switch-to-state 'bh/clock-in-to-next)
+
+(defun bh/is-project-p ()
+  "Any task with a todo keyword subtask"
+  (save-restriction
+    (widen)
+    (let ((has-subtask)
+          (subtree-end (save-excursion (org-end-of-subtree t)))
+          (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+      (save-excursion
+        (forward-line 1)
+        (while (and (not has-subtask)
+                    (< (point) subtree-end)
+                    (re-search-forward "^\*+ " subtree-end t))
+          (when (member (org-get-todo-state) org-todo-keywords-1)
+            (setq has-subtask t))))
+      (and is-a-task has-subtask))))
+
+(defun bh/is-task-p ()
+  "Any task with a todo keyword and no subtask"
+  (save-restriction
+    (widen)
+    (let ((has-subtask)
+          (subtree-end (save-excursion (org-end-of-subtree t)))
+          (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+      (save-excursion
+        (forward-line 1)
+        (while (and (not has-subtask)
+                    (< (point) subtree-end)
+                    (re-search-forward "^\*+ " subtree-end t))
+          (when (member (org-get-todo-state) org-todo-keywords-1)
+            (setq has-subtask t))))
+      (and is-a-task (not has-subtask)))))
+
+(defun bh/clock-in-to-next (kw)
+  "Switch a task from TODO to NEXT when clocking in.
+Skips capture tasks, projects, and subprojects.
+Switch projects and subprojects from NEXT back to TODO"
+  (when (not (and (boundp 'org-capture-mode) org-capture-mode))
+    (cond
+     ((and (member (org-get-todo-state) (list "TODO"))
+           (bh/is-task-p))
+      "NEXT")
+     ((and (member (org-get-todo-state) (list "NEXT"))
+           (bh/is-project-p))
+      "TODO"))))
 
 ;;MobileOrg
 (require 'org-mobile)
@@ -633,3 +697,4 @@
 ;;     (if arg (nth arg recently-killed-list)
 ;;       (car recently-killed-list)))))
 ;;
+
