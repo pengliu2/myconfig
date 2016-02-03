@@ -134,7 +134,7 @@
 			       "~/notes/life.org"
 			       "~/notes/frommobile.org"
 			       "~/notes/projects"
-                   "~/notes/jobs"
+			       "~/notes/jobs"
 			       )))
 
 (setq org-agenda-skip-scheduled-if-done t)
@@ -277,6 +277,53 @@ Switch projects and subprojects from NEXT back to TODO"
 (require 'filenotify)
 (require 'org-mobile-sync)
 (org-mobile-sync-mode 1)
+
+;;org-depend.el
+(require 'org-depend)
+
+;;showing time in org-src-mode
+(defvar org-src-mode-entry-time)
+(defun org-src-mode-print-elapse-time()
+  ;;(message "path 2")
+  (if (org-bound-and-true-p org-src-mode-entry-time)
+      (progn
+	(let ((res (format-seconds "H %M %z%S" (float-time (time-subtract (current-time) org-src-mode-entry-time)))))
+	  (message "time: %s" res)
+	  )
+	)
+    (progn
+      ;;(message "variable not found")
+      )
+    )
+  )
+
+(defun my-org-edit-src-exit ()
+  (interactive)
+  (if (org-bound-and-true-p org-src-mode-entry-time)
+      (progn
+	(let ((res (format-seconds "H %M %z%S" (float-time (time-subtract (current-time) org-src-mode-entry-time)))))
+	  (add-file-local-variable-prop-line 'edittime res nil)
+	  )
+	)
+    (progn
+      ;;(message "variable not found")
+      )
+    )
+  (org-edit-src-exit)
+  )
+
+(defun org-src-mode-elapse-time ()
+  ;;(message "called")
+  (when (org-bound-and-true-p org-src--from-org-mode)
+    ;;(message "path 1")
+    (delete-file-local-variable-prop-line 'edittime nil)
+    (setq org-src-mode-entry-time (current-time))
+    (org-add-hook 'kill-buffer-hook 'org-src-mode-print-elapse-time nil 'local)
+    (define-key org-src-mode-map "\C-c'" 'my-org-edit-src-exit)
+    )
+  )
+
+(add-hook 'org-src-mode-hook 'org-src-mode-elapse-time)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-mode ends
