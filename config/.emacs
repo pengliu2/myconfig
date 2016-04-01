@@ -127,6 +127,22 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 (global-set-key "\C-cl" 'org-store-link)
+
+;;warn me of any deadlines in next 7 days
+(setq org-deadline-warning-days 7)
+;;don't give awarning colour to tasks with impending deadlines
+;;if they are scheduled to be done
+(setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
+;;don't show tasks that are scheduled
+(setq org-agenda-todo-ignore-scheduled (quote all))
+
+;;sort tasks in order of when they are due and then by priority
+(setq org-agenda-sorting-strategy
+  (quote
+   ((agenda deadline-up priority-down)
+    (todo priority-down category-keep)
+    (tags priority-down category-keep)
+    (search category-keep))))
 (setq org-catch-invisible-edits 1)
 (setq org-agenda-window-setup 'current-window) 
 (setq org-agenda-files (quote ("~/notes/gtd.org"
@@ -179,7 +195,7 @@
 ;; Customized Weekly Agenda
 (setq org-agenda-custom-commands
       '(("W" "Weekly Review"
-         ((agenda "" ((org-agenda-ndays 1))) ;; review upcoming deadlines and appointments
+         ((agenda "" ((org-agenda-ndays 7))) ;; review upcoming deadlines and appointments
           ;; type "l" in the agenda to review logged items 
           ;;          (stuck "") ;; review stuck projects as designated by org-stuck-projects
           ;;          (todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
