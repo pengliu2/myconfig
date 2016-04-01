@@ -9,7 +9,7 @@
 
 # width of left monitor
 w_l_monitor=1920
-w_r_monitor=1600
+w_r_monitor=1920
 
 window=`xdotool getactivewindow`
 
