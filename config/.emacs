@@ -295,7 +295,7 @@ Switch projects and subprojects from NEXT back to TODO"
 (org-mobile-sync-mode 1)
 
 ;;org-depend.el
-(require 'org-depend)
+;;(require 'org-depend)
 
 ;;showing time in org-src-mode
 (defvar org-src-mode-entry-time)
