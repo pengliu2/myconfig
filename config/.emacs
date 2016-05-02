@@ -61,15 +61,9 @@
 ;; Editing Settings Start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (set-scroll-bar-mode 'right)
-(setq default-frame-alist (append (list
-  '(top . 0)
-  '(left . 0)
-  '(width  . 100)  ; Width set to 100 characters
-  '(height . 36)) ; Height set to 36 lines
-  default-frame-alist)) 
 (setq inhibit-startup-message 0)
 (setq initial-scratch-message nil)
-(setq tool-bar-mode -1)
+(setq tool-bar-mode nil)
 (setq frame-title-format "Emacs - %S: %b %f")
 (setq blink-cursor nil)
 (put 'upcase-region 'disabled nil)
