@@ -644,9 +644,9 @@ Switch projects and subprojects from NEXT back to TODO"
 ;; color theme settings start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-theme 'zenburn)
-(setq sml/theme 'dark)
-(setq sml/no-confirm-load-theme t)
-(sml/setup)
+;;(setq sml/theme 'dark)
+;;(setq sml/no-confirm-load-theme t)
+;;(sml/setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; color theme settings end
@@ -662,7 +662,7 @@ Switch projects and subprojects from NEXT back to TODO"
   (insert "}")
   (indent-according-to-mode)
   (previous-line 1))
-(global-set-key [(meta ?[)] 'paren-dwim)
+;;(global-set-key [(meta ?[)] 'paren-dwim)
 
 (defun insert-function-head (purpose param retval remarks)
   (interactive "spurpose:\nsparam:\nsretval:\nsremarks")
