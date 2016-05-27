@@ -10,7 +10,7 @@
 w_l_monitor=1920
 window_key=$1
 
-function move_window_to
+function move_window_to_first_display
 {
     to_move=$1
     desired_display=$2

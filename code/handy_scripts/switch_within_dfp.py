@@ -2,32 +2,34 @@
 import pygtk
 pygtk.require('2.0')
 import gtk, wnck
+import pengliu_wm_utils
+
+SCREENSIZE = 1920
 
 if __name__ == "__main__":
-    default = wnck.screen_get_default()
-
+    # default = wnck.screen_get_default()
+    default = pengliu_wm_utils.find_global_active()
     while gtk.events_pending():
         gtk.main_iteration(False)
 
-    focus = 1
-    top = [None, None]
+    display = -1
+    top = [None,None]
     window_list = default.get_windows_stacked()
     if len(window_list) == 0:
         print "No Windows Found"
     else:
+        numwindows = len(window_list)
+        count = 0
         for win in window_list:
+            count += 1
             if win.get_name() == 'xfce4-panel' or win.get_name() == 'Desktop':
                 continue
+            
             xp,yp,wp,hp = win.get_geometry()
-            if win.is_most_recently_activated():
-                if xp < 1920:
-                    focus = 0
-                else:
-                    focus = 1
+            display = xp / SCREENSIZE
+            if win.is_active() or count == numwindows:
                 break
-            if xp < 1920:
-                top[0] = win
-            else:
-                top[1] = win
-    if top[focus] is not None:
-        top[focus].activate(0)
+            top[display] = win
+
+    if top[display] is not None:
+        top[display].activate(0)
