@@ -51,5 +51,3 @@ def focus_away(direction):
 
 if __name__ == "__main__":
     focus_away(int(sys.argv[1]))
-    
-    print wnck.screen_get_default().get_number()

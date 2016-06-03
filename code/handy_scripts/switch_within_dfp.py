@@ -9,8 +9,7 @@ SCREENSIZE = 1920
 if __name__ == "__main__":
     # default = wnck.screen_get_default()
     default = pengliu_wm_utils.find_global_active()
-    while gtk.events_pending():
-        gtk.main_iteration(False)
+    default.force_update()
 
     display = -1
     top = [None,None]

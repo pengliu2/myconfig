@@ -28,32 +28,35 @@ def find_active_win(screen):
             top = win
             if win.is_active():
                 break
-    print top.get_name()
     return top
+
+def find_active_win_dbg(screen_no):
+    wl = wnck.screen_get(screen_no).get_windows_stacked()
+    for w in range(len(wl)-1,0,-1):
+        if (wl[w].is_active()):
+            print "%s - Active"%(wl[w].get_name())
+        else:
+            print wl[w].get_name()
     
 def find_global_active():
-    i = 0
-    screen = wnck.screen_get_default()
-    while gtk.events_pending():
-        gtk.main_iteration(False)
-    wl = screen.get_windows_stacked()
-    for j in range(len(wl)-1,0,-1):
-        if wl[j].is_active():
-            return wl[j].get_screen()
-        
+    """
+    return: current screen
+    catch: each screen might have one active window. so if there's 2, use default screen.
+    """
+    count = 0
+    s = None
     for i in range(0,MAX_SCREEN_NUM,1):
         screen = wnck.screen_get(i)
         if screen == None:
-            break
-        
-        while gtk.events_pending():
-            gtk.main_iteration(False)
+            continue
+        screen.force_update()
 
-        wl = screen.get_windows_stacked()
-
-        for j in range(len(wl)-1,0,-1):
-            j -= 1
-            if wl[j].is_active():
-                return wl[j].get_screen()
-        i += 1
+        active_win = screen.get_active_window()
+        if active_win is not None:
+            s = screen
+            count += 1
+    if count == 1:
+        return s
+    elif count > 1:
+        return wnck.screen_get_default()
     return None
