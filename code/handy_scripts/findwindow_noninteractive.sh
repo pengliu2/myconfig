@@ -90,13 +90,12 @@ if [ -z $window ]; then
 fi
 #echo "window id is [$window]"
 
-active_window=`xdotool getactivewindow`
-active_window=`printf "0x%08x" $active_window`
+#active_window=`xdotool getactivewindow`
+#active_window=`printf "0x%08x" $active_window`
 #echo "active_window is [$active_window]"
-if [ "$active_window" != "$window" ]
-then
-    #echo "moving active"
-    move_window_to $active_window 0
-fi
-move_window_to $window 1
+#if [ "$active_window" != "$window" ]
+#then
+#    move_window_to $active_window 0
+#fi
+#move_window_to $window 1
 wmctrl -i -R $window
