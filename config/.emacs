@@ -73,6 +73,7 @@
 
 (ido-mode 1)
 (global-font-lock-mode t)
+(column-number-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing Settings End
@@ -150,7 +151,13 @@
 			       "~/notes/projects"
 			       ;;"~/notes/jobs"
                    "~/notes/work"
+                   "~/notes/journal"
+                   "~/notes/home"
 			       )))
+
+;; for org-journal
+(setq org-agenda-file-regexp  "\\`[^.].*\\.org\\'\\|\\`[0-9]+\\'")
+
 
 (setq org-agenda-start-with-log-mode nil)
 (setq org-log-done 'time)
@@ -362,6 +369,14 @@ Switch projects and subprojects from NEXT back to TODO"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-mode ends
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; org-journal starts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq org-journal-dir "~/notes/journal/")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; org-journal ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -600,6 +615,7 @@ Switch projects and subprojects from NEXT back to TODO"
 	  '(lambda ()
 	     (define-key c-mode-map "\C-ck" 'compile)
 	     (setq show-trailing-whitespace t)
+         (column-number-mode 1)
          ))
 
 (add-hook 'text-mode-hook
