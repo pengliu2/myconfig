@@ -148,6 +148,7 @@
 			       "~/notes/review.org"
 			       "~/notes/life.org"
 			       "~/notes/frommobile.org"
+                   "~/notes/desktop.org"
 			       "~/notes/projects"
 			       ;;"~/notes/jobs"
                    "~/notes/work"
@@ -157,6 +158,7 @@
 
 ;; for org-journal
 (setq org-agenda-file-regexp  "\\`[^.].*\\.org\\'\\|\\`[0-9]+\\'")
+(setq org-journal-carryover-items "TODO=\"NEXT\"\|TODO=\"TODO\"")
 
 
 (setq org-agenda-start-with-log-mode nil)
