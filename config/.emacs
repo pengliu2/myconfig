@@ -3,7 +3,6 @@
 ;;goto-last-change.el
 ;;browse-kill-ring.el  igrep.el             
 ;;color-moccur.el
-;;maxframe.el
 ;;magit		    git-blame.el
 ;;projectile
 ;; DropBox
@@ -368,7 +367,8 @@ Switch projects and subprojects from NEXT back to TODO"
     )
   )
 
-(add-hook 'org-src-mode-hook 'org-src-mode-elapse-time)
+;; Comment this for now, until I have a better way to differentiate code that needs this
+;; (add-hook 'org-src-mode-hook 'org-src-mode-elapse-time)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-mode ends
@@ -378,6 +378,8 @@ Switch projects and subprojects from NEXT back to TODO"
 ;; org-journal starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq org-journal-dir "~/notes/journal/")
+(add-hook 'org-journal-mode-hook 'turn-on-auto-fill)
+(add-hook 'org-journal-mode-hook 'flyspell-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-journal ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
