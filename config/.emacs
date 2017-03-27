@@ -36,7 +36,9 @@
  '(mouse-avoidance-mode (quote jump) nil (avoid))
 ;; '(shell-file-name "bash")
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
-)
+ )
+
+(tool-bar-mode -1)
 (transient-mark-mode 1)
 (setq auto-save-default nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -48,7 +50,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
@@ -71,7 +72,8 @@
 (setq tramp-default-method "ssh")
 (setq select-active-regions nil)
 
-(ido-mode 1)
+(ido-mode 'both)
+(ido-ubiquitous 1)
 (global-font-lock-mode t)
 (column-number-mode 1)
 
@@ -154,9 +156,11 @@
                    "~/notes/work"
                    "~/notes/journal"
                    "~/notes/home"
+                   "~/.org-jira"
 			       )))
 
 ;; for org-journal
+;; (setq org-journal-hide-entries-p nil)
 (setq org-agenda-file-regexp  "\\`[^.].*\\.org\\'\\|\\`[0-9]+\\'")
 (setq org-journal-carryover-items "TODO=\"NEXT\"\|TODO=\"TODO\"")
 
@@ -202,7 +206,8 @@
 
 ;; Customized Weekly Agenda
 (setq org-agenda-custom-commands
-      '(("W" "Weekly Review"
+      '(
+        ("W" "Weekly Review"
          ((agenda ""
                   ((org-agenda-start-on-weekday nil)
                    (org-agenda-start-day "-7d")
@@ -214,6 +219,8 @@
           ;;          (stuck "") ;; review stuck projects as designated by org-stuck-projects
           ;;          (todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
           ;;          (todo "MAYBE") ;; review someday/maybe items
+          (tags "status={Task In Progress}" ((org-agenda-todo-ignore-scheduled (quote all)))
+                )
           (todo "NEXT" ((org-agenda-todo-ignore-scheduled (quote all))
                         (org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
                                                      (timeline . "  % s")
@@ -230,6 +237,28 @@
         ;; ...other commands here
         ("P" "Backlog View"
          ((alltodo "" ((org-agenda-todo-ignore-scheduled (quote all)))))
+         )
+        ("d" "Today"
+         (
+          ;; type "l" in the agenda to review logged items 
+          ;;          (stuck "") ;; review stuck projects as designated by org-stuck-projects
+          ;;          (todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
+          ;;          (todo "MAYBE") ;; review someday/maybe items
+          (tags "status={Task In Progress\\|code-complete}+TODO=\"TODO\"-type={Epic}" ((org-agenda-todo-ignore-scheduled (quote all)))
+                )
+          (todo "NEXT" ((org-agenda-todo-ignore-scheduled (quote all))
+                        (org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
+                                                     (timeline . "  % s")
+                                                     (todo . " %i%l%l %-12:c")
+                                                     (tags . " %i %-12:c")
+                                                     (search . " %i %-12:c")))
+                        )
+                )
+          (todo "WAITING" ((org-agenda-todo-ignore-scheduled (quote all)))
+                )
+          (todo "HOLD" ((org-agenda-todo-ignore-scheduled (quote all)))
+                )
+          )
          )
         )
       )
@@ -382,6 +411,15 @@ Switch projects and subprojects from NEXT back to TODO"
 (add-hook 'org-journal-mode-hook 'flyspell-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-journal ends
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; org-jira starts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq jiralib-url "https://jirasw")
+(setq request-backend 'url-retrieve)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; org-jira ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -610,7 +648,7 @@ Switch projects and subprojects from NEXT back to TODO"
           '(lambda ()
              (c-set-style "stroustrup")
              (outline-minor-mode)
-	     (define-key c++-mode-map "\C-ck" 'compile)
+             (define-key c++-mode-map "\C-ck" 'compile)
              ))
 
 (add-hook 'c-mode-common-hook
