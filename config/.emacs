@@ -154,7 +154,6 @@
 			       "~/notes/projects"
 			       ;;"~/notes/jobs"
                    "~/notes/work"
-                   "~/notes/journal"
                    "~/notes/home"
                    "~/.org-jira"
 			       )))
@@ -644,23 +643,6 @@ Switch projects and subprojects from NEXT back to TODO"
 (setq auto-mode-alist (cons '("/home/a22543/localrepo/[^/]+/kernel/.*\\.[ch]$" . linux-c-mode)
 			    auto-mode-alist))
 
-(add-hook 'c++-mode-hook
-          '(lambda ()
-             (c-set-style "stroustrup")
-             (outline-minor-mode)
-             (define-key c++-mode-map "\C-ck" 'compile)
-             ))
-
-(add-hook 'c-mode-common-hook
-          (lambda ()
-	    (local-set-key  (kbd "C-c o") 'ff-find-other-file)))
-(add-hook 'c-mode-hook
-	  '(lambda ()
-	     (define-key c-mode-map "\C-ck" 'compile)
-	     (setq show-trailing-whitespace t)
-         (column-number-mode 1)
-         ))
-
 (add-hook 'text-mode-hook
 	  '(lambda ()
 	     (outline-minor-mode)
@@ -682,6 +664,15 @@ Switch projects and subprojects from NEXT back to TODO"
 (add-hook 'python-mode-hook
 	  (lambda ()
 	    (setq indent-tabs-mode nil tab-width 4)))
+
+(setq-default c-default-style "k&r"
+	      c-basic-offset 4)
+
+(add-hook 'c-mode-common-hook
+	  (lambda ()
+	    (local-set-key  (kbd "C-c o") 'ff-find-other-file)
+	    (setq show-trailing-whitespace t)
+	    (outline-minor-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming Goodies and Mode Hooks End
