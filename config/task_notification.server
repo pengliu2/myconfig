@@ -7,7 +7,7 @@ if [ "$LOCAL_NET" = "10.44" ]; then
 fi
 if [ "a${DISPLAY}" = "a" -o ! "a${WINDOW}" = "a" ]; then
     if [ "$NO_SSH" = "false" ]; then
-        ssh -x peng@${LOCAL_MACHINE} DISPLAY=:0.0 /usr/local/bin/task_notification "${HOSTNAME}:${PWD}"
+        ssh -x ${USER}@${LOCAL_MACHINE} DISPLAY=:0.0 ${HOME}/usr/bin/task_notification.local "${HOSTNAME}:${PWD}"
     fi
 else
     zenity --info --text=$PWD &
