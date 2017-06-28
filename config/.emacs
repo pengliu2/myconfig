@@ -161,7 +161,7 @@
 ;; for org-journal
 ;; (setq org-journal-hide-entries-p nil)
 (setq org-agenda-file-regexp  "\\`[^.].*\\.org\\'\\|\\`[0-9]+\\'")
-(setq org-journal-carryover-items "TODO=\"NEXT\"\|TODO=\"TODO\"")
+(setq org-journal-carryover-items "TODO=\"NEXT\"\|TODO=\"TODO\"|TODO=\"WAITING\"")
 
 
 (setq org-agenda-start-with-log-mode nil)
@@ -243,7 +243,7 @@
           ;;          (stuck "") ;; review stuck projects as designated by org-stuck-projects
           ;;          (todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
           ;;          (todo "MAYBE") ;; review someday/maybe items
-          (tags "status={Task In Progress\\|code-complete}+TODO=\"TODO\"-type={Epic}" ((org-agenda-todo-ignore-scheduled (quote all)))
+	  (tags "status={Task In Progress\\|code-complete}+TODO=\"TODO\"-type={Epic}" ((org-agenda-todo-ignore-scheduled (quote all)))
                 )
           (todo "NEXT" ((org-agenda-todo-ignore-scheduled (quote all))
                         (org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
@@ -347,8 +347,6 @@ Switch projects and subprojects from NEXT back to TODO"
 (define-key org-agenda-mode-map "\C-cp" 'org-mobile-pull)
 
 (require 'filenotify)
-(require 'org-mobile-sync)
-(org-mobile-sync-mode 1)
 
 ;;org-depend.el
 ;;(require 'org-depend)
