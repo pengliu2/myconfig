@@ -78,6 +78,9 @@ case "$window_key" in
     "v")
         window_name='Desktop Ubuntu'
         ;;
+    "g")
+        window_name=' - Google Chrome$'
+        ;;
 esac
 
 if [ -z window_name ]; then
