@@ -73,7 +73,7 @@
 (setq select-active-regions nil)
 
 (ido-mode 'both)
-(ido-ubiquitous 1)
+;;(ido-ubiquitous 1)
 (global-font-lock-mode t)
 (column-number-mode 1)
 
@@ -156,6 +156,7 @@
                    "~/notes/work"
                    "~/notes/home"
                    "~/.org-jira"
+                   "~/notes/journal"
 			       )))
 
 ;; for org-journal
@@ -413,7 +414,7 @@ Switch projects and subprojects from NEXT back to TODO"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-jira starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq jiralib-url "https://jirasw")
+(setq jiralib-url "https://jirasw.nvidia.com")
 (setq request-backend 'url-retrieve)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-jira ends
