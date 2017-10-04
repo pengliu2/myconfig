@@ -626,22 +626,6 @@ Switch projects and subprojects from NEXT back to TODO"
 (eval-after-load "which-func"
   '(add-to-list 'which-func-modes 'c-mode))
 
-(defun linux-c-mode ()
-  "C mode with adjusted defaults for use with the Linux kernel."
-  (interactive)
-  (c-mode)
-  (setq c-indent-level 8)
-  (setq c-brace-imaginary-offset 0)
-  (setq c-brace-offset -8)
-  (setq c-argdecl-indent 8)
-  (setq c-label-offset -8)
-  (setq c-continued-statement-offset 8)
-  (setq indent-tabs-mode t)
-  (setq tab-width 8))
-
-(setq auto-mode-alist (cons '("/home/a22543/localrepo/[^/]+/kernel/.*\\.[ch]$" . linux-c-mode)
-			    auto-mode-alist))
-
 (add-hook 'text-mode-hook
 	  '(lambda ()
 	     (outline-minor-mode)
@@ -664,7 +648,7 @@ Switch projects and subprojects from NEXT back to TODO"
 	  (lambda ()
 	    (setq indent-tabs-mode nil tab-width 4)))
 
-(setq-default c-default-style "k&r"
+(setq-default c-default-style "K&R"
 	      c-basic-offset 4)
 
 (add-hook 'c-mode-common-hook
@@ -672,6 +656,18 @@ Switch projects and subprojects from NEXT back to TODO"
 	    (local-set-key  (kbd "C-c o") 'ff-find-other-file)
 	    (setq show-trailing-whitespace t)
 	    (outline-minor-mode)))
+
+(defun linux-c-mode ()
+  "C mode with adjusted defaults for use with the Linux kernel."
+  (interactive)
+  (c-mode)
+  (setq c-indent-level 8)
+  (setq c-basic-offset 8)
+  (setq indent-tabs-mode t)
+  (setq tab-width 8))
+
+(setq auto-mode-alist (cons '("/build/pengliu/[^/]+/kernel/.*\\.[ch]$" . linux-c-mode)
+			    auto-mode-alist))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming Goodies and Mode Hooks End
