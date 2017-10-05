@@ -67,7 +67,7 @@ case "$window_key" in
         window_name='\<Emacs -'
         ;;
     "f")
-        window_name='Vimperator$'
+        window_name='Mozilla Firefox$'
         ;;
     "c")
         window_name='\<Calculator'
