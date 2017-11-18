@@ -219,7 +219,7 @@
           ;;          (stuck "") ;; review stuck projects as designated by org-stuck-projects
           ;;          (todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
           ;;          (todo "MAYBE") ;; review someday/maybe items
-          (tags "status={Task In Progress}" ((org-agenda-todo-ignore-scheduled (quote all)))
+	  (tags "status={Task In Progress\\|code-complete}+TODO=\"TODO\"-type={Epic}" ((org-agenda-todo-ignore-scheduled (quote all)))
                 )
           (todo "NEXT" ((org-agenda-todo-ignore-scheduled (quote all))
                         (org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
