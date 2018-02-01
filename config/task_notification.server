@@ -1,6 +1,3 @@
 #!/bin/bash
-NO_SSH="false"
-LOCAL_MACHINE=`echo ${SSH_CONNECTION}|cut -f 1 -d " "`
-LOCAL_NET=`echo ${LOCAL_MACHINE}|cut -f 1,2 -d .`
-ssh -x ${USER}@${LOCAL_MACHINE} DISPLAY=:0.0 ${HOME}/usr/bin/task_notification.local "${HOSTNAME}:${PWD}"
+/usr/bin/ssh -x ${USER}@$(echo ${SSH_CONNECTION}|cut -f 1 -d " ") DISPLAY=:0.0 ${HOME}/usr/bin/task_notification.local "${HOSTNAME}:${PWD}"
 
