@@ -126,6 +126,8 @@
 (global-set-key "\C-cb" 'org-iswitchb)
 (global-set-key "\C-cl" 'org-store-link)
 
+(define-key org-mode-map "<C-tab>" nil)
+
 ;;warn me of any deadlines in next 7 days
 (setq org-deadline-warning-days 7)
 ;;don't give awarning colour to tasks with impending deadlines
@@ -210,7 +212,7 @@
         ("W" "Weekly Review"
          ((agenda ""
                   ((org-agenda-start-on-weekday nil)
-                   (org-agenda-start-day "-7d")
+                   (org-agenda-start-day "-5d")
                    (org-agenda-span 14)
                    (org-agenda-skip-deadline-if-done nil)
                    (org-agenda-skip-scheduled-if-done nil)
@@ -593,7 +595,8 @@ Switch projects and subprojects from NEXT back to TODO"
 
 ;;(global-set-key [(control f4)] 'bookmark-set)
 ;;(global-set-key [f4] 'bookmark-jump)
-
+(define-key makefile-gmake-mode-map "\M-n" nil)
+(define-key makefile-gmake-mode-map "\M-p" nil)
 (global-set-key "\M-n" (lambda() (interactive)(scroll-up 1)))
 (global-set-key "\M-p" (lambda() (interactive)(scroll-down 1)))
 

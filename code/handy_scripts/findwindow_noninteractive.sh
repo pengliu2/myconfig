@@ -61,7 +61,10 @@ function move_window_to
 
 case "$window_key" in
     "t")
-        window_name='\<Terminal -'
+        window_name='\<Terminal - pengliu@pengliu-Desktop-Ubuntu:'
+        ;;
+    "b")
+        window_name='\<Terminal - pengliu@Peng-T530-Debian:'
         ;;
     "e")
         window_name='\<Emacs -'
