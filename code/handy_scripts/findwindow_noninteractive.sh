@@ -73,7 +73,7 @@ case "$window_key" in
         window_name='Mozilla Firefox$'
         ;;
     "c")
-        window_name='\<Calculator'
+        window_name='\<Terminal -'
         ;;
     "m")
         window_name=' Freeplane '
@@ -83,6 +83,9 @@ case "$window_key" in
         ;;
     "g")
         window_name=' - Google Chrome$'
+        ;;
+    "s")
+        window_name='\<Slack - '
         ;;
 esac
 
