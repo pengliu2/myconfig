@@ -4,7 +4,6 @@
 ;;browse-kill-ring.el  igrep.el             
 ;;color-moccur.el
 ;;magit		    git-blame.el
-;;projectile
 ;; DropBox
 ;; xcscope
 ;; smex - M-x interface with Ido-style fuzzy matching.
@@ -33,11 +32,11 @@
  '(igrep-files-default nil)
  '(ispell-program-name "aspell")
  '(make-backup-files nil)
- '(mouse-avoidance-mode (quote jump) nil (avoid))
 ;; '(shell-file-name "bash")
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  )
 
+(mouse-avoidance-mode 'banish)
 (tool-bar-mode -1)
 (transient-mark-mode 1)
 (setq auto-save-default nil)
@@ -94,16 +93,6 @@
 ;; ido ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; projectile starts
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(projectile-global-mode)
-(setq projectile-indexing-method 'native)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; projectile ends
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; outline starts
@@ -126,7 +115,7 @@
 (global-set-key "\C-cb" 'org-iswitchb)
 (global-set-key "\C-cl" 'org-store-link)
 
-(define-key org-mode-map "<C-tab>" nil)
+;;(define-key org-mode-map "<C-tab>" nil)
 
 ;;warn me of any deadlines in next 7 days
 (setq org-deadline-warning-days 7)
@@ -158,12 +147,20 @@
                    "~/notes/work"
                    "~/notes/home"
                    "~/.org-jira"
-                   "~/notes/journal"
-			       )))
+		   )))
+
+(require 'cl)
+;;(require 'org-journal)
+(setq org-journal-dir "~/notes/journal")
+;;(add-to-list 'org-agenda-files (expand-file-name "~/notes/journal"))
+;;(setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|\\`[0-9]+\\'")
+;;(setq org-journal-file-format "%Y%m%d.org")
+
+(add-hook 'org-journal-mode-hook 'turn-on-auto-fill)
+(add-hook 'org-journal-mode-hook 'flyspell-mode)
 
 ;; for org-journal
 ;; (setq org-journal-hide-entries-p nil)
-(setq org-agenda-file-regexp  "\\`[^.].*\\.org\\'\\|\\`[0-9]+\\'")
 (setq org-journal-carryover-items "TODO=\"NEXT\"\|TODO=\"TODO\"|TODO=\"WAITING\"")
 
 
@@ -404,16 +401,6 @@ Switch projects and subprojects from NEXT back to TODO"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; org-journal starts
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq org-journal-dir "~/notes/journal/")
-(add-hook 'org-journal-mode-hook 'turn-on-auto-fill)
-(add-hook 'org-journal-mode-hook 'flyspell-mode)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; org-journal ends
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-jira starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq jiralib-url "https://jirasw.nvidia.com")
@@ -595,8 +582,8 @@ Switch projects and subprojects from NEXT back to TODO"
 
 ;;(global-set-key [(control f4)] 'bookmark-set)
 ;;(global-set-key [f4] 'bookmark-jump)
-(define-key makefile-gmake-mode-map "\M-n" nil)
-(define-key makefile-gmake-mode-map "\M-p" nil)
+;;(define-key makefile-gmake-mode-map "\M-n" nil)
+;;(define-key makefile-gmake-mode-map "\M-p" nil)
 (global-set-key "\M-n" (lambda() (interactive)(scroll-up 1)))
 (global-set-key "\M-p" (lambda() (interactive)(scroll-down 1)))
 
@@ -800,7 +787,6 @@ Switch projects and subprojects from NEXT back to TODO"
 
 ;; Reopen the last killed buffer
 ;; Source: http://stackoverflow.com/questions/10394213/emacs-reopen-previous-killed-buffer
-(require 'cl)
 (require 'recentf)
 (recentf-mode 1)
 (defun undo-kill-buffer ()
