@@ -146,14 +146,14 @@
 			       ;;"~/notes/jobs"
                    "~/notes/work"
                    "~/notes/home"
+                   "~/notes/journal"
                    "~/.org-jira"
 		   )))
 
 (require 'cl)
 ;;(require 'org-journal)
 (setq org-journal-dir "~/notes/journal")
-;;(add-to-list 'org-agenda-files (expand-file-name "~/notes/journal"))
-;;(setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|\\`[0-9]+\\'")
+(setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|\\`[0-9]+\\'")
 ;;(setq org-journal-file-format "%Y%m%d.org")
 
 (add-hook 'org-journal-mode-hook 'turn-on-auto-fill)
@@ -339,6 +339,10 @@ Switch projects and subprojects from NEXT back to TODO"
            (bh/is-project-p))
       "TODO"))))
 
+(defun clocktablefiles ()
+  (cons (buffer-file-name) '("~/.org-jira/TGFXP.org"))
+  )
+
 ;;MobileOrg
 (require 'org-mobile)
 (setq org-mobile-inbox-for-pull "~/notes/frommobile.org")
@@ -404,7 +408,7 @@ Switch projects and subprojects from NEXT back to TODO"
 ;; org-jira starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq jiralib-url "https://jirasw.nvidia.com")
-(setq request-backend 'url-retrieve)
+(setq request-backend 'curl)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; org-jira ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -607,14 +611,12 @@ Switch projects and subprojects from NEXT back to TODO"
 
 (which-func-mode 1)
 
-(eval-after-load "which-func"
-  '(add-to-list 'which-func-modes 'java-mode))
-(eval-after-load "which-func"
-  '(add-to-list 'which-func-modes 'python-mode))
-(eval-after-load "which-func"
-  '(add-to-list 'which-func-modes 'perl-mode))
-(eval-after-load "which-func"
-  '(add-to-list 'which-func-modes 'c-mode))
+;;(eval-after-load "which-func"
+;;  '(add-to-list 'which-func-modes 'python-mode))
+;;(eval-after-load "which-func"
+;;  '(add-to-list 'which-func-modes 'perl-mode))
+;;(eval-after-load "which-func"
+;;  '(add-to-list 'which-func-modes 'c-mode))
 
 (add-hook 'text-mode-hook
 	  '(lambda ()

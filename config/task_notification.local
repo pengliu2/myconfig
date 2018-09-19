@@ -1,9 +1,9 @@
 #!/bin/sh
 if which zenity > /dev/null; then
 	if [ -z $1 ]; then
-		zenity --info --text=$PWD &
+        notify-send $(pwd) &
 	else
-		zenity --info --text=$1 &
+		notify-send $1 &
 	fi
 fi
 
