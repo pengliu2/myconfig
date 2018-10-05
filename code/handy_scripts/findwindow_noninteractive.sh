@@ -87,6 +87,9 @@ case "$window_key" in
     "s")
         window_name='\<Slack - '
         ;;
+    "o")
+        window_name='\<Tabs Outliner$'
+        ;;
 esac
 
 if [ -z window_name ]; then
