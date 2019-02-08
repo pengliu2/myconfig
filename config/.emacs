@@ -39,7 +39,7 @@
 (mouse-avoidance-mode 'banish)
 (tool-bar-mode -1)
 (transient-mark-mode 1)
-(setq auto-save-default nil)
+(setq auto-save-visited-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Automatical settings end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
