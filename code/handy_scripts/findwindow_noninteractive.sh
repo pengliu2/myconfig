@@ -69,6 +69,9 @@ case "$window_key" in
     "e")
         window_name='\<Emacs -'
         ;;
+    "n")
+        window_name='\<Source -'
+        ;;
     "f")
         window_name='Mozilla Firefox$'
         ;;

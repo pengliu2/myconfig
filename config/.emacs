@@ -342,6 +342,7 @@ Switch projects and subprojects from NEXT back to TODO"
 (defun clocktablefiles ()
   (cons (buffer-file-name) '("~/.org-jira/TGFXP.org"))
   )
+(setq org-duration-format (quote h:mm))
 
 ;;MobileOrg
 (require 'org-mobile)
@@ -815,4 +816,3 @@ Switch projects and subprojects from NEXT back to TODO"
 ;;     (if arg (nth arg recently-killed-list)
 ;;       (car recently-killed-list)))))
 ;;
-
