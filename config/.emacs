@@ -661,6 +661,8 @@ Switch projects and subprojects from NEXT back to TODO"
 
 (setq auto-mode-alist (cons '("/build/pengliu/[^/]+/kernel/.*\\.[ch]$" . linux-c-mode)
 			    auto-mode-alist))
+(setq auto-mode-alist (cons '("/mnt/[^/]+/[^/]+/kernel/.*\\.[ch]$" . linux-c-mode)
+			    auto-mode-alist))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming Goodies and Mode Hooks End
