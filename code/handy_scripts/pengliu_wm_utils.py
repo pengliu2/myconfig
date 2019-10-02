@@ -1,6 +1,8 @@
-import pygtk
-pygtk.require('2.0')
-import gtk, wnck
+import gi
+gi.require_version('Gtk','3.0')
+gi.require_version('Wnck','3.0')
+from gi.repository import Gtk as gtk
+from gi.repository import  Wnck as wnck
 
 MAX_SCREEN_NUM = 4
 
@@ -14,7 +16,7 @@ def find_top_win_on_screen_within(screen, minx, maxx):
             xp,yp,wp,hp = win.get_geometry()
             if xp >= minx and xp < maxx:
                 top = win
-                if win.is_most_recently_activated() or win.is_active():
+                if win.is_active() or win.is_most_recently_activated():
                     break
     return top
 
@@ -45,16 +47,13 @@ def find_global_active():
     """
     count = 0
     s = None
-    for i in range(0,MAX_SCREEN_NUM,1):
-        screen = wnck.screen_get(i)
-        if screen == None:
-            continue
-        screen.force_update()
+    screen = wnck.Screen.get_default()
+    screen.force_update()
 
-        active_win = screen.get_active_window()
-        if active_win is not None:
-            s = screen
-            count += 1
+    active_win = screen.get_active_window()
+    if active_win is not None:
+        s = screen
+        count += 1
     if count == 1:
         return s
     elif count > 1:

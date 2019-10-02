@@ -1,53 +1,54 @@
 #!/usr/bin/python
 import sys
-import pygtk
-pygtk.require('2.0')
-import gtk, wnck
+
+import gi
+gi.require_version('Gtk','3.0')
+gi.require_version('Wnck','3.0')
+from gi.repository import Gtk as gtk
+from gi.repository import  Wnck as wnck
+
 import pengliu_wm_utils
 
-SCREENSIZE = 1920
-NUMSCREEN = 2
-DISPLAYONSCREEN = [2,1]
+MONITOR = 1920
 
 def focus_away(direction):
-    cur_screen = pengliu_wm_utils.find_global_active()
-    while gtk.events_pending():
-        gtk.main_iteration(False)
-        
+    cur_screen = wnck.Screen.get_default()
+    cur_screen.force_update()
+    screen_w = cur_screen.get_width()
+    n_display = screen_w / MONITOR
+
     active_win = pengliu_wm_utils.find_active_win(cur_screen)
     xp,yp,wp,hp = active_win.get_geometry()
-    display = xp / SCREENSIZE
+    display = xp / MONITOR
     
-    cur_num = cur_screen.get_number()    
     destdisplay = display
-    destscreen = cur_num
     destdisplay += direction
-    if destdisplay >= DISPLAYONSCREEN[cur_num]:
-        destscreen += 1
-        if destscreen >= NUMSCREEN:
-            return
-        else:
-            destdisplay = 0
-    elif destdisplay < 0:
-        destscreen -= 1
-        if destscreen < 0:
-            return
-        else:
-            destdisplay = DISPLAYONSCREEN[destscreen] - 1
+    destdisplay = 0 if destdisplay < 0 else destdisplay;
+    destdisplay = n_display - 1 if destdisplay >= n_display else destdisplay; 
             
-    if destdisplay == display and destscreen == cur_screen:
+    if destdisplay == display:
         return
 
-    minx = SCREENSIZE * destdisplay
-    maxx = minx + SCREENSIZE
-    
-    dest = wnck.screen_get(destscreen);
-    while gtk.events_pending():
-        gtk.main_iteration(False)
+    top = [None, None, None]
+    window_list = cur_screen.get_windows_stacked()
+    if len(window_list) == 0:
+        print "No Windows Found"
+    else:
+        numwindows = len(window_list)
+        count = 0
+        for win in window_list:
+            count += 1
+            if win.get_name() == 'xfce4-panel' or win.get_name() == 'Desktop':
+                continue
+            
+            xp,yp,wp,hp = win.get_geometry()
+            display = xp / MONITOR
+            if win.is_active() or count == numwindows:
+                break
+            top[display] = win
 
-    top = pengliu_wm_utils.find_top_win_on_screen_within(dest, minx, maxx)
-    if top is not None:
-        top.activate(0)
+    if top[destdisplay] is not None:
+        top[destdisplay].activate(0)
 
 if __name__ == "__main__":
     focus_away(int(sys.argv[1]))

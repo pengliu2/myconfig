@@ -1,16 +1,12 @@
 #!/bin/bash
-#++++++++++++++++
-# Monitor Switch
-#
-# Moves currently focused window from one monitor to the other.
-# Designed for a system with two monitors.
-# Script should be triggered using a keyboard shortcut.
-#++++++++++++++++
 
-# width of left monitor
 w_l_monitor=1920
+n_monitor=3
+
+right_bound=$(($w_l_monitor*$n_monitor))
 
 window=`xdotool getactivewindow`
+w=`xwininfo -id $window | grep "Width" | awk '{print $2}'`
 
 # unmaximize
 wmctrl -i -r $window -b remove,maximized_vert,maximized_horz
@@ -19,15 +15,12 @@ wmctrl -i -r $window -b remove,maximized_vert,maximized_horz
 x=`xwininfo -id $window | grep "Absolute upper-left X" | awk '{print $4}'`
 y_abs=`xwininfo -id $window | grep "Absolute upper-left Y" | awk '{print $4}'`
 y_rel=`xwininfo -id $window | grep "Relative upper-left Y" | awk '{print $4}'`
-w=`xwininfo -id $window | grep "Width" | awk '{print $2}'`
 
 # calculate new x position
 if [ "$x" -lt "$w_l_monitor" ]; then
-	# window on left monitor
-	new_x=$(($x+$w_l_monitor))
-else if [ "$x" -lt "$(($w_l_monitor+$w_m_monitor))" ]
-	# window on right monitor
-	new_x=$(($x-$w_l_monitor))
+    new_x=$(($w_l_monitor * $n_monitor - $w_l_monitor + $x))
+else
+    new_x=$(($x - $w_l_monitor))
 fi
 
 #move window. Need to subtract the relative y-position.

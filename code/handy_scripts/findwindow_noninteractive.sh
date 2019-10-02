@@ -61,10 +61,10 @@ function move_window_to
 
 case "$window_key" in
     "t")
-        window_name='\<Terminal - pengliu@pengliu-Desktop-Ubuntu:'
+        window_name='\<Terminal - pengliu@pengliu-desktop-debian:'
         ;;
     "b")
-        window_name='\<Terminal - pengliu@Peng-T530-Debian:'
+        window_name='\<Terminal - pengliu@pengliu-desktop-ubuntu:'
         ;;
     "e")
         window_name='\<Emacs -'
@@ -88,7 +88,7 @@ case "$window_key" in
         window_name=' - Google Chrome$'
         ;;
     "s")
-        window_name='\<Slack - '
+        window_name='\<Slack'
         ;;
     "o")
         window_name='\<Tabs Outliner$'
