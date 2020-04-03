@@ -151,8 +151,6 @@
 (require 'cl)
 ;;(require 'org-journal)
 (setq org-journal-dir "~/notes/journal")
-(setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|\\`[0-9]+\\'")
-;;(setq org-journal-file-format "%Y%m%d.org")
 
 (add-hook 'org-journal-mode-hook 'turn-on-auto-fill)
 (add-hook 'org-journal-mode-hook 'flyspell-mode)
@@ -639,8 +637,11 @@ Switch projects and subprojects from NEXT back to TODO"
 	  (lambda ()
 	    (setq indent-tabs-mode nil tab-width 4)))
 
-(setq-default c-default-style "K&R"
-	      c-basic-offset 4)
+(setq c-default-style "stroustrup")
+(setq c-indent-level 4)
+(setq c-basic-offset 4)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 
 (add-hook 'c-mode-common-hook
 	  (lambda ()
@@ -667,18 +668,6 @@ Switch projects and subprojects from NEXT back to TODO"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; hacks on 24.2 start
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(when (and (equal emacs-major-version 24)
-           (equal emacs-minor-version 2))
-  (eval-after-load "mumamo"
-    '(setq mumamo-per-buffer-local-vars
-           (delq 'buffer-file-name mumamo-per-buffer-local-vars))))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; hacks on 24.2 ends
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; color theme settings start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-theme 'zenburn)
@@ -701,64 +690,6 @@ Switch projects and subprojects from NEXT back to TODO"
   (indent-according-to-mode)
   (previous-line 1))
 ;;(global-set-key [(meta ?[)] 'paren-dwim)
-
-(defun insert-function-head (purpose param retval remarks)
-  (interactive "spurpose:\nsparam:\nsretval:\nsremarks")
-  (insert (format "/*********************************************************************\\"))
-  (indent-according-to-mode)
-  (newline)
-  (insert (format "* Purpose:	%s" purpose))
-  (indent-according-to-mode)
-  (newline)
-  (insert (format "* Params:	%s" param))
-  (indent-according-to-mode)
-  (newline)
-  (insert (format "* Retval:	%s" retval))
-  (indent-according-to-mode)
-  (newline)
-  (insert (format "* Remarks:	%s" remarks))
-  (indent-according-to-mode)
-  (newline)
-  (insert (format "*********************************************************************/"))
-  (indent-according-to-mode))
-
-(defun insert-file-head (filename year)
-  (interactive "sfilename:\nsyear:")
-  (insert (format "/**  \\file syspanic.c\n"))
-  (insert (format "\\brief This file contains the source to the syspanic kernel driver\n"))
-  (insert (format "     \\if INCLUDE_LICENSE_SECTION\n"))
-  (insert (format "      * Copyright (C) %s Motorola, Inc.\n" year))
-  (insert (format "      * This program is free software; you can redistribute it\n"))
-  (insert (format "      * and/or modify it under the terms of the GNU General\n"))
-  (insert (format "      * Public License as published by the Free Software\n"))
-  (insert (format "      * Foundation; either version 2 of the License, or (at\n"))
-  (insert (format "      * your option) any later version.  You should have\n"))
-  (insert (format "      * received a copy of the GNU General Public License\n"))
-  (insert (format "      * along with this program; if not, write to the Free\n"))
-  (insert (format "      * Software Foundation 51 Franklin Street, Fifth Floor\n"))
-  (insert (format "      * Boston, MA 02110-1301 USA\n"))
-  (insert (format "      \\endif              \n"))
-  (insert (format "                          \n"))
-  (insert (format "                          \n"))
-  (insert (format "\\if MOTOROLA_CONFIDENTIAL_PROPRIETARY\n"))
-                  
-  (insert (format "====================================================================================================\n"))
-                  
-  (insert (format "                              Motorola Confidential Proprietary\n"))
-  (insert (format "                                    Template version 1.1\n"))
-  (insert (format "                       Copyright 2007 Motorola, Inc.  All Rights Reserved.\n"))
-                  
-  (insert (format "Internal Revision History:\n"))
-  (insert (format "                            Modification     Tracking\n"))
-  (insert (format "Author                          Date          Number     Description of Changes\n"))
-  (insert (format "-------------------------   ------------    ----------   -------------------------------------------\n"))
-  (insert (format "\n"))
-  (insert (format "\n                        "))
-  (insert (format "\\endif\n\n                "))
-  (insert (format "<tt>\n"))
-  (insert (format "*/\n\n"))
-  (indent-according-to-mode)
-  )
 
 (defun count-words-region (beginning end)
   "Print number of words in the region."
