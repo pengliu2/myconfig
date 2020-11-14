@@ -135,22 +135,26 @@
     (search category-keep))))
 (setq org-catch-invisible-edits 1)
 (setq org-agenda-window-setup 'current-window) 
+
+(require 'cl)
+
+(setq org-journal-dir (expand-file-name "~/notes/journal"))
+(require 'org-journal)
+
 (setq org-agenda-files (quote ("~/notes/gtd.org"
 			       "~/notes/review.org"
 			       "~/notes/life.org"
 			       "~/notes/frommobile.org"
-                   "~/notes/desktop.org"
-			       "~/notes/projects"
+                   ;;"~/notes/desktop.org"
+			       ;;"~/notes/projects"
 			       ;;"~/notes/jobs"
-                   "~/notes/work"
-                   "~/notes/home"
-                   "~/notes/journal"
-                   "~/.org-jira"
+                   ;;"~/notes/work"
+                   ;;"~/notes/home"
+                   ;;"~/notes/journal"
+                   ;;"~/notes/timereport.org"
+                   "~/.org-jira/TGFXP.org"
+                   "~/notes/learn/UIUC_cuda.org"
 		   )))
-
-(require 'cl)
-;;(require 'org-journal)
-(setq org-journal-dir "~/notes/journal")
 
 (add-hook 'org-journal-mode-hook 'turn-on-auto-fill)
 (add-hook 'org-journal-mode-hook 'flyspell-mode)
