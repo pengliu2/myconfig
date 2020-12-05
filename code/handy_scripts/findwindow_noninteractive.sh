@@ -93,6 +93,9 @@ case "$window_key" in
     "o")
         window_name='\<Tabs Outliner$'
         ;;
+    "w")
+        window_name=' - Google Chrome on pengliu-desktop-ubuntu18\>'
+        ;;
 esac
 
 if [ -z window_name ]; then

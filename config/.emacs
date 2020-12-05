@@ -153,6 +153,7 @@
                    ;;"~/notes/journal"
                    ;;"~/notes/timereport.org"
                    "~/.org-jira/TGFXP.org"
+                   "~/.org-jira/VULKANSC.org"
                    "~/notes/learn/UIUC_cuda.org"
 		   )))
 
@@ -340,7 +341,7 @@ Switch projects and subprojects from NEXT back to TODO"
       "TODO"))))
 
 (defun clocktablefiles ()
-  (cons (buffer-file-name) '("~/.org-jira/TGFXP.org"))
+  (cons (buffer-file-name) (quote ("~/.org-jira/TGFXP.org" "~/.org-jira/VULKANSC.org")))
   )
 (setq org-duration-format (quote h:mm))
 
