@@ -60,7 +60,7 @@ function move_window_to
 }
 
 case "$window_key" in
-    "t")
+    "d")
         window_name='\<Terminal - pengliu@pengliu-desktop-debian:'
         ;;
     "b")
@@ -79,7 +79,7 @@ case "$window_key" in
         window_name='\<Terminal -'
         ;;
     "m")
-        window_name=' Freeplane '
+        window_name='Mozilla Thunderbird$'
         ;;
     "v")
         window_name='Desktop Ubuntu'
@@ -95,6 +95,9 @@ case "$window_key" in
         ;;
     "w")
         window_name=' - Google Chrome on pengliu-desktop-ubuntu18\>'
+        ;;
+    "t")
+        window_name=" Microsoft Teams\>"
         ;;
 esac
 
