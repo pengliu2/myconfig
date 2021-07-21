@@ -239,7 +239,11 @@
          ((alltodo "" ((org-agenda-todo-ignore-scheduled (quote all)))))
          )
         ("d" "Today"
-         (
+         ((agenda ""
+                   ((org-agenda-span 2)
+                   (org-agenda-skip-deadline-if-done nil)
+                   (org-agenda-skip-scheduled-if-done nil)
+                   ))
           ;; type "l" in the agenda to review logged items 
           ;;          (stuck "") ;; review stuck projects as designated by org-stuck-projects
           ;;          (todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
