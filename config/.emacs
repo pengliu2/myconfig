@@ -115,6 +115,9 @@
 
 ;;(define-key org-mode-map "<C-tab>" nil)
 
+;;wrap lines in org mode
+(setq org-startup-truncated nil)
+
 ;;warn me of any deadlines in next 7 days
 (setq org-deadline-warning-days 7)
 ;;don't give awarning colour to tasks with impending deadlines
