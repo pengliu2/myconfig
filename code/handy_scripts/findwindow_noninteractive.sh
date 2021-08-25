@@ -61,22 +61,22 @@ function move_window_to
 
 case "$window_key" in
     "d")
-        window_name='\<Terminal - pengliu@pengliu-desktop-debian:'
+        window_name='^Terminal -'
         ;;
     "b")
-        window_name='\<Terminal - pengliu@pengliu-desktop-ubuntu:'
+        window_name='^pengliu@pengliu-desktop-debian:'
         ;;
     "e")
-        window_name='\<Emacs -'
+        window_name='^Emacs -'
         ;;
     "n")
-        window_name='\<Source -'
+        window_name='^Source -'
         ;;
     "f")
         window_name='Mozilla Firefox$'
         ;;
     "c")
-        window_name='\<Terminal -'
+        window_name='^Terminal'
         ;;
     "m")
         window_name='Mozilla Thunderbird$'
@@ -88,16 +88,16 @@ case "$window_key" in
         window_name=' - Google Chrome$'
         ;;
     "s")
-        window_name='\<Slack'
+        window_name='^Slack'
         ;;
     "o")
-        window_name='\<Tabs Outliner$'
+        window_name='^Tabs Outliner/$'
         ;;
     "w")
-        window_name=' - Google Chrome on pengliu-desktop-ubuntu18\>'
+        window_name=' - Google Chrome on pengliu-desktop-ubuntu18$'
         ;;
     "t")
-        window_name=" Microsoft Teams\>"
+        window_name=" Microsoft Teams$"
         ;;
 esac
 
@@ -105,11 +105,14 @@ if [ -z window_name ]; then
     return
 fi
 
-window=`wmctrl -l | egrep "$window_name" | head -n 1 | cut -f 1 -d " "`
-if [ -z $window ]; then
+offset=`wmctrl -l | cut -d " " -f 5- | egrep -n "$window_name" | cut -d ":" -f 1 | head -n 1`
+if [ -z $offset ]; then
     exit 0
 fi
-#echo "window id is [$window]"
+#echo "offset is [$offset]"
+
+windowid=`wmctrl -l | head -n $offset | tail -n +$offset | cut -f 1 -d " "`
+#echo "window id is [$windowid]"
 
 #active_window=`xdotool getactivewindow`
 #active_window=`printf "0x%08x" $active_window`
@@ -119,4 +122,4 @@ fi
 #    move_window_to $active_window 0
 #fi
 #move_window_to $window 1
-wmctrl -i -R $window
+wmctrl -i -R $windowid
