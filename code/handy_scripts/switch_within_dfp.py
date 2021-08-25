@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import gi
 gi.require_version('Gtk','3.0')
 gi.require_version('Wnck','3.0')
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     top = [None, None, None]
     window_list = default.get_windows_stacked()
     if len(window_list) == 0:
-        print "No Windows Found"
+        print ("No Windows Found")
     else:
         numwindows = len(window_list)
         count = 0
@@ -26,7 +26,9 @@ if __name__ == "__main__":
                 continue
             
             xp,yp,wp,hp = win.get_geometry()
-            display = xp / SCREENSIZE
+            print ("xp is{}".format(xp))
+            display = int(xp / SCREENSIZE)
+            print ("display is {}".format(display))
             if win.is_active() or count == numwindows:
                 break
             top[display] = win
