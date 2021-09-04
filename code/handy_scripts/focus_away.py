@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import sys
 
 import gi
@@ -15,24 +15,33 @@ def focus_away(direction):
     cur_screen = wnck.Screen.get_default()
     cur_screen.force_update()
     screen_w = cur_screen.get_width()
-    n_display = screen_w / MONITOR
+    n_display = int(screen_w / MONITOR)
+    #print("number of display:{}".format(n_display))
 
     active_win = pengliu_wm_utils.find_active_win(cur_screen)
     xp,yp,wp,hp = active_win.get_geometry()
-    display = xp / MONITOR
+    #print("xp is {}, wp is {}".format(xp, wp))
+    
+    display = int(xp / MONITOR)
+    #print("currnt display: {}".format(display))
     
     destdisplay = display
     destdisplay += direction
     destdisplay = 0 if destdisplay < 0 else destdisplay;
-    destdisplay = n_display - 1 if destdisplay >= n_display else destdisplay; 
+    destdisplay = n_display - 1 if destdisplay >= n_display else destdisplay;
+    #print("destdisplay: {}".format(destdisplay))
             
     if destdisplay == display:
         return
 
     top = [None, None, None]
     window_list = cur_screen.get_windows_stacked()
+    #print("window list:")
+    #for w in window_list:
+    #    print("{}".format(w))
+        
     if len(window_list) == 0:
-        print "No Windows Found"
+        return
     else:
         numwindows = len(window_list)
         count = 0
@@ -42,7 +51,7 @@ def focus_away(direction):
                 continue
             
             xp,yp,wp,hp = win.get_geometry()
-            display = xp / MONITOR
+            display = int(xp / MONITOR)
             if win.is_active() or count == numwindows:
                 break
             top[display] = win

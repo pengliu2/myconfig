@@ -36,9 +36,9 @@ def find_active_win_dbg(screen_no):
     wl = wnck.screen_get(screen_no).get_windows_stacked()
     for w in range(len(wl)-1,0,-1):
         if (wl[w].is_active()):
-            print "%s - Active"%(wl[w].get_name())
+            print ("%s - Active"%(wl[w].get_name()))
         else:
-            print wl[w].get_name()
+            print (wl[w].get_name())
     
 def find_global_active():
     """
