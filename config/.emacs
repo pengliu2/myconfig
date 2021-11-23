@@ -40,6 +40,7 @@
 (tool-bar-mode -1)
 (transient-mark-mode 1)
 (setq auto-save-visited-mode 1)
+(setq ediff-window-setup-function #'ediff-setup-windows-plain)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Automatical settings end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

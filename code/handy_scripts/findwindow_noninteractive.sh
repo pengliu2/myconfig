@@ -64,7 +64,7 @@ case "$window_key" in
         window_name='^Terminal -'
         ;;
     "b")
-        window_name='^pengliu@pengliu-desktop-debian:'
+        window_name="^pengliu@pengliu-wfh-debian"
         ;;
     "e")
         window_name='^Emacs -'
@@ -91,7 +91,7 @@ case "$window_key" in
         window_name='^Slack'
         ;;
     "o")
-        window_name='^Tabs Outliner/$'
+        window_name='^Tabs Outliner$'
         ;;
     "w")
         window_name=' - Google Chrome on pengliu-desktop-ubuntu18$'
