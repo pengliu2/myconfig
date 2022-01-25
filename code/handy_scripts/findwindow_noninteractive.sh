@@ -64,13 +64,13 @@ case "$window_key" in
         window_name='^Terminal -'
         ;;
     "b")
-        window_name="^pengliu@pengliu-wfh-debian"
+        window_name='^pengliu@pengliu-wfh-debian'
         ;;
     "e")
         window_name='^Emacs -'
         ;;
     "n")
-        window_name='^Source -'
+        window_name='^Code -'
         ;;
     "f")
         window_name='Mozilla Firefox$'
@@ -97,7 +97,10 @@ case "$window_key" in
         window_name=' - Google Chrome on pengliu-desktop-ubuntu18$'
         ;;
     "t")
-        window_name=" Microsoft Teams$"
+        window_name=' Microsoft Teams$'
+        ;;
+    "i")
+        window_name='Microsoft​ Edge Beta$'
         ;;
 esac
 
