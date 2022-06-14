@@ -1,7 +1,7 @@
 #!/bin/bash
 
 w_l_monitor=1920
-n_monitor=3
+n_monitor=2
 right_bound=$(($w_l_monitor*$n_monitor))
 
 window=`xdotool getactivewindow`

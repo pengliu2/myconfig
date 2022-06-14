@@ -90,9 +90,6 @@ case "$window_key" in
     "s")
         window_name='^Slack'
         ;;
-    "o")
-        window_name='^Tabs Outliner$'
-        ;;
     "w")
         window_name=' - Google Chrome on pengliu-desktop-ubuntu18$'
         ;;
@@ -101,6 +98,9 @@ case "$window_key" in
         ;;
     "i")
         window_name='Microsoft​ Edge Beta$'
+        ;;
+    "o")
+        window_name='Okular$'
         ;;
 esac
 
@@ -114,6 +114,9 @@ if [ -z $offset ]; then
 fi
 #echo "offset is [$offset]"
 
+offsets=`wmctrl -l | cut -d " " -f 5- | egrep -n "$window_name" | cut -d ":" -f 1`
+
+echo "$offsets" | while read offset; do
 windowid=`wmctrl -l | head -n $offset | tail -n +$offset | cut -f 1 -d " "`
 #echo "window id is [$windowid]"
 
@@ -125,4 +128,5 @@ windowid=`wmctrl -l | head -n $offset | tail -n +$offset | cut -f 1 -d " "`
 #    move_window_to $active_window 0
 #fi
 #move_window_to $window 1
-wmctrl -i -R $windowid
+wmctrl -i -a $windowid
+done
