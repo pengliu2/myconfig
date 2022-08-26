@@ -64,7 +64,7 @@ case "$window_key" in
         window_name='^Terminal -'
         ;;
     "b")
-        window_name='^pengliu@pengliu-wfh-debian'
+        window_name='^pengliu@[^~]+: ~$'
         ;;
     "e")
         window_name='^Emacs -'
@@ -91,10 +91,10 @@ case "$window_key" in
         window_name='^Slack'
         ;;
     "w")
-        window_name=' - Google Chrome on pengliu-desktop-ubuntu18$'
+        window_name='^Chrome Work$'
         ;;
     "t")
-        window_name=' Microsoft Teams$'
+        window_name='Microsoft Teams$'
         ;;
     "i")
         window_name='Microsoft​ Edge Beta$'
