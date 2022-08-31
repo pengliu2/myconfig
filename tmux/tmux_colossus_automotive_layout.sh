@@ -33,11 +33,11 @@ sleep 0.2
 tmux send-keys -t 2 Enter
 tmux send-keys -t 2 "tegrarecovery x1 on" Enter
 sleep 0.2
-tmux send-keys -t 2 "tegrareset x1" Enter
-sleep 0.2
-tmux send-keys -t 2 "tegrarecovery x1 off" Enter
-sleep 0.2
 tmux send-keys -t 2 "tegrareset x1"
+#sleep 0.2
+#tmux send-keys -t 2 "tegrarecovery x1 off" Enter
+#sleep 0.2
+#tmux send-keys -t 2 "tegrareset x1"
 
 # 4th pane created
 tmux split-window -h -p 30
