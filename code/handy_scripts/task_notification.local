@@ -5,9 +5,9 @@ else
 	notify-send $1 &
 fi
 
-if which ogg123 > /dev/null; then
-        if [ -f "/home/a22543/Documents/ding.ogg" ]; then
-                ogg123 -q /home/a22543/Documents/ding.ogg 2>&1 > /dev/null
+if which gst123 > /dev/null; then
+        if [ -f "/home/pengliu/myconfig/code/handy_scripts/finish-success.ogg" ]; then
+                gst123 /home/pengliu/myconfig/code/handy_scripts/finish-success.ogg 2>&1 > /dev/null
         fi
 fi
 

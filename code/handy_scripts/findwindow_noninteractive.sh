@@ -81,14 +81,11 @@ case "$window_key" in
     "m")
         window_name='Mozilla Thunderbird$'
         ;;
-    "v")
-        window_name='Desktop Ubuntu'
-        ;;
     "g")
         window_name=' - Google Chrome$'
         ;;
     "s")
-        window_name='^Slack'
+        window_name=' - Slack$'
         ;;
     "w")
         window_name='^Chrome Work$'
@@ -101,6 +98,9 @@ case "$window_key" in
         ;;
     "o")
         window_name='Okular$'
+        ;;
+    "v")
+        window_name=' - Visual Studio Code$'
         ;;
 esac
 
