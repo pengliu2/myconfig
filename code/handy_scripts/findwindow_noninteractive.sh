@@ -82,25 +82,28 @@ case "$window_key" in
         window_name='Mozilla Thunderbird$'
         ;;
     "g")
-        window_name=' - Google Chrome$'
+        window_name='^References - Google Chrome$'
         ;;
     "s")
         window_name=' - Slack$'
         ;;
     "w")
-        window_name='^Chrome Work$'
+        window_name='^Work - Chrome$'
         ;;
     "t")
-        window_name='Microsoft Teams$'
+        window_name='^Assignments - Google Chrome$'
         ;;
     "i")
-        window_name='Microsoft​ Edge Beta$'
+        window_name='^Capture - Chrome$'
         ;;
     "o")
         window_name='Okular$'
         ;;
     "v")
         window_name=' - Visual Studio Code$'
+        ;;
+    "a")
+        window_name='^OneNote - Chrome$'
         ;;
 esac
 

@@ -1,4 +1,14 @@
 #!/bin/sh
+
+# for remote:
+# first set up ssh keys(remote side) and authorized_keys(local side)
+# alias n="ssh pengliu@pengliu-wfh-debian bash /home/pengliu/myconfig/code/handy_scripts/task_notification.local"
+
+# TODO: automatically capture the previous commands to include in the notif messages
+#       fc -n -l | tail -n 1 BUT it doesn't capture ls in ls; fc -n -l | tail -n 1
+#       can use history in BASH:
+# $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//'
+
 if [ -z $1 ]; then
 	notify-send ${PWD} &
 else
@@ -7,7 +17,7 @@ fi
 
 if which gst123 > /dev/null; then
         if [ -f "/home/pengliu/myconfig/code/handy_scripts/finish-success.ogg" ]; then
-                gst123 /home/pengliu/myconfig/code/handy_scripts/finish-success.ogg 2>&1 > /dev/null
+                gst123 --volume 1000 /home/pengliu/myconfig/code/handy_scripts/finish-success.ogg 2>&1 > /dev/null
         fi
 fi
 

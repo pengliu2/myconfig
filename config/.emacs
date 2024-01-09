@@ -50,7 +50,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package.el ends
@@ -70,7 +69,7 @@
 (setq tramp-default-method "ssh")
 (setq select-active-regions nil)
 
-(ido-mode 'both)
+(ido-mode 0)
 ;;(ido-ubiquitous 1)
 (global-font-lock-mode t)
 (column-number-mode 1)
