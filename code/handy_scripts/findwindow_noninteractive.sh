@@ -88,7 +88,7 @@ case "$window_key" in
         window_name=' - Slack$'
         ;;
     "w")
-        window_name='^Work - Chrome$'
+        window_name='^work - Google Chrome'
         ;;
     "t")
         window_name='^Assignments - Google Chrome$'
@@ -104,6 +104,9 @@ case "$window_key" in
         ;;
     "a")
         window_name='^OneNote - Chrome$'
+        ;;
+    "j")
+        window_name='^Joplin$'
         ;;
 esac
 
