@@ -17,7 +17,7 @@ fi
 
 if which gst123 > /dev/null; then
         if [ -f "/home/pengliu/myconfig/code/handy_scripts/finish-success.ogg" ]; then
-                gst123 --volume 1000 /home/pengliu/myconfig/code/handy_scripts/finish-success.ogg 2>&1 > /dev/null
+                gst123 --volume 100 /home/pengliu/myconfig/code/handy_scripts/finish-success.ogg 2>&1 > /dev/null
         fi
 fi
 

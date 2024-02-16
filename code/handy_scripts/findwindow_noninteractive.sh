@@ -60,7 +60,7 @@ function move_window_to
 }
 
 case "$window_key" in
-    "d")
+    "t")
         window_name='^Terminal -'
         ;;
     "b")
@@ -69,14 +69,8 @@ case "$window_key" in
     "e")
         window_name='^Emacs -'
         ;;
-    "n")
-        window_name='^Code -'
-        ;;
     "f")
         window_name='Mozilla Firefox$'
-        ;;
-    "c")
-        window_name='^Terminal'
         ;;
     "m")
         window_name='Mozilla Thunderbird$'
@@ -85,28 +79,22 @@ case "$window_key" in
         window_name='^References - Google Chrome$'
         ;;
     "s")
-        window_name=' - Slack$'
+        window_name='^Slack'
         ;;
     "w")
         window_name='^work - Google Chrome'
         ;;
-    "t")
-        window_name='^Assignments - Google Chrome$'
-        ;;
     "i")
         window_name='^Capture - Chrome$'
         ;;
-    "o")
+    "p")
         window_name='Okular$'
         ;;
     "v")
         window_name=' - Visual Studio Code$'
         ;;
-    "a")
-        window_name='^OneNote - Chrome$'
-        ;;
-    "j")
-        window_name='^Joplin$'
+    "n")
+        window_name='^Joplin'
         ;;
 esac
 
