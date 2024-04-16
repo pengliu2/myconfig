@@ -10,9 +10,9 @@
 # $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//'
 
 if [ -z $1 ]; then
-	notify-send ${PWD} &
+	notify-send -i terminal -t 10000 ${PWD} &
 else
-	notify-send $1 &
+	notify-send -i terminal -t 10000 $1 &
 fi
 
 if which gst123 > /dev/null; then

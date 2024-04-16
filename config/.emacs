@@ -41,6 +41,7 @@
 (transient-mark-mode 1)
 (setq auto-save-visited-mode 1)
 (setq ediff-window-setup-function #'ediff-setup-windows-plain)
+(setq select-active-regions (quote only))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Automatical settings end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

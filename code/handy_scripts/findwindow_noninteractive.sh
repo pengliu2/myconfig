@@ -79,13 +79,13 @@ case "$window_key" in
         window_name='^References - Google Chrome$'
         ;;
     "s")
-        window_name='^Slack'
+        window_name=' - Slack$'
         ;;
     "w")
         window_name='^work - Google Chrome'
         ;;
     "i")
-        window_name='^Capture - Chrome$'
+        window_name='Microsoft Teams$'
         ;;
     "p")
         window_name='Okular$'
