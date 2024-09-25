@@ -1,6 +1,6 @@
 ;;This configuration needs following elisps:
 ;;org	org-mobile-sync
-;;goto-last-change.el
+;;goto-chg.el
 ;;browse-kill-ring.el  igrep.el             
 ;;color-moccur.el
 ;;magit		    git-blame.el
@@ -36,6 +36,7 @@
  '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  )
 
+(set-face-attribute 'default nil :height 100)
 (mouse-avoidance-mode 'banish)
 (tool-bar-mode -1)
 (transient-mark-mode 1)
@@ -50,7 +51,6 @@
 ;; package.el starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package.el ends
