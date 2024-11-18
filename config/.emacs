@@ -17,24 +17,25 @@
 ;; Automatical settings start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
-  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
-  ;; Your init file should contain only one such instance.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(case-fold-search t)
  '(compilation-scroll-output t)
  '(compilation-window-height 10)
- '(confirm-kill-emacs (quote y-or-n-p))
- '(dired-recursive-copies (quote top))
- '(dired-recursive-deletes (quote top))
- '(ediff-coding-system-for-read (quote raw-text))
+ '(confirm-kill-emacs 'y-or-n-p)
+ '(dired-recursive-copies 'top)
+ '(dired-recursive-deletes 'top)
+ '(ediff-coding-system-for-read 'raw-text)
  '(ediff-diff-options "-w")
  '(enable-recursive-minibuffers t)
- '(find-ls-option (quote ("-exec ls -ld {} \\;" . "-ld")) t)
+ '(find-ls-option '("-exec ls -ld {} \\;" . "-ld"))
  '(igrep-files-default nil)
  '(ispell-program-name "aspell")
  '(make-backup-files nil)
-;; '(shell-file-name "bash")
- '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
- )
+ '(package-selected-packages '(xcscope smex))
+ '(uniquify-buffer-name-style 'post-forward-angle-brackets nil (uniquify)))
 
 (set-face-attribute 'default nil :height 100)
 (mouse-avoidance-mode 'banish)
@@ -51,6 +52,7 @@
 ;; package.el starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package.el ends
@@ -97,10 +99,10 @@
 ;; outline starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Use meta O as outline mode prefix
-(global-unset-key (kbd "M-o"))
-(add-hook 'outline-minor-mode-hook
-	  (lambda () (local-set-key (kbd "M-o")
-				    outline-mode-prefix-map)))
+;(global-unset-key (kbd "M-o"))
+;(add-hook 'outline-minor-mode-hook
+;	  (lambda () (local-set-key (kbd "M-o")
+;				    outline-mode-prefix-map)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; outline ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -141,9 +143,6 @@
 (setq org-agenda-window-setup 'current-window) 
 
 (require 'cl)
-
-(setq org-journal-dir (expand-file-name "~/notes/journal"))
-(require 'org-journal)
 
 (setq org-agenda-files (quote ("~/notes/gtd.org"
 			       "~/notes/review.org"
@@ -592,7 +591,7 @@ Switch projects and subprojects from NEXT back to TODO"
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-set-key [(meta g)] 'goto-line)
-(global-set-key [(ctrl tab)] 'other-window)
+(global-set-key [(meta o)] 'other-window)
 
 ;;(global-set-key [(control f4)] 'bookmark-set)
 ;;(global-set-key [f4] 'bookmark-jump)
@@ -683,7 +682,7 @@ Switch projects and subprojects from NEXT back to TODO"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; color theme settings start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-theme 'zenburn)
+;;(load-theme 'zenburn)
 ;;(setq sml/theme 'dark)
 ;;(setq sml/no-confirm-load-theme t)
 ;;(sml/setup)
