@@ -619,7 +619,7 @@ Switch projects and subprojects from NEXT back to TODO"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq clang-format-style "google")
-(which-func-mode 1)
+;(which-func-mode 1)
 
 ;;(eval-after-load "which-func"
 ;;  '(add-to-list 'which-func-modes 'python-mode))
