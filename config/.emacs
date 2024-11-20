@@ -1,6 +1,6 @@
 ;;This configuration needs following elisps:
 ;;org	org-mobile-sync
-;;goto-chg.el
+;;goto-last-change.el
 ;;browse-kill-ring.el  igrep.el             
 ;;color-moccur.el
 ;;magit		    git-blame.el
@@ -37,13 +37,11 @@
  '(package-selected-packages '(xcscope smex))
  '(uniquify-buffer-name-style 'post-forward-angle-brackets nil (uniquify)))
 
-(set-face-attribute 'default nil :height 100)
 (mouse-avoidance-mode 'banish)
 (tool-bar-mode -1)
 (transient-mark-mode 1)
 (setq auto-save-visited-mode 1)
 (setq ediff-window-setup-function #'ediff-setup-windows-plain)
-(setq select-active-regions (quote only))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Automatical settings end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -71,8 +69,10 @@
 (setq read-quoted-char-radix 16)
 (setq tramp-default-method "ssh")
 (setq select-active-regions nil)
+(unless (display-graphic-p)
+  (menu-bar-mode -1))
 
-(ido-mode 0)
+(ido-mode 'both)
 ;;(ido-ubiquitous 1)
 (global-font-lock-mode t)
 (column-number-mode 1)
@@ -618,6 +618,7 @@ Switch projects and subprojects from NEXT back to TODO"
 ;; Programming Goodies and Mode Hooks Start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq clang-format-style "google")
 (which-func-mode 1)
 
 ;;(eval-after-load "which-func"
