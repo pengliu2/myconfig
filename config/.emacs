@@ -38,6 +38,7 @@
  '(uniquify-buffer-name-style 'post-forward-angle-brackets nil (uniquify)))
 
 (mouse-avoidance-mode 'banish)
+(setq beacon-mode 1)
 (tool-bar-mode -1)
 (transient-mark-mode 1)
 (setq auto-save-visited-mode 1)
@@ -455,6 +456,32 @@ Switch projects and subprojects from NEXT back to TODO"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LSP Starts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-hook 'c-mode-hook #'lsp)
+(add-hook 'c++-mode-hook #'lsp)
+
+;; Path to clangd (adjust if necessary)
+(setq lsp-clients-clangd-executable "/usr/bin/clangd")
+
+(setq lsp-headerline-breadcrumb-enable t)
+
+(add-hook 'lsp-mode-hook 'lsp-headerline-breadcrumb-mode)
+
+    
+(setq lsp-clients-clangd-args '("--background-index"
+                                "--all-scopes-completion"
+                                "--enable-config"
+                                ))
+
+(setq lsp-disabled-clients '(semgrep-ls))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LSP Ends
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Autocompletion and History starts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;(cond
@@ -618,7 +645,6 @@ Switch projects and subprojects from NEXT back to TODO"
 ;; Programming Goodies and Mode Hooks Start
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq clang-format-style "google")
 ;(which-func-mode 1)
 
 ;;(eval-after-load "which-func"
@@ -662,6 +688,12 @@ Switch projects and subprojects from NEXT back to TODO"
 	    (setq show-trailing-whitespace t)
 	    (outline-minor-mode)))
 
+;;(add-hook 'c++-mode-hook
+;;          (lambda ()
+;;            (setq indent-tabs-mode nil)        ; Use spaces instead of tabs
+;;            (setq tab-width 4)
+;;            (c-set-style "stroustrup")))       ; Use Stroustrup style as default
+
 (defun linux-c-mode ()
   "C mode with adjusted defaults for use with the Linux kernel."
   (interactive)
@@ -674,7 +706,7 @@ Switch projects and subprojects from NEXT back to TODO"
 (setq auto-mode-alist (cons '("/build/pengliu/[^/]+/kernel/.*\\.[ch]$" . linux-c-mode)
 			    auto-mode-alist))
 (setq auto-mode-alist (cons '("/mnt/[^/]+/[^/]+/kernel/.*\\.[ch]$" . linux-c-mode)
-			    auto-mode-alist))
+			                auto-mode-alist))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming Goodies and Mode Hooks End
