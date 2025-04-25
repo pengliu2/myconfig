@@ -619,6 +619,7 @@ Switch projects and subprojects from NEXT back to TODO"
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-set-key [(meta g)] 'goto-line)
 (global-set-key [(meta o)] 'other-window)
+(global-set-key [(control tab)] 'other-window)
 
 ;;(global-set-key [(control f4)] 'bookmark-set)
 ;;(global-set-key [f4] 'bookmark-jump)
