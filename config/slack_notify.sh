@@ -8,7 +8,7 @@ CURRENT_DIR=$(pwd)
 
 # Build the message
 if [ $# -eq 0 ]; then
-    MESSAGE="Task is done, on
+    MESSAGE="Task Done!
 
 Host: ${HOSTNAME}
 Directory: ${CURRENT_DIR}"
