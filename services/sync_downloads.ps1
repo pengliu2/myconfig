@@ -3,22 +3,22 @@ $DST = 'pengliu@pengliu-desktop.client.nvidia.com:/home/pengliu/mp/p4/Downloads/
 $LOG = "$env:TEMP\sync_downloads.log"
 
 function Send-Notification($title, $message) {
-    [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
-    [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom, ContentType = WindowsRuntime] | Out-Null
     $t = [System.Security.SecurityElement]::Escape($title)
     $m = [System.Security.SecurityElement]::Escape($message)
-    $xml = New-Object Windows.Data.Xml.Dom.XmlDocument
-    $xml.LoadXml(@"
-<toast>
-  <visual><binding template="ToastGeneric">
-    <text>$t</text>
-    <text>$m</text>
-  </binding></visual>
-</toast>
-"@)
-    $toast = [Windows.UI.Notifications.ToastNotification]::new($xml)
-    $appId = '{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe'
-    [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($appId).Show($toast)
+    $cmd = @"
+[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom, ContentType = WindowsRuntime] | Out-Null
+`$xml = New-Object Windows.Data.Xml.Dom.XmlDocument
+`$xml.LoadXml('<toast><visual><binding template="ToastGeneric"><text>$t</text><text>$m</text></binding></visual></toast>')
+`$toast = [Windows.UI.Notifications.ToastNotification]::new(`$xml)
+`$appId = '{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell.exe'
+[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier(`$appId).Show(`$toast)
+"@
+    $psi = New-Object System.Diagnostics.ProcessStartInfo 'powershell.exe'
+    $psi.Arguments = "-ExecutionPolicy Bypass -Command $cmd"
+    $psi.CreateNoWindow = $true
+    $psi.UseShellExecute = $false
+    [System.Diagnostics.Process]::Start($psi) | Out-Null
 }
 
 function Invoke-Sync {
