@@ -78,7 +78,7 @@ IsWindowCloaked(windowID) {
 }
 
 ; Shortcut for maximizing all visible app windows
-#+a::
+#+f::
     MaximizeAllWindows()
 return
 
