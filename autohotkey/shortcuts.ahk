@@ -34,6 +34,54 @@ MinimizeRestore(windowTitles*) {
     MsgBox, No window matching any of the provided titles was found.
 }
 
+MaximizeAllWindows() {
+    WinGet, windows, List
+
+    Loop, %windows% {
+        windowID := windows%A_Index%
+        if (IsMaximizableAppWindow(windowID))
+            WinMaximize, ahk_id %windowID%
+    }
+}
+
+IsMaximizableAppWindow(windowID) {
+    WinGetTitle, title, ahk_id %windowID%
+    if (title = "")
+        return false
+
+    WinGetClass, class, ahk_id %windowID%
+    if (class = "Shell_TrayWnd" || class = "Progman" || class = "WorkerW")
+        return false
+
+    WinGet, style, Style, ahk_id %windowID%
+    if !(style & 0x10000000)  ; WS_VISIBLE
+        return false
+
+    if !(style & 0x00010000)  ; WS_MAXIMIZEBOX
+        return false
+
+    WinGet, exStyle, ExStyle, ahk_id %windowID%
+    if (exStyle & 0x00000080)  ; WS_EX_TOOLWINDOW
+        return false
+
+    WinGet, minMax, MinMax, ahk_id %windowID%
+    if (minMax = -1)
+        return false
+
+    return !IsWindowCloaked(windowID)
+}
+
+IsWindowCloaked(windowID) {
+    cloaked := 0
+    DllCall("dwmapi\DwmGetWindowAttribute", "Ptr", windowID, "UInt", 14, "Int*", cloaked, "UInt", 4)
+    return cloaked
+}
+
+; Shortcut for maximizing all visible app windows
+#+a::
+    MaximizeAllWindows()
+return
+
 ; Shortcut for Mozilla Firefox window
 !f3::
 #m::  ; Alt+F1 hotkey to activate the window
