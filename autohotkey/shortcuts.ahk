@@ -44,7 +44,65 @@ MaximizeAllWindows() {
     }
 }
 
+FocusTopWindowOnDisplay(targetSide) {
+    targetMonitor := GetMonitorBySide(targetSide)
+    if (!targetMonitor)
+        return
+
+    WinGet, windows, List
+
+    Loop, %windows% {
+        windowID := windows%A_Index%
+        if (!IsFocusableAppWindow(windowID))
+            continue
+
+        WinGetPos, x, y, width, height, ahk_id %windowID%
+        centerX := x + (width / 2)
+        centerY := y + (height / 2)
+
+        if (PointIsInMonitor(centerX, centerY, targetMonitor)) {
+            WinActivate, ahk_id %windowID%
+            return
+        }
+    }
+}
+
+GetMonitorBySide(targetSide) {
+    SysGet, monitorCount, MonitorCount
+    targetMonitor := ""
+
+    Loop, %monitorCount% {
+        SysGet, monitor, Monitor, %A_Index%
+        monitorInfo := {left: monitorLeft, top: monitorTop, right: monitorRight, bottom: monitorBottom}
+
+        if (!targetMonitor) {
+            targetMonitor := monitorInfo
+        } else if (targetSide = "left" && monitorInfo.left < targetMonitor.left) {
+            targetMonitor := monitorInfo
+        } else if (targetSide = "right" && monitorInfo.left > targetMonitor.left) {
+            targetMonitor := monitorInfo
+        }
+    }
+
+    return targetMonitor
+}
+
+PointIsInMonitor(x, y, monitor) {
+    return x >= monitor.left && x < monitor.right && y >= monitor.top && y < monitor.bottom
+}
+
 IsMaximizableAppWindow(windowID) {
+    if (!IsFocusableAppWindow(windowID))
+        return false
+
+    WinGet, style, Style, ahk_id %windowID%
+    if !(style & 0x00010000)  ; WS_MAXIMIZEBOX
+        return false
+
+    return true
+}
+
+IsFocusableAppWindow(windowID) {
     WinGetTitle, title, ahk_id %windowID%
     if (title = "")
         return false
@@ -55,9 +113,6 @@ IsMaximizableAppWindow(windowID) {
 
     WinGet, style, Style, ahk_id %windowID%
     if !(style & 0x10000000)  ; WS_VISIBLE
-        return false
-
-    if !(style & 0x00010000)  ; WS_MAXIMIZEBOX
         return false
 
     WinGet, exStyle, ExStyle, ahk_id %windowID%
@@ -80,6 +135,15 @@ IsWindowCloaked(windowID) {
 ; Shortcut for maximizing all visible app windows
 #+f::
     MaximizeAllWindows()
+return
+
+; Shortcuts for focusing the top app window on the left/right display
+#,::
+    FocusTopWindowOnDisplay("left")
+return
+
+#.::
+    FocusTopWindowOnDisplay("right")
 return
 
 ; Shortcut for Mozilla Firefox window
