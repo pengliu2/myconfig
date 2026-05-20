@@ -146,6 +146,15 @@ return
     FocusTopWindowOnDisplay("right")
 return
 
+; Shortcuts for moving the active window left/right
+#+,::
+    Send, #{Left}
+return
+
+#+.::
+    Send, #{Right}
+return
+
 ; Shortcut for Mozilla Firefox window
 !f3::
 #m::  ; Alt+F1 hotkey to activate the window
