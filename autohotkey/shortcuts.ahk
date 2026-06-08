@@ -148,10 +148,12 @@ return
 
 ; Shortcuts for moving the active window left/right
 #+,::
+#^,::
     Send, #{Left}
 return
 
 #+.::
+#^.::
     Send, #{Right}
 return
 
@@ -190,7 +192,7 @@ return
 
 ; Shortcut for Emacs window
 #e::  ; Alt+F1 hotkey to activate the window
-    MinimizeRestore("^pengliu@pengliu-desktop.*", "^Emacs - .*", "^'Emacs - .*", "^\[WARN:COPY MODE\] Emacs - .*")
+    MinimizeRestore("^pengliu@(?!(?:build|PENGLIU-HOVI)).*", "^Emacs - .*", "^'Emacs - .*", "^\[WARN:COPY MODE\] Emacs - .*")
 return
 
 ; Shortcut for device window (Flashing)
