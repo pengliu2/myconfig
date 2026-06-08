@@ -67,6 +67,32 @@ FocusTopWindowOnDisplay(targetSide) {
     }
 }
 
+FocusSecondWindowOnActiveDisplay() {
+    WinGet, activeWindow, ID, A
+    if (!activeWindow)
+        return
+
+    targetMonitor := GetMonitorForWindow(activeWindow)
+    if (!targetMonitor)
+        return
+
+    WinGet, windows, List
+
+    Loop, %windows% {
+        windowID := windows%A_Index%
+        if (windowID = activeWindow)
+            continue
+
+        if (!IsFocusableAppWindow(windowID))
+            continue
+
+        if (WindowIsOnMonitor(windowID, targetMonitor)) {
+            WinActivate, ahk_id %windowID%
+            return
+        }
+    }
+}
+
 GetMonitorBySide(targetSide) {
     SysGet, monitorCount, MonitorCount
     targetMonitor := ""
@@ -85,6 +111,32 @@ GetMonitorBySide(targetSide) {
     }
 
     return targetMonitor
+}
+
+GetMonitorForWindow(windowID) {
+    WinGetPos, x, y, width, height, ahk_id %windowID%
+    centerX := x + (width / 2)
+    centerY := y + (height / 2)
+
+    SysGet, monitorCount, MonitorCount
+
+    Loop, %monitorCount% {
+        SysGet, monitor, Monitor, %A_Index%
+        monitorInfo := {left: monitorLeft, top: monitorTop, right: monitorRight, bottom: monitorBottom}
+
+        if (PointIsInMonitor(centerX, centerY, monitorInfo))
+            return monitorInfo
+    }
+
+    return ""
+}
+
+WindowIsOnMonitor(windowID, monitor) {
+    WinGetPos, x, y, width, height, ahk_id %windowID%
+    centerX := x + (width / 2)
+    centerY := y + (height / 2)
+
+    return PointIsInMonitor(centerX, centerY, monitor)
 }
 
 PointIsInMonitor(x, y, monitor) {
@@ -144,6 +196,11 @@ return
 
 #.::
     FocusTopWindowOnDisplay("right")
+return
+
+; Shortcut for raising the next window down in the same display's Z-order
+#Esc::
+    FocusSecondWindowOnActiveDisplay()
 return
 
 ; Shortcuts for moving the active window left/right
