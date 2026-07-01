@@ -200,6 +200,8 @@ return
 
 ; Shortcut for raising the next window down in the same display's Z-order
 #Esc::
+!Esc::
+#p::
     FocusSecondWindowOnActiveDisplay()
 return
 
@@ -249,7 +251,7 @@ return
 
 ; Shortcut for Emacs window
 #e::  ; Alt+F1 hotkey to activate the window
-    MinimizeRestore("^pengliu@(?!(?:build|PENGLIU-HOVI)).*", "^Emacs - .*", "^'Emacs - .*", "^\[WARN:COPY MODE\] Emacs - .*")
+    MinimizeRestore("^pengliu@(?!(?:build)).*", "^Emacs - .*", "^'Emacs - .*", "^\[WARN:COPY MODE\] Emacs - .*")
 return
 
 ; Shortcut for device window (Flashing)
@@ -297,11 +299,6 @@ return
 ; Shortcut for Cursor
 #v::
      MinimizeRestore(".* - Cursor$")
-return
-
-; Shortcut for p4 pengliu_bugfix_main
-#p::
-     MinimizeRestore("^pengliu_bugfixmain.*")
 return
 
 ; Shortcut for Outlook
