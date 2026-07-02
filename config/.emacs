@@ -668,9 +668,53 @@ Switch projects and subprojects from NEXT back to TODO"
 ;; markdown-mode binds M-n/M-p to link navigation; keep them as line scrolls.
 (with-eval-after-load 'markdown-mode
   (define-key markdown-mode-map (kbd "M-n")
-    (lambda () (interactive) (scroll-up 1)))
+              (lambda () (interactive) (scroll-up 1)))
   (define-key markdown-mode-map (kbd "M-p")
-    (lambda () (interactive) (scroll-down 1))))
+              (lambda () (interactive) (scroll-down 1))))
+
+(defun my-markdown-smart-header-reference ()
+  "Smart reference link generator for Markdown headings.
+Scans the buffer for an existing definition matching the heading's anchor.
+If found, reuses that label and skips the prompt. If not found, jumps back
+to the heading, prompts for a label, and inserts the definition line 
+immediately on the next line without empty lines."
+  (interactive)
+  (save-excursion
+    (back-to-indentation)
+    (if (looking-at "^#+\\s-+\\(.+\\)$")
+        (let* ((title (match-string 1))
+               ;; Generate standard GitHub-style anchor slug
+               (slug (downcase title))
+               (slug (replace-regexp-in-string " " "-" slug))
+               (slug (replace-regexp-in-string "[^a-z0-9-_]" "" slug))
+               (label nil)
+               (inline-text nil))
+          
+          ;; 1. Check if the anchor definition already exists anywhere in the buffer
+          (goto-char (point-min))
+          (if (re-search-forward (concat "^\\s-*\\[\\(.+?\\)\\]:\\s-*#" (regexp-quote slug) "\\s-*$") nil t)
+              (setq label (match-string 1))
+            
+            ;; 2. If it doesn't exist, jump back to heading line first so user can see it
+            (my-markdown-goto-heading-line-end title)
+            ;; Prompt for the label while cursor is at the heading
+            (setq label (read-string "Enter short link label (e.g., llm-link): "))
+            ;; Insert definition line immediately on the next line
+            (insert "\n" (format "[%s]: #%s" label slug))
+            (message "Inserted definition block immediately under heading."))
+          
+          ;; 3. Push ONLY the inline link text to the kill ring
+          (setq inline-text (format "[%s][%s]" title label))
+          (kill-new inline-text)
+          (message "Ready! Press C-y to paste your inline link: %s" inline-text))
+      (message "Not on a Markdown heading!"))))
+
+(defun my-markdown-goto-heading-line-end (title)
+  "Helper to safely find the end of the current heading line matching TITLE."
+  (goto-char (point-min))
+  (re-search-forward (concat "^#+\\s-+" (regexp-quote title) "\\s-*$") nil t))
+
+(define-key markdown-mode-map (kbd "C-c C-a") #'my-markdown-smart-header-reference)
 
 (setq scroll-step 1
       scroll-margin 3
