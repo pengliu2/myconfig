@@ -52,7 +52,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; package.el ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -84,36 +83,9 @@
 (global-font-lock-mode t)
 (column-number-mode 1)
 
-(defun wsl-copy-to-windows-clipboard (text)
-  "Pipe yanked TEXT to clip.exe safely, only if the executable exists."
-  (let ((clip-program "clip.exe"))
-    ;; Only attempt to run if the file exists in the system PATH
-    (if (executable-find clip-program)
-        (let ((process-connection-type nil))
-          (let ((proc (start-process clip-program nil clip-program)))
-            (process-send-string proc text)
-            (process-send-eof proc)))
-      ;; Optional: Log a message to the *Messages* buffer if missing
-      (message "Warning: %s not found. Keeping text internal." clip-program))))
-
-;; Safely hook it into the Emacs clipboard system
-(setq interprogram-cut-function 'wsl-copy-to-windows-clipboard)
-
-(defun wsl-paste-from-windows-clipboard ()
-  "Fetch text from the Windows clipboard using PowerShell."
-  (let ((powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"))
-    (when (file-executable-p powershell)
-      (with-temp-buffer
-        (let ((coding-system-for-read 'utf-8-dos))
-          (when (zerop (call-process
-                        powershell nil t nil
-                        "-NoProfile"
-                        "-Command"
-                        "[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; [Console]::Out.Write([string](Get-Clipboard -Raw))"))
-            (buffer-string)))))))
-
-;; Assign it to the built-in pasting hook
-(setq interprogram-paste-function 'wsl-paste-from-windows-clipboard)
+(use-package clipetty
+  :ensure t
+  :hook (after-init . global-clipetty-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing Settings End
@@ -667,6 +639,7 @@ Switch projects and subprojects from NEXT back to TODO"
 
 ;; markdown-mode binds M-n/M-p to link navigation; keep them as line scrolls.
 (with-eval-after-load 'markdown-mode
+  (define-key markdown-mode-map (kbd "C-c C-a") #'my-markdown-smart-header-reference)
   (define-key markdown-mode-map (kbd "M-n")
               (lambda () (interactive) (scroll-up 1)))
   (define-key markdown-mode-map (kbd "M-p")
@@ -713,8 +686,6 @@ immediately on the next line without empty lines."
   "Helper to safely find the end of the current heading line matching TITLE."
   (goto-char (point-min))
   (re-search-forward (concat "^#+\\s-+" (regexp-quote title) "\\s-*$") nil t))
-
-(define-key markdown-mode-map (kbd "C-c C-a") #'my-markdown-smart-header-reference)
 
 (setq scroll-step 1
       scroll-margin 3
