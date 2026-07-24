@@ -78,6 +78,8 @@
 (unless (display-graphic-p)
   (menu-bar-mode -1))
 
+(setq ido-enable-flex-matching t
+        ido-auto-merge-work-directories-length -1)
 (ido-mode 'both)
 ;;(ido-ubiquitous 1)
 (global-font-lock-mode t)
@@ -86,7 +88,8 @@
 (use-package clipetty
   :ensure t
   :hook (after-init . global-clipetty-mode))
-
+(with-eval-after-load 'clipetty
+  (setq clipetty-tmux-ssh-tty "tmux display-message -p '#{pane_tty}'"))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing Settings End
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -113,6 +116,8 @@
 ;(add-hook 'outline-minor-mode-hook
 ;	  (lambda () (local-set-key (kbd "M-o")
 ;				    outline-mode-prefix-map)))
+(global-set-key (kbd "M-u") #'imenu-list-smart-toggle)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; outline ends
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -692,7 +697,7 @@ immediately on the next line without empty lines."
       scroll-conservatively 10000000)
 
 (defun switch-to-other-buffer () (interactive) (switch-to-buffer (other-buffer)))
-(global-set-key "\C-\M-l" 'switch-to-other-buffer)
+(global-set-key "\M-l" 'switch-to-other-buffer)
 (global-set-key "\C-w" 'clipboard-kill-region)
 (global-set-key "\M-w" 'clipboard-kill-ring-save)
 (global-set-key "\C-y" 'clipboard-yank)
