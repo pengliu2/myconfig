@@ -202,6 +202,7 @@ return
 #Esc::
 !Esc::
 #p::
+#o::
     FocusSecondWindowOnActiveDisplay()
 return
 
@@ -251,12 +252,14 @@ return
 
 ; Shortcut for Emacs window
 #e::  ; Alt+F1 hotkey to activate the window
-    MinimizeRestore("^pengliu@(?!(?:build)).*", "^Emacs - .*", "^'Emacs - .*", "^\[WARN:COPY MODE\] Emacs - .*")
+;    MinimizeRestore("^pengliu@(?!(?:build)).*", "^Emacs - .*", "^'Emacs - .*", "^\[WARN:COPY MODE\] Emacs - .*")
+    MinimizeRestore("^pengliu@.*", "^Emacs - .*", "^'Emacs - .*", "^\[WARN:COPY MODE\] Emacs - .*")
 return
 
 ; Shortcut for device window (Flashing)
 #d::
-     MinimizeRestore("^pengliu@build-pengliu.*", "^lab@.*", "^Windows PowerShell$", "^labuser@.*", "^jenkins@.*")
+;     MinimizeRestore("^pengliu@build-pengliu.*", "^lab@.*", "^Windows PowerShell$", "^labuser@.*", "^jenkins@.*")
+     MinimizeRestore("^pengliu@.*", "^lab@.*", "^Windows PowerShell$", "^labuser@.*", "^jenkins@.*")
 return
 
 ; Shortcut for Slack window
@@ -302,7 +305,7 @@ return
 return
 
 ; Shortcut for Outlook
-#o::
+#i::
      MinimizeRestore(".* - Outlook$")
 return
 
