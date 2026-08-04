@@ -7,31 +7,21 @@ SetTitleMatchMode, RegEx  ; Set title match mode to regular expression
 
 MinimizeRestore(windowTitles*) {
     for index, windowTitle in windowTitles {
-        IfWinExist, %windowTitle%
-        {
-            ; Get the window's ID
-            WinGet, targetWindow, ID, %windowTitle%
-            
-            ; Check if window is maximized
-            WinGet, isMaximized, MinMax, ahk_id %targetWindow%
-            
-            ; Activate the window
+        WinGet, matchingWindows, List, %windowTitle%
+
+        Loop, %matchingWindows% {
+            targetWindow := matchingWindows%A_Index%
+
+            ; Windows on inactive virtual desktops are DWM-cloaked.
+            if (IsWindowCloaked(targetWindow))
+                continue
+
             WinActivate, ahk_id %targetWindow%
-
-            ; Minimize the window
-            ;WinMinimize, ahk_id %targetWindow%
-
-            ; Restore window to previous state
-            ;if (isMaximized = 1) {
-            ;    WinMaximize, ahk_id %targetWindow%
-            ;} else {
-            ;    WinRestore, ahk_id %targetWindow%
-            ;}
-            return  ; Exit after finding and processing the first matching window
+            return
         }
     }
-    ; If we get here, none of the windows were found
-    MsgBox, No window matching any of the provided titles was found.
+
+    MsgBox, No matching window was found on the current desktop.
 }
 
 MaximizeAllWindows() {
@@ -234,14 +224,7 @@ return
 ; Shortcut for Google Chrome window
 !f2::
 #c::  ; Alt+F2 hotkey to activate the Chroime window
-    IfWinExist, .*Google Chrome$
-    {
-        WinActivate  ; Activate the window with title that ends with "Google Chrome"
-    }
-    else
-    {
-        MsgBox, No window with title ending with "Google Chrome" was found.
-    }
+    MinimizeRestore(".*Google Chrome$")
 return
 
 ; Shortcut for WSL
@@ -265,14 +248,7 @@ return
 ; Shortcut for Slack window
 !f9::
 #s::  ; Alt+F8 hotkey to activate the window
-    IfWinExist, .* - Slack$
-    {
-        WinActivate  ; Activate the window with title that ends with " - Slack"
-    }
-    else
-    {
-        MsgBox, No window with title ending with " - Slack" was found.
-    }
+    MinimizeRestore(".* - Slack$")
 return
 
 
@@ -284,14 +260,7 @@ return
 
 ; Shortcut for Powershell window
 #f5::   ; Win+w hotkey to active the window
-    IfWinExist, ^Windows PowerShell$
-    {
-        WinActivate
-    }
-    else
-    {
-        MsgBox, No window with title "Windows PowerShell" was found.
-    }
+    MinimizeRestore("^Windows PowerShell$")
 return
 
 ; Shortcut for MINGW64, the build window
