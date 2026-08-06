@@ -181,10 +181,12 @@ return
 
 ; Shortcuts for focusing the top app window on the left/right display
 #,::
+!,::
     FocusTopWindowOnDisplay("left")
 return
 
 #.::
+!.::
     FocusTopWindowOnDisplay("right")
 return
 
@@ -233,16 +235,15 @@ return
     MinimizeRestore("i).*pengl(iu)?@PENGLIU-HOVI.*", "ahk_exe Tabby.exe")
 return
 
-; Shortcut for Emacs window
+; Shortcut for a pengliu desktop window
 #e::  ; Alt+F1 hotkey to activate the window
-;    MinimizeRestore("^pengliu@(?!(?:build)).*", "^Emacs - .*", "^'Emacs - .*", "^\[WARN:COPY MODE\] Emacs - .*")
-    MinimizeRestore("^pengliu@.*", "^Emacs - .*", "^'Emacs - .*", "^\[WARN:COPY MODE\] Emacs - .*")
+    MinimizeRestore("^pengliu@pengliu-desktop")
 return
 
 ; Shortcut for device window (Flashing)
 #d::
 ;     MinimizeRestore("^pengliu@build-pengliu.*", "^lab@.*", "^Windows PowerShell$", "^labuser@.*", "^jenkins@.*")
-     MinimizeRestore("^pengliu@.*", "^lab@.*", "^Windows PowerShell$", "^labuser@.*", "^jenkins@.*")
+     MinimizeRestore("^pengliu@(?!pengliu-desktop).*", "^lab@.*", "^Windows PowerShell$", "^labuser@.*", "^jenkins@.*")
 return
 
 ; Shortcut for Slack window
