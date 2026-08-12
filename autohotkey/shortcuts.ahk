@@ -57,6 +57,50 @@ FocusTopWindowOnDisplay(targetSide) {
     }
 }
 
+SwapTopWindowsBetweenDisplays() {
+    leftMonitor := GetMonitorBySide("left")
+    rightMonitor := GetMonitorBySide("right")
+    if (!leftMonitor || !rightMonitor)
+        return
+
+    leftWindow := GetTopWindowOnMonitor(leftMonitor)
+    rightWindow := GetTopWindowOnMonitor(rightMonitor)
+    if (!leftWindow || !rightWindow)
+        return
+
+    WinGetPos, leftX, leftY, leftWidth, leftHeight, ahk_id %leftWindow%
+    WinGetPos, rightX, rightY, rightWidth, rightHeight, ahk_id %rightWindow%
+
+    ; Preserve each window's position relative to its display.  SWP_NOACTIVATE
+    ; keeps the currently focused window focused while both windows move.
+    MoveWindowWithoutActivating(leftWindow
+        , rightMonitor.left + leftX - leftMonitor.left
+        , rightMonitor.top + leftY - leftMonitor.top
+        , leftWidth, leftHeight)
+    MoveWindowWithoutActivating(rightWindow
+        , leftMonitor.left + rightX - rightMonitor.left
+        , leftMonitor.top + rightY - rightMonitor.top
+        , rightWidth, rightHeight)
+}
+
+GetTopWindowOnMonitor(monitor) {
+    WinGet, windows, List
+
+    Loop, %windows% {
+        windowID := windows%A_Index%
+        if (IsFocusableAppWindow(windowID) && WindowIsOnMonitor(windowID, monitor))
+            return windowID
+    }
+
+    return 0
+}
+
+MoveWindowWithoutActivating(windowID, x, y, width, height) {
+    ; SWP_NOACTIVATE prevents the move from changing keyboard focus.
+    DllCall("SetWindowPos", "Ptr", windowID, "Ptr", 0
+        , "Int", x, "Int", y, "Int", width, "Int", height, "UInt", 0x0010)
+}
+
 FocusSecondWindowOnActiveDisplay() {
     WinGet, activeWindow, ID, A
     if (!activeWindow)
@@ -207,6 +251,11 @@ return
 #+.::
 #^.::
     Send, #{Right}
+return
+
+; Swap the top app windows on the left and right displays without changing focus
+#^x::
+    SwapTopWindowsBetweenDisplays()
 return
 
 ; Shortcut for Mozilla Firefox window
