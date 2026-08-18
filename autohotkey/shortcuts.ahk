@@ -52,6 +52,10 @@ FocusTopWindowOnDisplay(targetSide) {
 
         if (PointIsInMonitor(centerX, centerY, targetMonitor)) {
             WinActivate, ahk_id %windowID%
+            ; Windows reports the grouped physical displays as one virtual
+            ; monitor, so use the selected window's center rather than the
+            ; virtual monitor's midpoint (which can be at the display seam).
+            MouseMove, %centerX%, %centerY%, 0
             return
         }
     }
@@ -71,8 +75,8 @@ SwapTopWindowsBetweenDisplays() {
     WinGetPos, leftX, leftY, leftWidth, leftHeight, ahk_id %leftWindow%
     WinGetPos, rightX, rightY, rightWidth, rightHeight, ahk_id %rightWindow%
 
-    ; Preserve each window's position relative to its display.  SWP_NOACTIVATE
-    ; keeps the currently focused window focused while both windows move.
+    ; Preserve each window's position relative to its display without changing
+    ; focus until both moves have completed.
     MoveWindowWithoutActivating(leftWindow
         , rightMonitor.left + leftX - leftMonitor.left
         , rightMonitor.top + leftY - leftMonitor.top
@@ -81,6 +85,9 @@ SwapTopWindowsBetweenDisplays() {
         , leftMonitor.left + rightX - rightMonitor.left
         , leftMonitor.top + rightY - rightMonitor.top
         , rightWidth, rightHeight)
+
+    ; leftWindow is now the top window on the right display.
+    WinActivate, ahk_id %leftWindow%
 }
 
 GetTopWindowOnMonitor(monitor) {
@@ -253,7 +260,8 @@ return
     Send, #{Right}
 return
 
-; Swap the top app windows on the left and right displays without changing focus
+; Swap the top app windows on the left and right displays, then focus the right one.
+#x::
 #^x::
     SwapTopWindowsBetweenDisplays()
 return
