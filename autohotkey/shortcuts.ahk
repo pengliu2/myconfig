@@ -293,14 +293,13 @@ return
 return
 
 ; Shortcut for a pengliu desktop window
-#e::  ; Alt+F1 hotkey to activate the window
-    MinimizeRestore("^pengliu@pengliu-desktop")
+#e::
+    MinimizeRestore("ahk_exe WindowsTerminal.exe")
 return
 
 ; Shortcut for device window (Flashing)
 #d::
-;     MinimizeRestore("^pengliu@build-pengliu.*", "^lab@.*", "^Windows PowerShell$", "^labuser@.*", "^jenkins@.*")
-     MinimizeRestore("^pengliu@(?!pengliu-desktop).*", "^lab@.*", "^Windows PowerShell$", "^labuser@.*", "^jenkins@.*")
+    MinimizeRestore("ahk_exe Tabby.exe")
 return
 
 ; Shortcut for Slack window
