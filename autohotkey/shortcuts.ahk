@@ -250,6 +250,7 @@ return
 return
 
 ; Shortcuts for moving the active window left/right
+; This works with Windows 11 FancyZones, when FancyZones Override Windows Snap is on
 #+,::
 #^,::
     Send, #{Left}
