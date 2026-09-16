@@ -700,7 +700,6 @@ immediately on the next line without empty lines."
 (global-set-key "\M-l" 'switch-to-other-buffer)
 (global-set-key "\C-w" 'clipboard-kill-region)
 (global-set-key "\M-w" 'clipboard-kill-ring-save)
-(global-set-key "\C-y" 'clipboard-yank)
 (global-set-key "\C-h" 'delete-backward-char)
 ;; key bindings end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
